@@ -29,6 +29,8 @@ https://drive.google.com/file/d/1tnuDbo0XGEA-cKgwQYvOFcynzfgIWMBY/view?usp=shari
 - [Prerequisites](#prerequisites)
 - [Installation](#installation)
 - [Running the App](#running-the-app)
+- [Building the App](#building-the-app)
+- [Project Structure](#project-structure)
 
 
 ## Getting Started
