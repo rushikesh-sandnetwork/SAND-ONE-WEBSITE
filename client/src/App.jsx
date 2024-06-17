@@ -1,10 +1,11 @@
 import './App.css'
+import LoginPage from './pages/globals/LoginPage/LoginPage'
 
 function App() {
 
   return (
     <>
-      this will be the sand one application
+      <LoginPage />
     </>
   )
 }
