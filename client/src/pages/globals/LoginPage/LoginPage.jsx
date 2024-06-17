@@ -1,6 +1,16 @@
 import React from 'react'
 import './LoginPage.css';
+import { Link, useNavigate } from 'react-router-dom'
+
 const LoginPage = () => {
+
+    const navigate = useNavigate()
+
+    function authenticateAndLogin(){
+        // function definition need to be defined but it is fine for now 
+        navigate('/admin');
+    }
+
     return (
         <div className="LoginPage-container">
             <div className="LoginPage-box">
@@ -21,9 +31,9 @@ const LoginPage = () => {
                         <input type="password" name="" id="" />
                     </div>
 
-                    <input className='loginBtn' type="button" value="LOGIN" />
+                    <input className='loginBtn' type="button" value="LOGIN" onClick={authenticateAndLogin}/>
 
-                </div>
+                </div>  
             </div>
         </div>
     )

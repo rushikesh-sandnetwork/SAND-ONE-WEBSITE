@@ -1,0 +1,14 @@
+.LandingPage-container {
+    display: flex;
+    height: 100vh; 
+}
+
+.sidebar {
+    width: 230px; 
+}
+
+.content {
+    flex: 1;
+    padding: 20px;
+}
+

@@ -1,0 +1,12 @@
+.PageTitle {
+    width: 100%;
+    padding: 5px 15px;
+    background-color: #2d9bff;
+    color: white;
+    font-weight: 900;
+    font-family: "Poppins", sans-serif;
+    font-size: 36px; 
+    box-sizing: border-box;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
