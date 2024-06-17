@@ -1,0 +1,1 @@
+This is the server side of the web application ie of SAND ONE.
