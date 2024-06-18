@@ -4,7 +4,10 @@ import './AdminCreateForms.css'
 const AdminCreateForms = () => {
   return (
     <div className='create-form-container'>
-      <PageTitle title="Create New Form"></PageTitle>
+      <div className="title">
+        <PageTitle title="Create New Form"></PageTitle>
+
+      </div>
     </div>
   )
 }
