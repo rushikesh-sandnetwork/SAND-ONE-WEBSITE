@@ -1,17 +1,31 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './AdminLandingPage.css';
-import AdminNavbar from '../AdminNavbar/AdminNavbar';
-import PageTitle from '../../../../../components/PageTitles/PageTitle';
-
+import AdminOverViewPage from '../AdminOverViewPage/AdminOverViewPage';
+import AdminCreateForms from '../AdminCreateForm/AdminCreateForms';
+import AdminViewClientsPage from '../AdminViewClientsPage/AdminViewClientsPage';
+import AdminProfilePage from '../AdminProfilePage/AdminProfilePage';
 const AdminLandingPage = () => {
+
+  const [activeTab, setActiveTab] = useState('overview');
+
+
   return (
     <div className='LandingPage-container'>
       <div className='sidebar'>
-        <AdminNavbar />
+        <div className="navbar">
+          <img src="https://sandnetwork.in/wp-content/uploads/2024/02/sand-logo.png" alt="" />
+          <a onClick={() => setActiveTab('overview')}>Overview</a>
+          <a >New Client</a>
+          <a onClick={() => setActiveTab('viewClients')}>View Clients</a>
+          <a onClick={() => setActiveTab('profile')}>Profile</a>
+          <input type="button" value="Logout" />
+        </div>
       </div>
       <div className='content'>
-        <PageTitle title="Overview" />
-        {/* Add other content components as needed */}
+        {activeTab == 'overview' && <AdminOverViewPage></AdminOverViewPage>}
+        {activeTab == 'newClient' && <AdminCreateForms></AdminCreateForms>}
+        {activeTab == 'viewClients' && <AdminViewClientsPage></AdminViewClientsPage>}
+        {activeTab == 'profile' && <AdminProfilePage></AdminProfilePage>}
       </div>
     </div>
   );
