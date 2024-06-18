@@ -1,0 +1,57 @@
+.OverViewTileTwoBox-container {
+    background-color: #31BDFC;
+    border-radius: 16px;
+    height: 250px;
+    width: 250px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    transition: transform 0.3s, box-shadow 0.3s; 
+}
+
+.OverViewTileTwoBox-container:hover {
+    transform: translateY(-5px); 
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+}
+
+
+.container-title {
+    margin: 0;
+    font-size: 24px; 
+    font-family: "Poppins", sans-serif;
+    font-weight: bold; 
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    padding-bottom: 5px; 
+}
+
+.container-content {
+    margin: 0;
+    padding: 0;
+    font-size: 16px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 300;
+    letter-spacing: 1px;
+}
+
+.moredetailsBtn {
+    padding: 12px 24px; 
+    border: none;
+    border-radius: 20px; 
+    color: white;
+    font-size: 14px;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    letter-spacing: 1px;
+    background-color: #2D9BFF;
+    cursor: pointer; 
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.moredetailsBtn:hover {
+    background-color: #238bde; 
+    transform: scale(1.05); 
+}
