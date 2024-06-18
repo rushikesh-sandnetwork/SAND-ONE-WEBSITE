@@ -1,0 +1,13 @@
+.ViewClientsContainer{
+    background-color: #CDF0FF;
+    height: 600px;
+    width: 95%;
+    border-radius: 18px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 20px;
+    flex-wrap: wrap;
+}
