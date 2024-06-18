@@ -3,14 +3,14 @@
     height: 75px;
     padding: 0px 20px;
     background-color: #2d9bff;
-    /* background-color: #2d9bff; */
     color: white;
     font-weight: 900;
+    letter-spacing: 2px;
     font-family: "Poppins", sans-serif;
-    font-size: 50px; 
+    font-size: 45px; 
     box-sizing: border-box;
     border-radius: 18px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-    display: flex; /* Use flexbox */
+    display: flex;
     align-items: center; 
 }

@@ -4,6 +4,7 @@ import AdminOverViewPage from '../AdminOverViewPage/AdminOverViewPage';
 import AdminCreateForms from '../AdminCreateForm/AdminCreateForms';
 import AdminViewClientsPage from '../AdminViewClientsPage/AdminViewClientsPage';
 import AdminProfilePage from '../AdminProfilePage/AdminProfilePage';
+import AdminViewCampaignsPage from '../AdminViewCampaignsPage/AdminViewCampaignsPage'
 const AdminLandingPage = () => {
 
   const [activeTab, setActiveTab] = useState('overview');
@@ -24,8 +25,9 @@ const AdminLandingPage = () => {
       <div className='content'>
         {activeTab == 'overview' && <AdminOverViewPage></AdminOverViewPage>}
         {activeTab == 'newClient' && <AdminCreateForms></AdminCreateForms>}
-        {activeTab == 'viewClients' && <AdminViewClientsPage></AdminViewClientsPage>}
+        {activeTab == 'viewClients' && <AdminViewClientsPage setActiveTab = {setActiveTab}></AdminViewClientsPage>}
         {activeTab == 'profile' && <AdminProfilePage></AdminProfilePage>}
+        {activeTab == 'client-detail' && <AdminViewCampaignsPage ></AdminViewCampaignsPage>}
       </div>
     </div>
   );

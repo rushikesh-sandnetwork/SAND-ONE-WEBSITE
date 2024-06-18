@@ -1,13 +1,19 @@
-.ViewClientsContainer{
+.ViewClientsContainer {
     background-color: #CDF0FF;
     height: 600px;
     width: 95%;
     border-radius: 18px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     margin-top: 20px;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-evenly;
-    padding: 20px;
-    flex-wrap: wrap;
+    padding: 10px 20px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    overflow-y: scroll;
+    -ms-overflow-style: none;
+    scrollbar-width: none; 
+}
+
+.ViewClientsContainer::-webkit-scrollbar {
+    display: none;  
 }
