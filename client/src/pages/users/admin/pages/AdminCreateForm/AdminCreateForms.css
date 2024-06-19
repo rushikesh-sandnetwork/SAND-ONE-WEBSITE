@@ -21,19 +21,28 @@
 .left-container{
     height: 85vh;
     width: 15%;
-    background-color: #757575;
+    background-color: #33384a;
     margin-bottom: 10px;
     margin-left: 10px;
-    border-radius: 20px;
+    border-radius: 12px;
     margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+-ms-overflow-style: none;
+scrollbar-width: none; 
 }
 
+.left-container::-webkit-scrollbar {
+    display: none;  
+  }
+  
 
 .right-container{
     height: 85vh;
     width: 80%;
     background-color: #CDF0FF;
-    border-radius: 20px;
+    border-radius: 12px;
     display: flex;
     flex-direction: row;
     align-items: center;

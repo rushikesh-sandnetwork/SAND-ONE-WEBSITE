@@ -1,26 +1,28 @@
 .draggable-item {
-    background-color: #cfcfcf;
+    background-color: #525a76;
     border: none;
     cursor: move;
     transition: opacity 0.3s ease;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
     height: 60px;
-    border-radius: 16px;
+    border-radius: 12px;
     margin-top: 12px;
     margin-left: 10px;
     margin-right: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    padding: 10px 10px;
+    margin-bottom: 5px;
   }
   
 .dragItemTitle{
-  color: black;
+  color: white;
   font-family: "Poppins", sans-serif;
   font-weight: bold;
   font-size: 20px;
   text-align: center;
-  
+  letter-spacing: 2px;
 }
 
   .draggable-item.hidden {
@@ -29,13 +31,20 @@
   }
 
 
-  .draggable-item{
-    background-color: rgb(237, 237, 237);
+  .dropped-item{
+    padding-left: 10px;
+    background-color: #8e8e8e;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+    height: 60px;
+    border-radius: 16px;
+    margin-top: 12px;
+    margin-left: 10px;
+    margin-right: 10px;
     display: flex;
     flex-direction: row;
+    align-items: center;
     justify-content: space-between;
 
-    padding-left: 10px;
   }
 
   .delete-button{
@@ -43,5 +52,24 @@
     border: none;
     cursor: pointer;
   }
+
+  .heading-text{
+    background-color: transparent;
+    border: none;
+    color: black;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+    outline: none;
+  }
+
+  .heading-text::placeholder{
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    font-size: 20px;
+  }    
   
+  .heading-text:enabled{
+    border: none;
+  }
 

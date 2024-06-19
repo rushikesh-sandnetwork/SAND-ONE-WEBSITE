@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
-import DraggableItem from './DraggableItem'; // Import DraggableItem or adjust path as needed
-import './DropArea.css'
+import DraggableItem from './DraggableItem'; // Adjust the import path as needed
+import './DropArea.css';
+
 const DropArea = ({ onDrop }) => {
   const [droppedItems, setDroppedItems] = useState([]); // State to store dropped items
 
@@ -20,8 +21,6 @@ const DropArea = ({ onDrop }) => {
     setDroppedItems((prevItems) => prevItems.filter(item => item.id !== id));
   };
 
-
-
   return (
     <div className='drop-area' ref={dropRef}>
       <p>Create Form Here</p>
@@ -33,6 +32,7 @@ const DropArea = ({ onDrop }) => {
             text={item.text}
             dropped={true}
             onDelete={handleDelete}
+            component={item.component} // Pass the appropriate component
           />
         ))}
       </div>

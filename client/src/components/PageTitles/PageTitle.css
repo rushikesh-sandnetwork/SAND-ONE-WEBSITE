@@ -4,12 +4,11 @@
     padding: 0px 20px;
     background-color: #3751b6;
     color: white;
-    font-weight: 900;
-    letter-spacing: 2px;
+    font-weight: 700;
     font-family: "Poppins", sans-serif;
-    font-size: 45px; 
+    font-size: 40px; 
     box-sizing: border-box;
-    border-radius: 18px;
+    border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
     display: flex;
     align-items: center; 
