@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
-import DraggableItem from './DraggableItem'; // Adjust the import path as needed
+import DraggableItem from './DraggableItem'; 
 import './DropArea.css';
 
 const DropArea = ({ onDrop }) => {
-  const [droppedItems, setDroppedItems] = useState([]); // State to store dropped items
+  const [droppedItems, setDroppedItems] = useState([]); 
 
   const [{ isOver }, dropRef] = useDrop(() => ({
     accept: 'item',
     drop: (item) => {
-      onDrop(item); // Call parent onDrop function to handle item drop
-      setDroppedItems((prevItems) => [...prevItems, item]); // Update dropped items state correctly
+      onDrop(item); 
+      setDroppedItems((prevItems) => [...prevItems, item]); 
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -32,7 +32,7 @@ const DropArea = ({ onDrop }) => {
             text={item.text}
             dropped={true}
             onDelete={handleDelete}
-            component={item.component} // Pass the appropriate component
+            component={item.component} 
           />
         ))}
       </div>

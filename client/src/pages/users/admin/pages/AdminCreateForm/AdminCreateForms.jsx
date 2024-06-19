@@ -5,30 +5,45 @@ import DraggableItem from './FormUtils/elements/DraggableItem';
 import DropArea from './FormUtils/elements/DropArea';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import Heading from './FormUtils/elements/FormFields/Heading/Heading';
+import FullName from './FormUtils/elements/FormFields/FullName/FullName';
+import Email from './FormUtils/elements/FormFields/Email/Email';
+import Address from './FormUtils/elements/FormFields/Address/Address';
+import Phone from './FormUtils/elements/FormFields/Phone/Phone';
+import DatePicker from './FormUtils/elements/FormFields/DatePicker/DatePicker';
+import Appointment from './FormUtils/elements/FormFields/Appointment/Appointment';
+import Signature from './FormUtils/elements/FormFields/Signature/Signature';
+import ShortText from './FormUtils/elements/FormFields/ShortText/ShortText';
+import LongText from './FormUtils/elements/FormFields/LongText/LongText';
+import DropDown from './FormUtils/elements/FormFields/DropDown/DropDown';
+import SingleChoice from './FormUtils/elements/FormFields/SingleChoice/SingleChoice';
+import MultipleChoice from './FormUtils/elements/FormFields/MultipleChoice/MultipleChoice';
+import Number from './FormUtils/elements/FormFields/Number/Number';
+import Image from './FormUtils/elements/FormFields/Image/Image';
+import FIleUpload from './FormUtils/elements/FormFields/FileUpload/FIleUpload';
+import StarRating from './FormUtils/elements/FormFields/StarRating/StarRating';
+import ScaleRating from './FormUtils/elements/FormFields/ScaleRating/ScaleRating';
 
-const ComponentA = () => <div>Component A Content</div>;
-const ComponentB = () => <div>Component B Content</div>;
-const ComponentC = () => <div>Component C Content</div>;
 
 const dragItems = [
-  { id: "1", text: "Heading", component: ComponentA },
-  { id: "2", text: "Full Name", component: ComponentB },
-  { id: "3", text: "Email", component: ComponentC },
-  { id: "4", text: "Address",component: ComponentC },
-  { id: "5", text: "Phone", component: ComponentC },
-  { id: "6", text: "Date Picker", component: ComponentC },
-  { id: "7", text: "Appointment", component: ComponentC },
-  { id: "8", text: "Signature", component: ComponentC },
-  { id: "9", text: "Short Text", component: ComponentC },
-  { id: "10", text: "Long Text", component: ComponentC },
-  { id: "11", text: "Drop Down", component: ComponentC },
-  { id: "12", text: "Single Choice",component: ComponentC  },
-  { id: "13", text: "Multiple Choice",component: ComponentC  },
-  { id: "14", text: "Number", component: ComponentC },
-  { id: "15", text: "Image",component: ComponentC },
-  { id: "16", text: "File Upload",  component: ComponentC},
-  { id: "17", text: "Star Rating",component: ComponentC },
-  { id: "18", text: "Scale Rating", component: ComponentC },
+  { id: "1", text: "Heading", component: Heading },
+  { id: "2", text: "Full Name", component: FullName },
+  { id: "3", text: "Email", component: Email },
+  { id: "4", text: "Address",component: Address },
+  { id: "5", text: "Phone", component: Phone },
+  { id: "6", text: "Date Picker", component: DatePicker },
+  { id: "7", text: "Appointment", component: Appointment },
+  { id: "8", text: "Signature", component: Signature },
+  { id: "9", text: "Short Text", component: ShortText },
+  { id: "10", text: "Long Text", component: LongText },
+  { id: "11", text: "Drop Down", component: DropDown },
+  { id: "12", text: "Single Choice",component: SingleChoice  },
+  { id: "13", text: "Multiple Choice",component: MultipleChoice  },
+  { id: "14", text: "Number", component: Number },
+  { id: "15", text: "Image",component: Image },
+  { id: "16", text: "File Upload",  component: FIleUpload},
+  { id: "17", text: "Star Rating",component: StarRating },
+  { id: "18", text: "Scale Rating", component: ScaleRating },
 ];
 
 const AdminCreateForms = () => {
