@@ -1,9 +1,11 @@
 import React from 'react'
-
+import './DatePicker.css'
 const DatePicker = () => {
   return (
-    <div>
-      This is a Data Picker component
+    <div className="datePicker-container">
+      <input type="text" name="" className='datePicker-title' placeholder='Pick a Date' id="" />
+
+      <input type="date" name="" className='dateTimeInput' id="" />
     </div>
   )
 }

@@ -14,13 +14,12 @@ const DraggableItem = ({ id, text, dropped, onDelete, component: Component }) =>
   if (dropped) {
     return (
       <div className="dropped-item">
-        <input type="text" className='heading-text' placeholder={text} />
-        <div className='dragged-item'>
-          {Component && <Component />}
+          <div className="component-container">
+            {Component && <Component />}
+          </div>
           <button onClick={() => onDelete(id)} className="delete-button">
             ❌
           </button>
-        </div>
       </div>
     );
   } else {

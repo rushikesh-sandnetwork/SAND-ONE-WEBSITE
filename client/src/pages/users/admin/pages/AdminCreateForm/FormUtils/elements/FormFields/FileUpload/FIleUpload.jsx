@@ -1,11 +1,14 @@
-import React from 'react'
+import React from 'react';
+import './FileUpload.css';
 
-const FIleUpload = () => {
+const FileUpload = () => {
   return (
-    <div>
-      this is fileupload component
+    <div className="fileUpload-container">
+      <input type="text" className="fileUpload-title" placeholder="Enter title" />
+      <input type="file" className='fileUpload-input' id="fileUpload" />
+      <label htmlFor="fileUpload" className="fileUpload-label">Choose a file</label>
     </div>
-  )
+  );
 }
 
-export default FIleUpload
+export default FileUpload;

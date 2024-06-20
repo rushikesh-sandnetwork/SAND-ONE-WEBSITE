@@ -1,9 +1,9 @@
 import React from 'react'
-
+import './DropDown.css'
 const DropDown = () => {
   return (
-    <div>
-      This is a drop down component
+    <div className="dropDown-container">
+      <input type="text" name="" className='dropDown-title' id="" placeholder='Drop Down'/>      
     </div>
   )
 }

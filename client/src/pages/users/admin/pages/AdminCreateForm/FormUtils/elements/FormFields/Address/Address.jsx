@@ -2,8 +2,8 @@ import React from 'react'
 
 const Address = () => {
   return (
-    <div>
-      This is an address component.
+    <div className="address-container">
+      <input type="text" className="address-title" placeholder='Address' />
     </div>
   )
 }
