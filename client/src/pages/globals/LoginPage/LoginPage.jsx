@@ -1,15 +1,42 @@
-import React from 'react'
+import React, { useState } from 'react';
 import './LoginPage.css';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 const LoginPage = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const navigate = useNavigate();
 
-    const navigate = useNavigate()
+    const authenticateAndLogin = async () => {
+        try {
+            const response = await axios.post('http://localhost:8080/api/v1/users/loginUser', {
+                email,
+                password
+            });
 
-    function authenticateAndLogin(){
-        // function definition need to be defined but it is fine for now 
-        navigate('/admin');
-    }
+            if (response.status === 200) {
+                console.log(response);                
+                if (response.data["data"]["role"] === "admin") {
+                    navigate('/admin');
+                } else if (response.data["data"]["role"] === "mis") {
+                    navigate('/mis');
+                }
+            } else {
+                setError('Login failed. Please try again.');
+            }
+            
+        } catch (error) {
+            if (error.response) {
+                // The request was made and the server responded with a status code
+                setError(error.response.data.message || 'Login failed. Please try again.');
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                setError('An unexpected error occurred. Please try again.');
+            }
+        }
+    };
 
     return (
         <div className="LoginPage-container">
@@ -25,18 +52,32 @@ const LoginPage = () => {
 
                     <div className="content-form">
                         <p>Email</p>
-                        <input type="text" name="" id="" />
+                        <input 
+                            type="text" 
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                        />
 
                         <p>Password</p>
-                        <input type="password" name="" id="" />
+                        <input 
+                            type="password" 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
                     </div>
 
-                    <input className='loginBtn' type="button" value="LOGIN" onClick={authenticateAndLogin}/>
+                    {error && <p className="error">{error}</p>}
 
+                    <input 
+                        className='loginBtn' 
+                        type="button" 
+                        value="LOGIN" 
+                        onClick={authenticateAndLogin}
+                    />
                 </div>  
             </div>
         </div>
-    )
+    );
 }
 
-export default LoginPage
+export default LoginPage;
