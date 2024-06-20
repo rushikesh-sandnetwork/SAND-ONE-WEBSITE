@@ -7,7 +7,7 @@ const Phone = () => {
 
       <input type="number" name="" className='phoneNumberInput' id="" />
 
-    
+      
     </div>
   )
 }

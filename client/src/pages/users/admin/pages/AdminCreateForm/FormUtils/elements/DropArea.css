@@ -20,8 +20,10 @@ scrollbar-width: none;
 
 p{
   font-family: "Poppins", sans-serif;
-  font-weight: bold;
-  font-size: 22px;
+  font-weight: 700;
+  font-size: 30px;
   text-align: center;
+  letter-spacing: 1px;
+  color: grey;
 }
 
