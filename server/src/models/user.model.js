@@ -23,6 +23,14 @@ const userSchema = new Schema({
         type: String,
         required: [true, "Password is required"]
     },
+    clientName:{
+        type:String,
+        required:true,
+    },
+    clientId:{
+        type:Schema.Types.ObjectId,
+        ref:"Client"
+    },
     role: {
         type: String,
         required: true,
