@@ -137,4 +137,30 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { loginUser, registerUser, refreshAccessToken, generateAccessAndRefreshTokens };
+
+const logoutUser = asyncHandler(async(req, res) => {
+  await User.findByIdAndUpdate(
+      req.user._id,
+      {
+          $unset: {
+              refreshToken: 1 
+          }
+      },
+      {
+          new: true
+      }
+  )
+
+  const options = {
+      httpOnly: true,
+      secure: true
+  }
+
+  return res
+  .status(200)
+  .clearCookie("accessToken", options)
+  .clearCookie("refreshToken", options)
+  .json(new apiResponse(200, {}, "User logged Out"))
+})
+
+module.exports = { loginUser, registerUser, refreshAccessToken, generateAccessAndRefreshTokens , logoutUser };
