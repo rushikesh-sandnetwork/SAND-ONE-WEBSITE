@@ -10,6 +10,10 @@ const campaignRights = new Schema({
         type:Schema.Types.ObjectId,
         ref:"Client",
     },
+    formId : {
+        type:Schema.Types.ObjectId,
+        ref:"Form",
+    },
     employeeId:{
         type:Schema.Types.ObjectId,
         ref:"user",
