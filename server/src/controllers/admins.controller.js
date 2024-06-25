@@ -7,39 +7,21 @@ import { client } from '../models/client.model';
 import { campaign } from '../models/campaign.model';
 import { Promoter } from '../models/promoter.model';
 import { campaignRights } from '../models/campaignsRightSchema.model';
-// Admin : 
-// Create New Form
-// Create Folder / Bin in the Cloud 	{ To Store the Data } 
-// Select Fields for the Form 		{ Drag and Drop  }
-// Fetch Rights
-// Assign Rights 
-// Fetch Data
-// View Data 
-// Download Data 
-
 
 const createNewClient = asyncHandler(async (req, res) => {
     try {
         const { clientName } = req.body;
 
         if (!clientName) {
-            throw new apiError(401, error?.message || "Client name is empty");
-        };
+            return res.status(400).json(new apiError(400, "Client name is empty"));
+        }
 
-        const newClient = await client.create({
-            clientName,
-        });
+        const newClient = await client.create({ clientName });
 
-        const createdClient = await client.findById(client._id);
-
-        if (!createdClient) {
-            throw new apiError(500, "Something went wrong");
-        };
-
-        res.status(201).json(new apiResponse(500, createdClient, "Client created successfully"));
-
+        res.status(201).json(new apiResponse(201, newClient, "Client created successfully"));
     } catch (error) {
-        throw new apiError(401, error?.message || "An error occurred while creating new client. Try again later.")
+        console.error('Error creating new client:', error);
+        res.status(500).json(new apiError(500, "An error occurred while creating new client. Try again later."));
     }
 });
 
@@ -47,22 +29,23 @@ const createNewClient = asyncHandler(async (req, res) => {
 const fetchClient = asyncHandler(async (req, res) => {
     try {
         const { clientId } = req.body;
+
         if (!clientId) {
-            throw new apiError(401, "Client ID is required");
-        };
+            return res.status(400).json(new apiError(400, "Client ID is required"));
+        }
 
-        const client = await client.findById(clientId);
+        const clientDoc = await client.findById(clientId);
 
-        if (!client) {
-            throw new apiError(500, "Client was not found");
-        };
+        if (!clientDoc) {
+            return res.status(404).json(new apiError(404, "Client not found"));
+        }
 
-        res.status(200).json(new apiResponse(200, client, "Client fetched successfully."));
-
+        res.status(200).json(new apiResponse(200, clientDoc, "Client fetched successfully"));
     } catch (error) {
-        throw new apiError(401, error?.message | "AN error occured while fetching client.");
+        console.error('Error fetching client:', error);
+        res.status(500).json(new apiError(500, "An error occurred while fetching client"));
     }
-})
+});
 
 
 const fetchAllClients = asyncHandler(async (req, res) => {
@@ -70,7 +53,8 @@ const fetchAllClients = asyncHandler(async (req, res) => {
         const clients = await client.find();
         res.status(200).json(new apiResponse(200, clients, "Clients fetched successfully"));
     } catch (error) {
-        throw new apiError(401, error?.message || "An error occurred while fetching");
+        console.error('Error fetching all clients:', error);
+        res.status(500).json(new apiError(500, "An error occurred while fetching clients"));
     }
 });
 
@@ -80,14 +64,14 @@ const fetchAllCampaigns = asyncHandler(async (req, res) => {
         const { campaignId } = req.body;
 
         if (!campaignId) {
-            throw new apiError(401, {}, "Client ID is required");
+            return res.status(400).json(new apiError(400, "Campaign ID is required"));
         }
 
         const campaigns = await campaign.find({ campaignId });
         res.status(200).json(new apiResponse(200, campaigns, "Campaigns fetched successfully"));
-
     } catch (error) {
-        throw new apiError(401, error?.message || "An error occured while fetching");
+        console.error('Error fetching all campaigns:', error);
+        res.status(500).json(new apiError(500, "An error occurred while fetching campaigns"));
     }
 });
 
@@ -97,21 +81,21 @@ const fetchCampaignDetails = asyncHandler(async (req, res) => {
         const { campaignId } = req.body;
 
         if (!campaignId) {
-            throw new apiError(401, {}, "Campaign ID is required");
-        };
+            return res.status(400).json(new apiError(400, "Campaign ID is required"));
+        }
 
-        const campaign = await campaign.findById({ campaignId });
+        const campaignDoc = await campaign.findById(campaignId);
 
-        if (!campaign) {
-            throw new apiError(404, {}, "Campaign not found");
-        };
+        if (!campaignDoc) {
+            return res.status(404).json(new apiError(404, "Campaign not found"));
+        }
 
-        res.status(200).json(new apiResponse(200, campaign, "Campaign fetched Successfully"));
-
+        res.status(200).json(new apiResponse(200, campaignDoc, "Campaign fetched successfully"));
     } catch (error) {
-        throw new apiError(401, error?.message || "An error occured while fetching");
+        console.error('Error fetching campaign details:', error);
+        res.status(500).json(new apiError(500, "An error occurred while fetching campaign details"));
     }
-})
+});
 
 
 const createNewCampaign = asyncHandler(async (req, res) => {
@@ -119,20 +103,15 @@ const createNewCampaign = asyncHandler(async (req, res) => {
         const { title, clientId } = req.body;
 
         if (!title || !clientId) {
-            throw new apiError(400, {}, "Some data is missing"); // Changed to 400 Bad Request
+            return res.status(400).json(new apiError(400, "Title and Client ID are required"));
         }
 
         const newCampaign = await campaign.create({ title, clientId });
 
-        const createdUser = new campaign.find(newCampaign._id);
-
-        if (!createdUser) {
-            throw new apiError(500, {}, "Campaign creation failed");
-        };
-
-        res.status(201).json(new apiResponse(201, newCampaign, "New campaign create"));
+        res.status(201).json(new apiResponse(201, newCampaign, "New campaign created successfully"));
     } catch (error) {
-        throw new apiError(400, error?.message || "An error occurred while creating the new campaign."); // Changed to 400 Bad Request
+        console.error('Error creating new campaign:', error);
+        res.status(500).json(new apiError(500, "An error occurred while creating new campaign"));
     }
 });
 
@@ -142,25 +121,24 @@ const assignCreatedForm = asyncHandler(async (req, res) => {
         const { formId, promoterId } = req.body;
 
         if (!formId || !promoterId) {
-            throw new apiError(400, error?.message || "Assigning the form failed.");
+            return res.status(400).json(new apiError(400, "Form ID and Promoter ID are required"));
         }
 
-        const promoter = await Promoter.findById({ promoterId });
+        const promoter = await Promoter.findById(promoterId);
 
         if (!promoter) {
-            throw new apiError(400, error?.message || "Promoter not present");
-        };
+            return res.status(404).json(new apiError(404, "Promoter not found"));
+        }
 
         promoter.forms = promoter.forms || [];
         promoter.forms.push(formId);
 
         await promoter.save();
 
-        res.status(200).json(new apiResponse(200, promoter, "Promoter details updated"))
-
-
+        res.status(200).json(new apiResponse(200, promoter, "Promoter details updated"));
     } catch (error) {
-        throw new apiError(400, error?.message || "Assigning the form failed");
+        console.error('Error assigning form to promoter:', error);
+        res.status(500).json(new apiError(500, "An error occurred while assigning the form"));
     }
 });
 
@@ -170,7 +148,7 @@ const updateUserRights = asyncHandler(async (req, res) => {
         const { formId, campaignId, clientId, employeeId, viewData, downloadData, manipulateData, downloadReport } = req.body;
 
         if (!formId || !campaignId || !clientId || !employeeId) {
-            throw new apiError(400, error?.message || "Data is missing.")
+            return res.status(400).json(new apiError(400, "Form ID, Campaign ID, Client ID, and Employee ID are required"));
         }
 
         const updates = {};
@@ -179,66 +157,74 @@ const updateUserRights = asyncHandler(async (req, res) => {
         if (manipulateData !== undefined) updates.manipulateData = manipulateData;
         if (downloadReport !== undefined) updates.downloadReport = downloadReport;
 
-        const result = await campaignRights.updateOne({ formId, campaignId, clientId, employeeId },
-            { $set: updates });
+        const result = await campaignRights.updateOne({ formId, campaignId, clientId, employeeId }, { $set: updates });
 
         if (result.nModified === 0) {
-            throw new apiError(404, "No matching document found to update");
+            return res.status(404).json(new apiError(404, "No matching document found to update"));
         }
 
-        res.status(200).json(new apiResponse(200, result, "Data updated successfully"));
+        res.status(200).json(new apiResponse(200, result, "User rights updated successfully"));
     } catch (error) {
-        throw new apiError(400, error?.message || "Assigning the form failed");
+        console.error('Error updating user rights:', error);
+        res.status(500).json(new apiError(500, "An error occurred while updating user rights"));
     }
 });
 
 
 const fetchUserRights = asyncHandler(async (req, res) => {
-
     try {
         const { formId, employeeId } = req.body;
 
         if (!formId || !employeeId) {
-            throw new apiError(400, error?.message || "Data is missing.")
-        };
+            return res.status(400).json(new apiError(400, "Form ID and Employee ID are required"));
+        }
 
         const userRights = await campaignRights.find({ formId, employeeId });
 
         if (!userRights) {
-            throw new apiError(404, "No matching document was found and error in fetching rights.");
-        };
+            return res.status(404).json(new apiError(404, "No rights found for this user"));
+        }
 
-        res.status(200).json(new apiResponse(200, userRights, "Rights for users fetched."));
-
+        res.status(200).json(new apiResponse(200, userRights, "User rights fetched successfully"));
     } catch (error) {
-        throw new apiError(400, error?.message || "Fetching the form rights failed");
-
+        console.error('Error fetching user rights:', error);
+        res.status(500).json(new apiError(500, "An error occurred while fetching user rights"));
     }
-})
+});
 
 
 const fetchData = asyncHandler(async (req, res) => {
     try {
         const { collectionName } = req.body;
+
         if (!collectionName) {
-            throw new apiError(400, error?.message || "Data is missing.")
+            return res.status(400).json(new apiError(400, "Collection name is required"));
         }
 
         const DynamicModel = mongoose.model(collectionName, new mongoose.Schema({}, { strict: false }), collectionName);
         const data = await DynamicModel.find();
 
         if (!data) {
-            throw new apiError(404, "No matching document was found and error in fetching rights.");
-        };
+            return res.status(404).json(new apiError(404, "No data found"));
+        }
 
-        res.status(200).json(new apiResponse(200, data, "Data fetched successfully."));
-
+        res.status(200).json(new apiResponse(200, data, "Data fetched successfully"));
     } catch (error) {
-        throw new apiError(400, error?.message || "Fetching the form data");
+        console.error('Error fetching data:', error);
+        res.status(500).json(new apiError(500, "An error occurred while fetching data"));
     }
-})
+});
 
 
 export {
-    fetchData, fetchUserRights, updateUserRights, assignCreatedForm, createNewCampaign, fetchCampaignDetails, fetchAllCampaigns, fetchAllClients, fetchClient, createNewClient
+    fetchData,
+    fetchUserRights,
+    updateUserRights,
+    assignCreatedForm,
+    createNewCampaign,
+    fetchCampaignDetails,
+    fetchAllCampaigns,
+    fetchAllClients,
+    fetchClient,
+    createNewClient
 };
