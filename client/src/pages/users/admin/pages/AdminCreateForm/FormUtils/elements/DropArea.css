@@ -27,3 +27,17 @@ p{
   color: grey;
 }
 
+.submitFormBtn{
+  border: none;
+  padding: 10px 25px;
+  background-color: #3751b6;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  text-align: center;
+  letter-spacing: 1px;
+  margin-bottom: 10px;
+  width: 300px;
+}
+

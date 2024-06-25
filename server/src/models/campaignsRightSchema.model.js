@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose;
+const {Schema} = mongoose;
 
 const campaignRights = new Schema({
     campaignId:{
@@ -40,4 +40,4 @@ const campaignRights = new Schema({
     }
 });
 
-export const rights = mongoose.model("CampaignRights", campaignRights)
+module.exports = mongoose.model("CampaignRights", campaignRights)

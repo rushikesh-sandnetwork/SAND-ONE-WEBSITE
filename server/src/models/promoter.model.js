@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose;
+const {Schema} = mongoose;
 // Promoter Schema {
 // 	Promoter Name , 	{ String }
 // 	Promoter id,		{ Promoter ID }
@@ -27,4 +27,4 @@ const promoterSchema = new Schema({
     }],
 });
 
-export const Promoter = mongoose.model("Promoter", promoterSchema);
+module.exports = mongoose.model("Promoter", promoterSchema);

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const Schema = mongoose;
+const {Schema} = mongoose;
 
 const campaignSchema = new Schema({
     title:{
@@ -26,4 +26,4 @@ const campaignSchema = new Schema({
     }
 },{timestamps:true});
 
-export const campaign = mongoose.model("Campaign", campaignSchema);
+module.exports = mongoose.model("Campaign", campaignSchema);

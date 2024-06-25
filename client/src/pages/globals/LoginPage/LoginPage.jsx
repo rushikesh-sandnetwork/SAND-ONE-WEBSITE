@@ -1,40 +1,49 @@
 import React, { useState } from 'react';
 import './LoginPage.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
 
     const authenticateAndLogin = async () => {
+        if (!email || !password) {
+            setError('Email and password are required');
+            return;
+        }
+
+        setLoading(true);
+        setError('');
+
         try {
             const response = await axios.post('http://localhost:8080/api/v1/users/loginUser', {
                 email,
                 password
             });
+            console.log(response.data.data.user.role);
 
             if (response.status === 200) {
-                console.log(response);                
-                if (response.data["data"]["role"] === "admin") {
+                const role = response.data.data.user.role;
+                if (role === 'admin') {
                     navigate('/admin');
-                } else if (response.data["data"]["role"] === "mis") {
+                } else if (role === 'mis') {
                     navigate('/mis');
                 }
             } else {
                 setError('Login failed. Please try again.');
             }
-            
         } catch (error) {
             if (error.response) {
-                // The request was made and the server responded with a status code
                 setError(error.response.data.message || 'Login failed. Please try again.');
             } else {
-                // Something happened in setting up the request that triggered an Error
                 setError('An unexpected error occurred. Please try again.');
             }
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -42,42 +51,49 @@ const LoginPage = () => {
         <div className="LoginPage-container">
             <div className="LoginPage-box">
                 <div className="LoginPage-logo">
-                    <img src="https://sandnetwork.in/wp-content/uploads/2024/02/sand-logo.png" alt="" />
+                    <img src="https://sandnetwork.in/wp-content/uploads/2024/02/sand-logo.png" alt="SAND Logo" />
                 </div>
                 <div className="LoginPage-content">
                     <div className="content-title">
                         <h1>Welcome To SAND ONE!</h1>
                         <p>Enter the fields below to get started</p>
                     </div>
-
                     <div className="content-form">
-                        <p>Email</p>
-                        <input 
-                            type="text" 
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                        />
-
-                        <p>Password</p>
-                        <input 
-                            type="password" 
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <label>
+                            Email
+                            <input 
+                                type="email" 
+                                value={email}
+                                onChange={(e) => {
+                                    setEmail(e.target.value);
+                                    setError('');
+                                }}
+                            />
+                        </label>
+                        <label>
+                            Password
+                            <input 
+                                type="password" 
+                                value={password}
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                    setError('');
+                                }}
+                            />
+                        </label>
                     </div>
-
                     {error && <p className="error">{error}</p>}
-
-                    <input 
-                        className='loginBtn' 
-                        type="button" 
-                        value="LOGIN" 
+                    <button 
+                        className="loginBtn" 
                         onClick={authenticateAndLogin}
-                    />
+                        disabled={loading}
+                    >
+                        {loading ? 'Logging in...' : 'LOGIN'}
+                    </button>
                 </div>  
             </div>
         </div>
     );
-}
+};
 
 export default LoginPage;

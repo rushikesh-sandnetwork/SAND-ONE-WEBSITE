@@ -1,12 +1,16 @@
-import { asyncHandler } from '../utils/asyncHandler';
-import { apiError } from '../utils/apiError';
-import { apiResponse } from '../utils/apiResponse';
-import mongoose from 'mongoose';
-import { client } from '../models/client.model';
-import { campaign } from '../models/campaign.model';
-import { Promoter } from '../models/promoter.model';
-import { campaignRights } from '../models/campaignsRightSchema.model';
-import { FormFieldSchema } from '../models/forms.fields.model';
+const { Router } = require("express");
+const userController = require("../controllers/users.controller");
+const router = Router();
+const mongoose = require("mongoose")
+const client = require("../models/client.model")
+const campaign = require("../models/campaign.model")
+const Promoter = require("../models/promoter.model")
+const campaignRights = require("../models/campaignsRightSchema.model")
+
+const FormFieldSchema = require("../models/forms.fields.model")
+const asyncHandler = require("../utils/asyncHandler")
+const apiResponse = require("../utils/apiResponse");
+const apiError =  require("../utils/apiError")
 
 
 const createNewClient = asyncHandler(async (req, res) => {
@@ -242,7 +246,7 @@ const fetchData = asyncHandler(async (req, res) => {
 });
 
 
-export {
+module.exports = {
     fetchData,
     fetchUserRights,
     updateUserRights,
