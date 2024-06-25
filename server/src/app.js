@@ -10,9 +10,11 @@ app.use(express.static("public"))
 
 app.use(cookieParser())
 
-const router = require("./routes/user.routes");
+const userRouter = require("./routes/user.routes");
+const adminRouter = require("./routes/admin.routes");
 
 
-app.use("/api/v1/users", router)
+app.use("/api/v1/user", userRouter);
+app.use("/api/v1/admin" , adminRouter);
 
 module.exports = app

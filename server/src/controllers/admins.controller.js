@@ -1,12 +1,13 @@
 import { asyncHandler } from '../utils/asyncHandler';
 import { apiError } from '../utils/apiError';
 import { apiResponse } from '../utils/apiResponse';
-import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import { client } from '../models/client.model';
 import { campaign } from '../models/campaign.model';
 import { Promoter } from '../models/promoter.model';
 import { campaignRights } from '../models/campaignsRightSchema.model';
+import { FormFieldSchema } from '../models/forms.fields.model';
+
 
 const createNewClient = asyncHandler(async (req, res) => {
     try {
@@ -94,6 +95,31 @@ const fetchCampaignDetails = asyncHandler(async (req, res) => {
     } catch (error) {
         console.error('Error fetching campaign details:', error);
         res.status(500).json(new apiError(500, "An error occurred while fetching campaign details"));
+    }
+});
+
+
+const createNewForm = asyncHandler(async (req, res) => {
+    try {
+        const { campaignId, formFields, collectionName } = req.body;
+
+        if (!campaignId || !formFields || !collectionName) {
+            return res.status(400).json(new apiError(400, "All data is required."));
+        }
+
+        const user = {
+            campaignId,
+            formFields,
+            collectionName
+        };
+
+        const newForm = await FormFieldSchema.create(user);
+        await mongoose.connection.db.createCollection(collectionName);
+
+        return res.status(201).json(new apiResponse(201, newForm, "New Form Successfully Created."));
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json(new apiError(500, "Internal Server Error"));
     }
 });
 
@@ -221,6 +247,7 @@ export {
     fetchUserRights,
     updateUserRights,
     assignCreatedForm,
+    createNewForm,
     createNewCampaign,
     fetchCampaignDetails,
     fetchAllCampaigns,

@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const {Schema} = mongoose;
 
-
 const FormFieldSchema = new Schema({
     campaignId : {
         type: Schema.Types.ObjectId,
