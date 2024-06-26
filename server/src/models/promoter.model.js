@@ -9,7 +9,7 @@ const {Schema} = mongoose;
 // }
 const promoterSchema = new Schema({
     promoterName: {
-        type: String,
+        type: String,   
         required: true,
     },
     companyName: {
@@ -20,10 +20,12 @@ const promoterSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "Campaign",
         required: true,
+        default: "",
     },
     forms: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: "Form",
+        default:""
     }],
 });
 

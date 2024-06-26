@@ -12,9 +12,10 @@ app.use(cookieParser())
 
 const userRouter = require("./routes/user.routes");
 const adminRouter = require("./routes/admin.routes");
-
+const promoterRouter = require("./routes/promoter.routes");
 
 app.use("/api/v1/user", userRouter);
 app.use("/api/v1/admin" , adminRouter);
+app.use("/api/v1/promoter", promoterRouter);
 
 module.exports = app

@@ -6,7 +6,6 @@ const client = require("../models/client.model")
 const campaign = require("../models/campaign.model")
 const Promoter = require("../models/promoter.model")
 const campaignRights = require("../models/campaignsRightSchema.model")
-
 const FormFieldSchema = require("../models/forms.fields.model")
 const asyncHandler = require("../utils/asyncHandler")
 const apiResponse = require("../utils/apiResponse");
@@ -245,8 +244,31 @@ const fetchData = asyncHandler(async (req, res) => {
     }
 });
 
+const fillFormData = asyncHandler(async (req, res) => {
+    try {
+        const reqData = req.body;
+        const collectionName = req.params.collectionName;
+
+        if (!reqData) {
+            return res.status(400).json(new apiError(400, "Missing required data fields."));
+        };
+
+        // Check if model already exists
+        const DynamicModel = mongoose.models[collectionName] || mongoose.model(collectionName, new mongoose.Schema({}, { strict: false }));
+        
+        const document = new DynamicModel(reqData);
+        const savedData = await document.save();
+
+        res.status(200).json(new apiResponse(200, savedData, "Data saved successfully."));
+    } catch (error) {
+        console.error('Error in saving the data.', error);
+        res.status(400).json(new apiError(400, "Error in saving the data"));
+    }
+});
+
 
 module.exports = {
+    fillFormData,
     fetchData,
     fetchUserRights,
     updateUserRights,
