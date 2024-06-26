@@ -65,13 +65,13 @@ const fetchAllClients = asyncHandler(async (req, res) => {
 
 const fetchAllCampaigns = asyncHandler(async (req, res) => {
     try {
-        const { campaignId } = req.body;
+        const { clientId } = req.body;
 
-        if (!campaignId) {
-            return res.status(400).json(new apiError(400, "Campaign ID is required"));
+        if (!clientId) {
+            return res.status(400).json(new apiError(400, "Client ID is required"));
         }
 
-        const campaigns = await campaign.find({ campaignId });
+        const campaigns = await campaign.find({ clientId });
         res.status(200).json(new apiResponse(200, campaigns, "Campaigns fetched successfully"));
     } catch (error) {
         console.error('Error fetching all campaigns:', error);

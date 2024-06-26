@@ -3,6 +3,10 @@ import './LoginPage.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
+// admin@gmail.com
+// Admin123
+
+
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -20,7 +24,7 @@ const LoginPage = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:8080/api/v1/users/loginUser', {
+            const response = await axios.post('http://localhost:8080/api/v1/user/loginUser', {
                 email,
                 password
             });
