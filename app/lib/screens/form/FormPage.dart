@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app/screens/form/FormDetailsPage.dart';
 import 'package:app/utils/FormButtons/FormButton.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -82,9 +83,19 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
                     child: ListView.builder(
                       itemCount: snapshot.data!.formIds.length,
                       itemBuilder: (context, index) {
-                        return FormTabs(
-                          id: snapshot.data!.formIds[index],
-                          title: "First Form",
+                        return GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => FormDetailsPage(
+                                        formId:
+                                            snapshot.data!.formIds[index])));
+                          },
+                          child: FormTabs(
+                            id: snapshot.data!.formIds[index],
+                            title: "First Form",
+                          ),
                         );
                       },
                     ),
