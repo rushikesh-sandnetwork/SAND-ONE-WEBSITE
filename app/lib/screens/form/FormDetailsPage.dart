@@ -1,7 +1,13 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+
+import '../../utils/FormFields/Address.dart';
+import '../../utils/FormFields/Appointment.dart';
+import '../../utils/FormFields/Email.dart';
+import '../../utils/FormFields/FullName.dart';
+import '../../utils/FormFields/LongText.dart';
+import '../../utils/FormFields/Number.dart';
 
 class FormDetailsPage extends StatefulWidget {
   final String formId;
@@ -71,27 +77,33 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
       appBar: AppBar(
         title: Text('Form Details'),
       ),
-      body: FutureBuilder<FormDetails>(
-        future: _formDetailsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (snapshot.hasData) {
-            var formDetails = snapshot.data!;
-            return ListView.builder(
-              itemCount: formDetails.formFields.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(formDetails.formFields[index]),
-                );
-              },
-            );
-          } else {
-            return Center(child: Text('No data available'));
-          }
-        },
+      body: SingleChildScrollView(
+        child: FutureBuilder<FormDetails>(
+          future: _formDetailsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (snapshot.hasData) {
+              var formDetails = snapshot.data!;
+              return ListView.builder(
+                shrinkWrap: true,
+                itemCount: formDetails.formFields.length,
+                itemBuilder: (context, index) {
+                  var fieldName = formDetails.formFields[index];
+                  if (fieldName == 'Date') {
+                    return Appointment();
+                  } else {
+                    return Container();
+                  }
+                },
+              );
+            } else {
+              return Center(child: Text('No data available'));
+            }
+          },
+        ),
       ),
     );
   }
