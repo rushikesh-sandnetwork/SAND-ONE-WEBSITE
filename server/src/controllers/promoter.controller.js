@@ -13,34 +13,56 @@ const createNewPromoter = asyncHandler(async (req, res) => {
         };
 
 
-        const newPromoter = await Promoter.create({promoterName , companyName});
+        const newPromoter = await Promoter.create({ promoterName, companyName });
 
-        if(!newPromoter){
+        if (!newPromoter) {
             return res.status(400).json(new apiError(400, "Promoter not created"));
         };
 
-        return res.status(200).json(new apiResponse(200 , newPromoter , "New Promoter was created."));
+        return res.status(200).json(new apiResponse(200, newPromoter, "New Promoter was created."));
 
 
     } catch (error) {
         console.error('Error in creating new Promoter.', error);
         res.status(400).json(new apiError(400, "Error in creating new Promoter."));
     }
-})
+});
+
+
+const fetchPromoterDetails = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Promoter ID is required."));
+        }
+
+        const promoterDetails = await Promoter.findById(promoterId);
+
+        if (!promoterDetails) {
+            return res.status(404).json(new apiError(404, "Promoter not found."));
+        }
+
+        return res.status(200).json(new apiResponse(200, promoterDetails, "Promoter details fetched successfully."));
+
+    } catch (error) {
+        console.error('Error in fetching Promoter details', error);
+        res.status(500).json(new apiError(500, "Error in fetching promoter details."));
+    }
+});
 
 
 const fetchFormField = asyncHandler(async (req, res) => {
     try {
-        const { formId, campaignId } = req.body;
+        const { formId } = req.body;
 
         if (!formId) {
             return res.status(400).json(new apiError(400, "Missing required field"));
         }
 
         console.log("Form ID:", formId);
-        console.log("Campaign ID:", campaignId);
 
-        const fields = await formsFieldsModel.find({ _id: formId, campaignId });
+        const fields = await formsFieldsModel.find({ _id: formId});
         console.log("Fetched Fields:", fields);
 
         if (fields.length === 0) {
@@ -77,4 +99,4 @@ const fillFormData = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { fillFormData, fetchFormField , createNewPromoter};
+module.exports = { fillFormData, fetchFormField, createNewPromoter , fetchPromoterDetails};
