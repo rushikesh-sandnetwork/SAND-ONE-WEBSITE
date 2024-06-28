@@ -6,6 +6,14 @@ const clientSchema = new Schema({
         type: String,
         required: true,
     },
+    clientLocation:{
+        type:String,
+        required: true,
+    },
+    clientWebsite:{
+        type:String,
+        required:true
+    }
     // clientLogo: {
     //     type: String,
     //     required: true,

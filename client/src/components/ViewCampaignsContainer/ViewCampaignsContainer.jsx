@@ -1,25 +1,54 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
-import './ViewCampaignsContainer.css'
-const ViewCampaignsContainer = () => {
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import './ViewCampaignsContainer.css';
+import ViewCampaignsBox from './ViewCampaignsBox';
 
-  const navigate = useNavigate()
+const ViewCampaignsContainer = ({ clientId }) => {
+  const navigate = useNavigate();
+  const [campaigns, setCampaigns] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  function createNewCampaign(){
-      navigate('generateForm');
+  useEffect(() => {
+    const fetchCampaigns = async () => {
+      try {
+        const response = await axios.post('http://localhost:8080/api/v1/admin/fetchAllCampaigns', { clientId });
+        setCampaigns(response.data.data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Error fetching campaigns:', error);
+        setError('Failed to load campaigns');
+        setLoading(false);
+      }
+    };
+
+    fetchCampaigns();
+  }, [clientId]);
+
+  const createNewCampaign = () => {
+    navigate('generateForm');
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>{error}</div>;
   }
 
   return (
     <div className="viewCampaignsContainer">
-              <input className='newCampaignBtn' type="button" value="Create New Campaign +" onClick={createNewCampaign}/>
+      <input className='newCampaignBtn' type="button" value="Create New Campaign +" onClick={createNewCampaign} />
 
-              <div className="allCampaignsContainer">
-                
-              </div>
-
+      <div className="allCampaignsContainer">
+        {campaigns.map(campaign => (
+          <ViewCampaignsBox key={campaign._id} campaign={campaign} />
+        ))}
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default ViewCampaignsContainer
-
+export default ViewCampaignsContainer;

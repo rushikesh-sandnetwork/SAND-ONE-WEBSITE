@@ -14,13 +14,14 @@ const apiError =  require("../utils/apiError")
 
 const createNewClient = asyncHandler(async (req, res) => {
     try {
-        const { clientName } = req.body;
-
-        if (!clientName) {
-            return res.status(400).json(new apiError(400, "Client name is empty"));
+        const { clientName, clientLocation, clientWebsite } = req.body;
+        console.log(clientName, clientLocation, clientWebsite);
+        
+        if (!clientName || !clientLocation || !clientWebsite) {
+            return res.status(400).json(new apiError(400, "Client name, location, and website are required"));
         }
 
-        const newClient = await client.create({ clientName });
+        const newClient = await client.create({ clientName, clientLocation, clientWebsite });
 
         res.status(201).json(new apiResponse(201, newClient, "Client created successfully"));
     } catch (error) {
@@ -28,7 +29,6 @@ const createNewClient = asyncHandler(async (req, res) => {
         res.status(500).json(new apiError(500, "An error occurred while creating new client. Try again later."));
     }
 });
-
 
 const fetchClient = asyncHandler(async (req, res) => {
     try {

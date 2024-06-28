@@ -92,11 +92,9 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
                 itemCount: formDetails.formFields.length,
                 itemBuilder: (context, index) {
                   var fieldName = formDetails.formFields[index];
-                  if (fieldName == 'Date') {
-                    return Appointment();
-                  } else {
-                    return Container();
-                  }
+                  return ListTile(
+                    title: Text(fieldName),
+                  );
                 },
               );
             } else {

@@ -1,9 +1,9 @@
 import React from 'react'
-
-const AdminClientsDetailsPage = () => {
+import PageTitle from '../../../../../components/PageTitles/PageTitle'
+import './AdminClientsDetailsPage.css'
+const AdminClientsDetailsPage = ({ setActiveTab }) => {
   return (
     <div className="adminClientsDetailsPage-container">
-        
     </div>
   )
 }

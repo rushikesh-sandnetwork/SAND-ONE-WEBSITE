@@ -2,7 +2,6 @@
     background-color: #CDF0FF;
     height: 75vh;
     width: 95%;
-    /* max-width: 600px; */
     border-radius: 18px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     margin: 20px auto;
@@ -10,6 +9,12 @@
     transition: box-shadow 0.3s ease-in-out;
   }
   
+  .client-Form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .create-new-client-container:hover {
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
   }
@@ -22,23 +27,29 @@
     margin-bottom: 20px;
   }
   
-  .nameContainer {
-    font-size: 18px;
-    padding: 10px 25px;
-    font-family: "Poppins", sans-serif;
+  .inputFields{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .input-field{
+    padding:12px 20px;
     border: none;
-    margin-top: 10px;
     outline: none;
     border-radius: 12px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: box-shadow 0.2s ease-in-out;
+    box-shadow: 2px 2px 2px rgba(203, 203, 203, 0.551);
+    font-size: 18px;
+    font-family: "Poppins", sans-serif;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin-bottom: 20px;
   }
   
-  .nameContainer:focus {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  }
-  
-  .submitButton {
+
+  .submit-button {
     font-size: 18px;
     padding: 10px 25px;
     font-family: "Poppins", sans-serif;
@@ -47,16 +58,18 @@
     margin-top: 20px;
     background-color: #007BFF;
     color: #fff;
+    box-shadow: 2px 2px 2px rgb(138, 138, 138);
+    width: 200px;
     cursor: pointer;
     transition: background-color 0.3s ease-in-out;
   }
   
-  .submitButton:disabled {
+  .submit-button:disabled {
     background-color: #7A7A7A;
     cursor: not-allowed;
   }
   
-  .submitButton:not(:disabled):hover {
+  .submit-button:not(:disabled):hover {
     background-color: #0056b3;
   }
   

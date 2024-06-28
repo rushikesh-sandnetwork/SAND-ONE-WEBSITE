@@ -10,7 +10,7 @@ router.route("/createNewClient").post(adminController.createNewClient);
 router.route("/fetchClient").post(adminController.fetchClient);
 
 // fetch all client 
-router.route("/fetchAllClient").post(adminController.fetchAllClients);
+router.route("/fetchAllClient").get(adminController.fetchAllClients);
 
 
 // fetch all campaigns
