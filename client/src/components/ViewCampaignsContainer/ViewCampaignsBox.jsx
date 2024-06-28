@@ -1,7 +1,7 @@
 import React from 'react';
 import './ViewCampaignsBox.css';
 
-const ViewCampaignsBox = ({ campaign }) => {
+const ViewCampaignsBox = ({ campaign  }) => {
   return (
     <div className="viewCampaignsBox">
       <h3>{campaign.title}</h3>

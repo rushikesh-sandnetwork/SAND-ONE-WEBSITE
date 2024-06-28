@@ -5,6 +5,7 @@ import AdminViewClientsPage from '../AdminViewClientsPage/AdminViewClientsPage';
 import AdminProfilePage from '../AdminProfilePage/AdminProfilePage';
 import AdminViewCampaignsPage from '../AdminViewCampaignsPage/AdminViewCampaignsPage';
 import AdminCreateNewClient from '../AdminCreateNewClient/AdminCreateNewClient';
+import AdminCreateNewCampaign from '../AdminCreateNewCampaign/AdminCreateNewCampaign';
 
 const AdminLandingPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -12,6 +13,7 @@ const AdminLandingPage = () => {
 
   // Extract the part of activeTab other than 'client-detail'
   const tabName = activeTab.startsWith('client-detail') ? activeTab.substring('client-detail'.length + 1) : activeTab;
+  const tabName2 = activeTab.startsWith('createNewCampaign') ? activeTab.substring('createNewCampaign'.length + 1) : activeTab;
 
   return (
     <div className='LandingPage-container'>
@@ -33,8 +35,12 @@ const AdminLandingPage = () => {
         )}
         {activeTab === 'profile' && <AdminProfilePage />}
         {activeTab.startsWith('client-detail') && (
-          <AdminViewCampaignsPage clientId={tabName} />
+          <AdminViewCampaignsPage clientId={tabName} setActiveTab={setActiveTab} />
         )}
+        {activeTab.startsWith('createNewCampaign') && (
+          <AdminCreateNewCampaign clientId={tabName2} setActiveTab={setActiveTab} />
+        )}
+        {/* {activeTab === 'createNewCampaign' && < AdminCreateNewCampaign />} */}
       </div>
     </div>
   );

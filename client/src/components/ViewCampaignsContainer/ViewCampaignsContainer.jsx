@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import './ViewCampaignsContainer.css';
 import ViewCampaignsBox from './ViewCampaignsBox';
 
-const ViewCampaignsContainer = ({ clientId }) => {
+const ViewCampaignsContainer = ({ clientId , setActiveTab }) => {
   const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -26,9 +26,7 @@ const ViewCampaignsContainer = ({ clientId }) => {
     fetchCampaigns();
   }, [clientId]);
 
-  const createNewCampaign = () => {
-    navigate('generateForm');
-  };
+
 
   if (loading) {
     return <div>Loading...</div>;
@@ -40,11 +38,11 @@ const ViewCampaignsContainer = ({ clientId }) => {
 
   return (
     <div className="viewCampaignsContainer">
-      <input className='newCampaignBtn' type="button" value="Create New Campaign +" onClick={createNewCampaign} />
+      <input className='newCampaignBtn' type="button" value="Create New Campaign +" onClick={()=>setActiveTab(`createNewCampaign/${clientId}`)} />
 
       <div className="allCampaignsContainer">
         {campaigns.map(campaign => (
-          <ViewCampaignsBox key={campaign._id} campaign={campaign} />
+          <ViewCampaignsBox key={campaign._id} campaign={campaign}  />
         ))}
       </div>
     </div>
