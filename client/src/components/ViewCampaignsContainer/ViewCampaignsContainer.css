@@ -1,4 +1,4 @@
-.viewCampaignsContainer{
+.viewCampaignsContainer {
     background-color: #CDF0FF;
     height: 600px;
     width: 95%;
@@ -6,13 +6,11 @@
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     margin-top: 20px;
     padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
 }
 
-.viewCampaignsContainer::-webkit-scrollbar {
-    display: none;  
-}
-
-.newCampaignBtn{
+.newCampaignBtn {
     background-color: #00C2FF;
     height: 50px;
     width: 100%;
@@ -25,25 +23,24 @@
     color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    transition: background-color 0.3s, box-shadow 0.3s; 
+    transition: background-color 0.3s, box-shadow 0.3s;
 }
 
-.newCampaignBtn:hover{
+.newCampaignBtn:hover {
     background-color: #2d9bff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-.allCampaignsContainer{
-    width: 95%;
+.allCampaignsContainer {
+    flex: 1;
+    width: 100%;
     border-radius: 18px;
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 20px;
-    overflow-y: scroll;
-    -ms-overflow-style: none;
-    scrollbar-width: none; 
+    overflow-y: auto;
 }
 
 .allCampaignsContainer::-webkit-scrollbar {
-    display: none;  
+    display: none;
 }
