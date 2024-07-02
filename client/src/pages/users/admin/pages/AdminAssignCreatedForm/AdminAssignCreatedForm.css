@@ -1,0 +1,97 @@
+.assignFormContainer {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+.title {
+  margin-bottom: 20px;
+}
+
+.formDetails {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.create-promoter-btn{
+padding: 15px 20px;
+margin-top: 25px;
+border: none;
+border-radius: 18px;
+background-color: #2d9bff;
+font-family: "Poppins", sans-serif;
+font-weight: bold;
+font-size: 18px;
+color: white;
+cursor: pointer;
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.create-promoter-btn:hover {
+box-shadow: 0 6px 8px rgba(0, 0, 0, 0.30);
+transform: translateY(-2px);
+}
+
+.create-promoter-btn:active {
+transform: translateY(0);
+box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+.promoterTable {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 14px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.promoterTable th, .promoterTable td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: left;
+}
+
+.promoterTable th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.promoterTable tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.promoterTable tr:hover {
+  background-color: #f1f1f1;
+}
+
+.promoterTable th:first-child,
+.promoterTable td:first-child {
+  border-top-left-radius: 10px;
+}
+
+.promoterTable th:last-child,
+.promoterTable td:last-child {
+  border-top-right-radius: 10px;
+}
+
+.assignFormBtn {
+  background-color: #3751b6;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.assignFormBtn:hover {
+  background-color: #2d4699;
+}

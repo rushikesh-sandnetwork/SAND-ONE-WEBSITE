@@ -4,6 +4,20 @@ const apiResponse = require('../utils/apiResponse');
 const apiError = require('../utils/apiError');
 const formsFieldsModel = require('../models/forms.fields.model');
 const Promoter = require("../models/promoter.model");
+
+const fetchAllPromoters = asyncHandler( async (req, res)=>{
+    try {
+        const promoters = await Promoter.find();
+
+        return res.status(200).json(new apiResponse(200 , promoters , "Fetched all forms."));
+
+    } catch (error) {
+        console.error('Error in fetching all the promoters.', error);
+        res.status(400).json(new apiError(400, "Error in fetching all the promoters."));
+    }
+});
+
+
 const createNewPromoter = asyncHandler(async (req, res) => {
     try {
         const { promoterName, companyName } = req.body;
@@ -99,4 +113,4 @@ const fillFormData = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { fillFormData, fetchFormField, createNewPromoter , fetchPromoterDetails};
+module.exports = { fetchAllPromoters,fillFormData, fetchFormField, createNewPromoter , fetchPromoterDetails};
