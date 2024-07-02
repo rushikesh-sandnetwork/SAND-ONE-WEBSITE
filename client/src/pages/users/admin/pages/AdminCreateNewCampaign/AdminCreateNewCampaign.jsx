@@ -70,7 +70,7 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
         </form>
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
-        {success && <input type="button" value="Next" className='submit-campaign-button' onClick={handleNextClick} />}
+        {success && <input type="button" value="Generate Form" className='submit-campaign-button' onClick={handleNextClick} />}
 
       
       </div>

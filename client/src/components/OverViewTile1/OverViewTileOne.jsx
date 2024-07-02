@@ -1,15 +1,54 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import './OverViewTileOne.css';
+import axios from 'axios';
 import OverViewTileOneBox from './OverViewTileOneBox';
+
 const OverViewTileOne = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [data, setData] = useState({ numberOfClients: 0, numberOfCampaigns: 0 });
+
+  const initialFetch = async () => {
+    setLoading(true);
+    setError('');
+    setSuccess('');
+
+    try {
+      const response = await axios.get('http://localhost:8080/api/v1/admin/fetchNumberOfClientsAndCampaigns');
+
+      if (response.status === 200) {
+        const fetchedData = response.data.data;
+        setData(fetchedData);
+        setSuccess(`Number of clients: ${fetchedData.numberOfClients}, Number of campaigns: ${fetchedData.numberOfCampaigns}`);
+      } else {
+        setError('Failed to fetch the number of clients and campaigns.');
+      }
+    } catch (error) {
+      setError('An error occurred while fetching data. Try again later.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    initialFetch();
+  }, []);
+
   return (
     <div className="OverViewTileOneContainer">
-        <OverViewTileOneBox title="TOTAL CAMPAIGN" number="8"></OverViewTileOneBox>
-        <OverViewTileOneBox title="ONGOING CAMPAIGN" number="2"></OverViewTileOneBox>
-        <OverViewTileOneBox title="COMPLETED CAMPAIGN" number="5"></OverViewTileOneBox>
-        <OverViewTileOneBox title="ON HOLD CAMPAIGN" number="1"></OverViewTileOneBox>
+      {loading && <p>Loading...</p>}
+      {error && <p className="error-message">{error}</p>}
+      {success && (
+        <>
+          <OverViewTileOneBox title="TOTAL CLIENTS" number={data.numberOfClients}></OverViewTileOneBox>
+          <OverViewTileOneBox title="TOTAL CAMPAIGNS" number={data.numberOfCampaigns}></OverViewTileOneBox>
+          <OverViewTileOneBox title="ONGOING CAMPAIGNS" number={data.numberOfCampaigns}></OverViewTileOneBox>
+          <OverViewTileOneBox title="ON HOLD CAMPAIGNS" number="0"></OverViewTileOneBox>
+        </>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default OverViewTileOne
+export default OverViewTileOne;

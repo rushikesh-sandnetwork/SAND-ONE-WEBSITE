@@ -288,8 +288,26 @@ const fillFormData = asyncHandler(async (req, res) => {
     }
 });
 
+const fetchNumberOfClientsAndCampaigns = asyncHandler( async (req, res)=>{
+    try {
+        const numberOfClients = await client.countDocuments();
+        const numberOfCampaigns = await campaign.countDocuments();
+
+        const data = {
+            "numberOfClients":numberOfClients,
+            "numberOfCampaigns":numberOfCampaigns
+        }
+
+        res.status(200).json(new apiResponse(200, data , "Number of Documents fetched."));
+    } catch (error) {
+        console.error('Error in fetching the data.', error);
+        res.status(400).json(new apiError(400, "Error in fetching the data"));
+    }
+})
+
 
 module.exports = {
+    fetchNumberOfClientsAndCampaigns,
     fillFormData,
     fetchData,
     fetchUserRights,

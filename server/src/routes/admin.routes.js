@@ -40,4 +40,6 @@ router.route("/fetchUserRight").post(adminController.fetchUserRights);
 // fetch data from the form 
 router.route("/fetchDataFromCollection").post(adminController.fetchData)
 
+router.route("/fetchNumberOfClientsAndCampaigns").get(adminController.fetchNumberOfClientsAndCampaigns);
+
 module.exports = router;
