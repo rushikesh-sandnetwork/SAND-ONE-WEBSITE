@@ -40,7 +40,7 @@ const AdminLandingPage = () => {
         {activeTab.startsWith('createNewCampaign') && (
           <AdminCreateNewCampaign clientId={tabName2} setActiveTab={setActiveTab} />
         )}
-        {/* {activeTab === 'createNewCampaign' && < AdminCreateNewCampaign />} */}
+    
       </div>
     </div>
   );

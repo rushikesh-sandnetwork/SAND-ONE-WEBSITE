@@ -11,8 +11,7 @@ function App() {
       <Routes>
         <Route path="/" element={<LoginPage />} />
         <Route path="/admin" element={<AdminLandingPage />} />
-        <Route path="/admin/generateForm" element={<AdminCreateForms />} />
-
+        <Route path="/admin/createNewForm/:campaignId" element={<AdminCreateForms />} />
         <Route path="/mis" element={<MisLandingPage />} />
       </Routes>
     </Router>

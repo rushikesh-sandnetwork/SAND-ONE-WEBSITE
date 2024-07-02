@@ -2,16 +2,26 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import './AdminCreateNewCampaign.css';
+import { useNavigate } from 'react-router-dom';
 
-const AdminCreateNewCampaign = ({clientId}) => {
+const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
   const [title, setTitle] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [campaignId, setId] = useState('');
+
+  const navigate = useNavigate();
+
 
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
   };
+
+  const handleNextClick = () => {
+    navigate(`/admin/createNewForm/${campaignId}`);
+  };
+
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -22,11 +32,12 @@ const AdminCreateNewCampaign = ({clientId}) => {
     try {
       console.log(clientId);
       const response = await axios.post('http://localhost:8080/api/v1/admin/createNewCampaign', { title, clientId });
-      
+
       if (response.status === 201) {
         const newCampaign = response.data.data;
         setSuccess(`Campaign created successfully: ${newCampaign.title} (ID: ${newCampaign._id})`);
         setTitle('');
+        setId(newCampaign._id);
       }
     } catch (error) {
       setError('An error occurred while creating new campaign. Try again later.');
@@ -50,7 +61,7 @@ const AdminCreateNewCampaign = ({clientId}) => {
               onChange={handleInputChange(setTitle)}
               required
             />
-           
+
           </div>
 
           <button type="submit" className="submit-campaign-button" disabled={loading}>
@@ -59,6 +70,9 @@ const AdminCreateNewCampaign = ({clientId}) => {
         </form>
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
+        {success && <input type="button" value="Next" className='submit-campaign-button' onClick={handleNextClick} />}
+
+      
       </div>
     </div>
   );

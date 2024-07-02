@@ -5,7 +5,6 @@ import './ViewCampaignsContainer.css';
 import ViewCampaignsBox from './ViewCampaignsBox';
 
 const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
-  const navigate = useNavigate();
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
