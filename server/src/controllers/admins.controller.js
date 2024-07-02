@@ -9,14 +9,14 @@ const campaignRights = require("../models/campaignsRightSchema.model")
 const FormFieldSchema = require("../models/forms.fields.model")
 const asyncHandler = require("../utils/asyncHandler")
 const apiResponse = require("../utils/apiResponse");
-const apiError =  require("../utils/apiError")
+const apiError = require("../utils/apiError")
 
 
 const createNewClient = asyncHandler(async (req, res) => {
     try {
         const { clientName, clientLocation, clientWebsite } = req.body;
         console.log(clientName, clientLocation, clientWebsite);
-        
+
         if (!clientName || !clientLocation || !clientWebsite) {
             return res.status(400).json(new apiError(400, "Client name, location, and website are required"));
         }
@@ -62,21 +62,21 @@ const fetchAllClients = asyncHandler(async (req, res) => {
     }
 });
 
-const deleteClient = asyncHandler(async (req,res)=>{
+const deleteClient = asyncHandler(async (req, res) => {
     try {
-        const {clientId} = req.body;
+        const { clientId } = req.body;
 
-        if(!clientId){
-            return res.status(400).json(new apiError(400 , "Details are required to delete the client."));
+        if (!clientId) {
+            return res.status(400).json(new apiError(400, "Details are required to delete the client."));
         };
 
-        const clientDoc = await client.findByIdAndDelete({clientId});
+        const clientDoc = await client.findByIdAndDelete({ clientId });
 
-        if(!clientDoc){
-            return res.status(400).json(new apiError(400 , "No client found with the given id."));
+        if (!clientDoc) {
+            return res.status(400).json(new apiError(400, "No client found with the given id."));
         };
 
-        return res.status(200).json(new apiResponse(200 , clientDoc , "Client deleted successfully."));
+        return res.status(200).json(new apiResponse(200, clientDoc, "Client deleted successfully."));
 
     } catch (error) {
         console.error('Error deleting clients:', error);
@@ -126,20 +126,27 @@ const fetchCampaignDetails = asyncHandler(async (req, res) => {
 
 const createNewForm = asyncHandler(async (req, res) => {
     try {
-        const { campaignId, formFields, collectionName } = req.body;
+        const { campaignId, formFields } = req.body;
 
-        if (!campaignId || !formFields || !collectionName) {
+        if (!campaignId || !formFields ) {
             return res.status(400).json(new apiError(400, "All data is required."));
         }
 
+
+        const campaignDetails = await campaign.findById(campaignId);
+
+        if (!campaignDetails) {
+            return res.status(404).json(new apiError(404, "Campaign not found."));
+        }
+
         const user = {
-            campaignId,
+            campaignId, 
             formFields,
-            collectionName
+            collectionName: campaignDetails.title, 
         };
 
         const newForm = await FormFieldSchema.create(user);
-        await mongoose.connection.db.createCollection(collectionName);
+        await mongoose.connection.db.createCollection(campaignDetails.title);
 
         return res.status(201).json(new apiResponse(201, newForm, "New Form Successfully Created."));
     } catch (error) {
@@ -277,7 +284,7 @@ const fillFormData = asyncHandler(async (req, res) => {
 
         // Check if model already exists
         const DynamicModel = mongoose.models[collectionName] || mongoose.model(collectionName, new mongoose.Schema({}, { strict: false }));
-        
+
         const document = new DynamicModel(reqData);
         const savedData = await document.save();
 
@@ -288,17 +295,17 @@ const fillFormData = asyncHandler(async (req, res) => {
     }
 });
 
-const fetchNumberOfClientsAndCampaigns = asyncHandler( async (req, res)=>{
+const fetchNumberOfClientsAndCampaigns = asyncHandler(async (req, res) => {
     try {
         const numberOfClients = await client.countDocuments();
         const numberOfCampaigns = await campaign.countDocuments();
 
         const data = {
-            "numberOfClients":numberOfClients,
-            "numberOfCampaigns":numberOfCampaigns
+            "numberOfClients": numberOfClients,
+            "numberOfCampaigns": numberOfCampaigns
         }
 
-        res.status(200).json(new apiResponse(200, data , "Number of Documents fetched."));
+        res.status(200).json(new apiResponse(200, data, "Number of Documents fetched."));
     } catch (error) {
         console.error('Error in fetching the data.', error);
         res.status(400).json(new apiError(400, "Error in fetching the data"));

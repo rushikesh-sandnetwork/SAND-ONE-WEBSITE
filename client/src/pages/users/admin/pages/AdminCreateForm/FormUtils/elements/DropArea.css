@@ -1,3 +1,35 @@
+.drop-area-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.create-form-btn {
+  margin-right: 20px;
+  padding: 10px 20px;
+  height: 45px;
+  background-color: #3751b6;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  border: none;
+  border-radius: 22px;
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.2s;
+}
+
+.create-form-btn:hover {
+  background-color: #2a3e8c;
+  transform: translateY(-2px);
+}
+
+.create-form-btn:active {
+  background-color: #1f2d66;
+  transform: translateY(0);
+}
+
 .drop-area {
 height:  80vh;
 width: 700px;
@@ -17,6 +49,16 @@ scrollbar-width: none;
   display: none;  
 }
 
+
+.drop-area-title{
+  margin-left: 10px;
+  margin-right: 20px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  
+}
 
 p{
   font-family: "Poppins", sans-serif;

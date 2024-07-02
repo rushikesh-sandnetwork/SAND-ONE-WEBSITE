@@ -47,10 +47,13 @@ const dragItems = [
 
 const AdminCreateForms = () => {
   const [items, setItems] = useState([]);
+  const [itemList , setItemList] = useState([]);
 
   const handleDrop = (item) => {
     const newItem = { id: item.id, text: item.text, component: item.component };
     const newItems = [...items, newItem];
+    const newItemList = [...itemList , item.text];
+    setItemList(newItemList);
     setItems(newItems);
   };
 
