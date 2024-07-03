@@ -7,6 +7,7 @@ import AdminViewCampaignsPage from '../AdminViewCampaignsPage/AdminViewCampaigns
 import AdminCreateNewClient from '../AdminCreateNewClient/AdminCreateNewClient';
 import AdminCreateNewCampaign from '../AdminCreateNewCampaign/AdminCreateNewCampaign';
 import AdminCampaignDetailsPage from '../AdminCampaignDetailsPage/AdminCampaignDetailsPage';
+import AdminFormDetails from '../AdminFormDetails/AdminFormDetails';
 
 const AdminLandingPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -16,6 +17,7 @@ const AdminLandingPage = () => {
   const tabName = activeTab.startsWith('client-detail') ? activeTab.substring('client-detail'.length + 1) : activeTab;
   const tabName2 = activeTab.startsWith('createNewCampaign') ? activeTab.substring('createNewCampaign'.length + 1) : activeTab;
   const tabName3 = activeTab.startsWith('campaignDetailsPage') ? activeTab.substring('campaignDetailsPage'.length + 1) : activeTab;
+  const tabName4 = activeTab.startsWith('view-form-details') ? activeTab.substring('view-form-details'.length + 1) : activeTab;
 
   return (
     <div className='LandingPage-container'>
@@ -45,9 +47,16 @@ const AdminLandingPage = () => {
 
         {/* working */}
         {activeTab.startsWith('campaignDetailsPage') && (
-          <AdminCampaignDetailsPage campaignId={tabName3} />
+          <AdminCampaignDetailsPage campaignId={tabName3} setActiveTab={setActiveTab} />
         )}
-    
+
+        {activeTab.startsWith('view-form-details') && (
+          <AdminFormDetails campaignId={tabName4}></AdminFormDetails>
+        )}
+
+
+
+
       </div>
     </div>
   );

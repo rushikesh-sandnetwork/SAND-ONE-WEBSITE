@@ -1,0 +1,25 @@
+.form-details-container {
+    background-color: #CDF0FF;
+    height: 75vh;
+    width: 95%;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin: 20px 0px;
+    padding: 20px;
+    transition: box-shadow 0.3s ease-in-out;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+.no-forms {
+    font-size: 50px;
+    color: #646464;
+    font-family: 'Poppins', sans-serif;
+    font-weight:900;
+    letter-spacing: 1px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+}

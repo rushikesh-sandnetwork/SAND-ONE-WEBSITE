@@ -8,7 +8,7 @@ const client = require("../models/client.model")
 const campaign = require("../models/campaign.model")
 const Promoter = require("../models/promoter.model")
 const campaignRights = require("../models/campaignsRightSchema.model")
-const FormFieldSchema = require("../models/forms.fields.model") 
+const FormFieldSchema = require("../models/forms.fields.model")
 const asyncHandler = require("../utils/asyncHandler")
 
 
@@ -129,7 +129,7 @@ const createNewForm = asyncHandler(async (req, res) => {
     try {
         const { campaignId, formFields } = req.body;
 
-        if (!campaignId || !formFields ) {
+        if (!campaignId || !formFields) {
             return res.status(400).json(new apiError(400, "All data is required."));
         }
 
@@ -141,9 +141,9 @@ const createNewForm = asyncHandler(async (req, res) => {
         }
 
         const user = {
-            campaignId, 
+            campaignId,
             formFields,
-            collectionName: campaignDetails.title, 
+            collectionName: campaignDetails.title,
         };
 
         const newForm = await FormFieldSchema.create(user);
@@ -311,10 +311,32 @@ const fetchNumberOfClientsAndCampaigns = asyncHandler(async (req, res) => {
         console.error('Error in fetching the data.', error);
         res.status(400).json(new apiError(400, "Error in fetching the data"));
     }
-})
+});
+
+
+const fetchFormsForCampaigns = asyncHandler(async (req, res) => {
+    try {
+        const { campaignId } = req.body;
+
+        if (!campaignId) {
+            return res.status(400).json(new apiError(400, "Missing required data fields."));
+        }
+
+        const forms = await FormFieldSchema.find({ campaignId: campaignId });
+
+
+        res.status(200).json(new apiResponse(200, forms, "Forms for campaigns Fetched."));
+
+
+    } catch (error) {
+        console.error('Error in fetching the data.', error);
+        res.status(400).json(new apiError(400, "Error in fetching the data"));
+    }
+});
 
 
 module.exports = {
+    fetchFormsForCampaigns,
     fetchNumberOfClientsAndCampaigns,
     fillFormData,
     fetchData,
