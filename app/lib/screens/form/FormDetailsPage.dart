@@ -77,31 +77,27 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
       appBar: AppBar(
         title: Text('Form Details'),
       ),
-      body: SingleChildScrollView(
-        child: FutureBuilder<FormDetails>(
-          future: _formDetailsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (snapshot.hasData) {
-              var formDetails = snapshot.data!;
-              return ListView.builder(
-                shrinkWrap: true,
-                itemCount: formDetails.formFields.length,
-                itemBuilder: (context, index) {
-                  var fieldName = formDetails.formFields[index];
-                  return ListTile(
-                    title: Text(fieldName),
-                  );
-                },
-              );
-            } else {
-              return Center(child: Text('No data available'));
-            }
-          },
-        ),
+      body: FutureBuilder<FormDetails>(
+        future: _formDetailsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (!snapshot.hasData || snapshot.data == null) {
+            return Center(child: Text('No data available'));
+          } else {
+            return ListView(
+              children: [
+                Address(),
+                Appointment(),
+                FullName(),
+                Email(),
+                LongText()
+              ],
+            );
+          }
+        },
       ),
     );
   }

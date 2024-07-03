@@ -15,30 +15,28 @@ class _EmailState extends State<Email> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "Email",
-              style: GoogleFonts.poppins(
-                  fontWeight: FontWeight.bold, fontSize: 20),
-            ),
-            SizedBox(height: 20),
-            TextFormField(
-              controller: _additionalInfoController,
-              decoration: InputDecoration(
-                hintText: 'Enter your email here :',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Email",
+            style:
+                GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 20),
+          ),
+          SizedBox(height: 20),
+          TextFormField(
+            controller: _additionalInfoController,
+            decoration: InputDecoration(
+              hintText: 'Enter your email here :',
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
               ),
-              style: GoogleFonts.poppins(),
             ),
-          ],
-        ),
+            style: GoogleFonts.poppins(),
+          ),
+        ],
       ),
     );
   }
