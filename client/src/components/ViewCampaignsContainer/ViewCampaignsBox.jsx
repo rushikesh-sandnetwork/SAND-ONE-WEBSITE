@@ -1,7 +1,7 @@
 import React from 'react';
 import './ViewCampaignsBox.css';
 
-const ViewCampaignsBox = ({ campaign  }) => {
+const ViewCampaignsBox = ({ campaign , campaignId,setActiveTab }) => {
   return (
     <div className="viewCampaignsBox">
       <h3>{campaign.title}</h3>
@@ -10,7 +10,9 @@ const ViewCampaignsBox = ({ campaign  }) => {
         type="button"
         value="More Details >"
         className="detailsBtn"
-        onClick={()=>{}}
+        onClick={()=>{
+          setActiveTab(`campaignDetailsPage/${campaignId}`);
+        }}
       />
     </div>
   );
