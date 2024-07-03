@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Appointment extends StatefulWidget {
-  const Appointment({super.key});
+class Appointment extends StatelessWidget {
+  final FormFieldSetter<String>? onSaved;
 
-  @override
-  State<Appointment> createState() => _AppointmentState();
-}
+  Appointment({Key? key, this.onSaved}) : super(key: key);
 
-class _AppointmentState extends State<Appointment> {
   final _formKey = GlobalKey<FormState>();
+
   final TextEditingController _appointmentTitleController =
       TextEditingController();
+
   final TextEditingController _dateTimeController = TextEditingController();
 
   @override
@@ -30,6 +29,8 @@ class _AppointmentState extends State<Appointment> {
             ),
             SizedBox(height: 20),
             TextFormField(
+                    onSaved: onSaved,
+
               controller: _dateTimeController,
               decoration: InputDecoration(
                 hintText: 'Select Date and Time',
@@ -43,6 +44,7 @@ class _AppointmentState extends State<Appointment> {
               onTap: () async {
                 FocusScope.of(context).requestFocus(FocusNode());
                 DateTime? pickedDate = await showDatePicker(
+                  
                   context: context,
                   initialDate: DateTime.now(),
                   firstDate: DateTime(2000),
@@ -55,6 +57,7 @@ class _AppointmentState extends State<Appointment> {
                   );
                   if (pickedTime != null) {
                     DateTime finalDateTime = DateTime(
+                      
                       pickedDate.year,
                       pickedDate.month,
                       pickedDate.day,

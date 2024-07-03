@@ -55,7 +55,7 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
   void initState() {
     super.initState();
     _promoterDetails =
-        PromoterService.fetchPromoterDetails('6683afd1c62a9921605e02ef');
+        PromoterService.fetchPromoterDetails('6684dedc377fb4272add11cf');
   }
 
   @override

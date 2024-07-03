@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Email extends StatefulWidget {
-  const Email({super.key});
+class Email extends StatelessWidget {
+  final FormFieldSetter<String>? onSaved;
 
-  @override
-  State<Email> createState() => _EmailState();
-}
+  Email({Key? key, this.onSaved}) : super(key: key);
 
-class _EmailState extends State<Email> {
   final TextEditingController _emailController = TextEditingController();
+
   final TextEditingController _additionalInfoController =
       TextEditingController();
 
@@ -27,6 +25,7 @@ class _EmailState extends State<Email> {
           ),
           SizedBox(height: 20),
           TextFormField(
+            onSaved: onSaved,
             controller: _additionalInfoController,
             decoration: InputDecoration(
               hintText: 'Enter your email here :',

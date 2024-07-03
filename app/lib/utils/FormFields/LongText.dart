@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LongText extends StatefulWidget {
-  const LongText({super.key});
+class LongText extends StatelessWidget {
+  final FormFieldSetter<String>? onSaved;
 
-  @override
-  State<LongText> createState() => _LongTextState();
-}
+  LongText({Key? key, this.onSaved}) : super(key: key);
 
-class _LongTextState extends State<LongText> {
   final TextEditingController _textController = TextEditingController();
 
   @override
@@ -25,6 +22,7 @@ class _LongTextState extends State<LongText> {
           ),
           SizedBox(height: 20),
           TextFormField(
+            onSaved: onSaved,
             controller: _textController,
             maxLines: 10,
             decoration: InputDecoration(

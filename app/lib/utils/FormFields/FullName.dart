@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class FullName extends StatefulWidget {
-  const FullName({super.key});
+class FullName extends StatelessWidget {
+  final FormFieldSetter<String>? onSaved;
 
-  @override
-  State<FullName> createState() => _FullNameState();
-}
+  FullName({Key? key, this.onSaved}) : super(key: key);
 
-class _FullNameState extends State<FullName> {
   final TextEditingController _fullNameController = TextEditingController();
+
   final TextEditingController _firstNameController = TextEditingController();
+
   final TextEditingController _lastNameController = TextEditingController();
 
   @override
@@ -33,6 +32,7 @@ class _FullNameState extends State<FullName> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
+                      onSaved: onSaved,
                       controller: _firstNameController,
                       decoration: InputDecoration(
                         hintText: 'First Name',
@@ -51,6 +51,7 @@ class _FullNameState extends State<FullName> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     TextFormField(
+                      onSaved: onSaved,
                       controller: _lastNameController,
                       decoration: InputDecoration(
                         hintText: 'Last Name',
