@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './CreatePromoterModal.css'
+import './CreatePromoterModal.css';
+
 const CreatePromoterModal = ({ onClose, onCreate }) => {
     const [promoterName, setPromoterName] = useState('');
-    const [companyName, setCompanyName] = useState('');
+    const [promoterEmailId, setPromoterEmailId] = useState('');
+    const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const handleCreatePromoter = async () => {
+    const handleCreatePromoter = async (e) => {
+        e.preventDefault(); // Prevent default form submission
+
         try {
             const response = await axios.post('http://localhost:8080/api/v1/promoter/registerNewPromoter', {
                 promoterName,
-                companyName,
+                promoterEmailId,
+                password,
             });
 
             if (response.status === 200) {
                 alert('Promoter created successfully!');
-                onCreate(response.data.data); // Pass created promoter data back to parent component
+                onCreate(response.data); // Pass created promoter data back to parent component
                 onClose();
             } else {
                 setError('Failed to create promoter.');
@@ -32,12 +37,10 @@ const CreatePromoterModal = ({ onClose, onCreate }) => {
                 {error && <p className="error-message">{error}</p>}
                 <form onSubmit={handleCreatePromoter}>
                     <div className="form-group">
-                        {/* <label htmlFor="promoterName">Promoter Name:</label> */}
                         <input
                             type="text"
                             id="promoterName"
                             className='inputField'
-
                             placeholder='Promoter Name'
                             value={promoterName}
                             onChange={(e) => setPromoterName(e.target.value)}
@@ -45,14 +48,24 @@ const CreatePromoterModal = ({ onClose, onCreate }) => {
                         />
                     </div>
                     <div className="form-group">
-                        {/* <label htmlFor="companyName">Company Name:</label> */}
                         <input
-                            type="text"
-                            id="companyName"
+                            type="email"
+                            id="promoterEmailId"
                             className='inputField'
-                            placeholder='Company Name'
-                            value={companyName}
-                            onChange={(e) => setCompanyName(e.target.value)}
+                            placeholder='Promoter Email'
+                            value={promoterEmailId}
+                            onChange={(e) => setPromoterEmailId(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div className="form-group">
+                        <input
+                            type="password"
+                            id="password"
+                            className='inputField'
+                            placeholder='Password'
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
                             required
                         />
                     </div>

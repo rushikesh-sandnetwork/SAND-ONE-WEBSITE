@@ -1,10 +1,11 @@
-import 'package:app/screens/form/FormPage.dart';
-import 'package:app/screens/profile/Profile.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
+import 'package:app/screens/form/FormPage.dart';
+import 'package:app/screens/profile/Profile.dart';
 
 class MainScreenPage extends StatefulWidget {
-  const MainScreenPage({super.key});
+  final String promoterId;
+  const MainScreenPage({required this.promoterId});
 
   @override
   State<MainScreenPage> createState() => _MainScreenPageState();
@@ -22,13 +23,18 @@ const List<TabItem> items = [
 class _MainScreenPageState extends State<MainScreenPage> {
   late PageController _pageController;
   int visit = 0;
-
-  List screen = [PromoterDetailsPage(), Profile()];
+  late List<Widget> screen;
 
   @override
   void initState() {
     super.initState();
     _pageController = PageController(initialPage: visit);
+
+    // Initialize screen list here
+    screen = [
+      PromoterDetailsPage(promoterId: widget.promoterId),
+      Profile(promoterId: widget.promoterId),
+    ];
   }
 
   @override

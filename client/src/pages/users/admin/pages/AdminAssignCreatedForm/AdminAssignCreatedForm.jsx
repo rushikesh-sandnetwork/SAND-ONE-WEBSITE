@@ -32,6 +32,7 @@ const AdminAssignCreatedForm = () => {
                 setLoading(false);
             }
         };
+        
 
         fetchPromoters();
     }, [formId]);
@@ -93,18 +94,16 @@ const AdminAssignCreatedForm = () => {
                     <table className="promoterTable">
                         <thead>
                             <tr>
-                                <th>ID</th>
                                 <th>Promoter Name</th>
-                                <th>Company Name</th>
+                                <th>Email</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
                             {promoters.map((promoter) => (
                                 <tr key={promoter._id}>
-                                    <td>{promoter._id}</td>
                                     <td>{promoter.promoterName}</td>
-                                    <td>{promoter.companyName}</td>
+                                    <td>{promoter.promoterEmailId}</td>
                                     <td>
                                         {promoter.hasFormAssigned ? (
                                             <span>Assigned</span>

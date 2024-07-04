@@ -4,6 +4,7 @@ const router = Router();
 
 // Define the route with collectionName as a parameter
 router.route('/fetchFormFilledData').post(promoterController.fetchFormFilledData);
+router.route('/loginPromoter').post(promoterController.promoterLogin);
 router.route('/fillFormData/:collectionName').post(promoterController.fillFormData);
 router.route('/fetchPromoters').get(promoterController.fetchAllPromoters);
 router.route('/fetchPromoterDetails').post(promoterController.fetchPromoterDetails);

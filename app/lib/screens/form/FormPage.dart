@@ -44,6 +44,9 @@ class PromoterDetails {
 }
 
 class PromoterDetailsPage extends StatefulWidget {
+  final String promoterId;
+  const PromoterDetailsPage({required this.promoterId});
+
   @override
   _PromoterDetailsPageState createState() => _PromoterDetailsPageState();
 }
@@ -54,8 +57,7 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
   @override
   void initState() {
     super.initState();
-    _promoterDetails =
-        PromoterService.fetchPromoterDetails('6684dedc377fb4272add11cf');
+    _promoterDetails = PromoterService.fetchPromoterDetails(widget.promoterId);
   }
 
   @override
@@ -94,7 +96,7 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
                           },
                           child: FormTabs(
                             id: snapshot.data!.formIds[index],
-                            title: "First Form",
+                            title: "Form " + (index + 1).toString(),
                           ),
                         );
                       },

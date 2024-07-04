@@ -20,14 +20,14 @@ const fetchAllPromoters = asyncHandler(async (req, res) => {
 
 const createNewPromoter = asyncHandler(async (req, res) => {
     try {
-        const { promoterName, companyName } = req.body;
+        const { promoterName, promoterEmailId , password } = req.body;
 
-        if (!promoterName || !companyName) {
+        if (!promoterName || !promoterEmailId ||!password) {
             return res.status(400).json(new apiError(400, "Missing required fields"));
         };
 
 
-        const newPromoter = await Promoter.create({ promoterName, companyName });
+        const newPromoter = await Promoter.create({ promoterName,promoterEmailId , password });
 
         if (!newPromoter) {
             return res.status(400).json(new apiError(400, "Promoter not created"));
@@ -142,4 +142,32 @@ const fetchFormFilledData = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { fetchFormFilledData,fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails };
+const promoterLogin = asyncHandler(async (req, res) => {
+    try {
+        const { email, password } = req.body;
+        if (!email || !password) {
+            return res.status(400).json(new apiError(400, "Missing required data fields."));
+        };
+
+
+        const promoterDetails = await Promoter.findOne({ promoterEmailId:email });
+
+        if (!promoterDetails) {
+            return res.status(400).json(new apiError(400, "There doesnt exist such a promoter with the given id."));
+        };
+
+        if (promoterDetails.password != password) {
+            return res.status(400).json(new apiError(400, "Invalid password."));
+        };
+
+        return res.status(200).json(new apiResponse(200, promoterDetails, "Promoter Logged in successfully."));
+
+
+    } catch (error) {
+        console.error('Error in fetching the data.', error);
+        res.status(400).json(new apiError(400, "Error in fetching the data"));
+    }
+});
+
+
+module.exports = { promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails };

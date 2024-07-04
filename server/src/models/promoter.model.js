@@ -6,7 +6,11 @@ const promoterSchema = new Schema({
         type: String,
         required: true,
     },
-    companyName: {
+    promoterEmailId:{
+        type: String,
+        required: true,
+    },
+    password: {
         type: String,
         required: true,
     },

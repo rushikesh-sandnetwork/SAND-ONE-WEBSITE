@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({super.key});
+  final String promoterId;
+  const Profile({required this.promoterId});
 
   @override
   State<Profile> createState() => _ProfileState();

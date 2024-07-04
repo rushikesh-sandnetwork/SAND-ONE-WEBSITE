@@ -43,7 +43,7 @@
     padding: 10px;
 }
 
-.form-group input[type="text"] {
+.form-group input {
     width: 90%;
     padding: 8px;
     font-size: 14px;
