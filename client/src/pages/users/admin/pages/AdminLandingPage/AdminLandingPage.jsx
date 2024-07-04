@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import './AdminLandingPage.css';
 import AdminOverViewPage from '../AdminOverViewPage/AdminOverViewPage';
 import AdminViewClientsPage from '../AdminViewClientsPage/AdminViewClientsPage';
 import AdminProfilePage from '../AdminProfilePage/AdminProfilePage';
@@ -8,6 +7,9 @@ import AdminCreateNewClient from '../AdminCreateNewClient/AdminCreateNewClient';
 import AdminCreateNewCampaign from '../AdminCreateNewCampaign/AdminCreateNewCampaign';
 import AdminCampaignDetailsPage from '../AdminCampaignDetailsPage/AdminCampaignDetailsPage';
 import AdminFormDetails from '../AdminFormDetails/AdminFormDetails';
+import AdminFormItems from '../AdminFormItems/AdminFormItems';
+import './AdminLandingPage.css';
+import AdminFormViewData from '../AdminFormViewData/AdminFormViewData';
 
 const AdminLandingPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -18,6 +20,8 @@ const AdminLandingPage = () => {
   const tabName2 = activeTab.startsWith('createNewCampaign') ? activeTab.substring('createNewCampaign'.length + 1) : activeTab;
   const tabName3 = activeTab.startsWith('campaignDetailsPage') ? activeTab.substring('campaignDetailsPage'.length + 1) : activeTab;
   const tabName4 = activeTab.startsWith('view-form-details') ? activeTab.substring('view-form-details'.length + 1) : activeTab;
+  const tabName5 = activeTab.startsWith('viewFormItems') ? activeTab.substring('viewFormItems'.length + 1) : activeTab;
+  const tabName6 = activeTab.startsWith('viewFormData') ? activeTab.substring('viewFormData'.length + 1) : activeTab;
 
   return (
     <div className='LandingPage-container'>
@@ -51,8 +55,19 @@ const AdminLandingPage = () => {
         )}
 
         {activeTab.startsWith('view-form-details') && (
-          <AdminFormDetails campaignId={tabName4}></AdminFormDetails>
+          <AdminFormDetails campaignId={tabName4} setActiveTab={setActiveTab}></AdminFormDetails>
         )}
+
+
+        {activeTab.startsWith('viewFormItems') && (
+          <AdminFormItems formId={tabName5} setActiveTab={setActiveTab}/>
+        )}
+
+
+        {activeTab.startsWith('viewFormData') && (
+          <AdminFormViewData formId={tabName6}></AdminFormViewData>
+        )}
+
 
 
 

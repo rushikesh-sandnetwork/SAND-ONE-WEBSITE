@@ -118,29 +118,22 @@ const fetchFormFilledData = asyncHandler(async (req, res) => {
     try {
         const { formId } = req.body;
 
-        // Check if formId is provided in the request body
         if (!formId) {
             return res.status(400).json(new apiError(400, "Missing required data fields."));
         }
 
-        // Find form details based on formId
         const formDetails = await formsFieldsModel.findById(formId);
 
-        // Check if formDetails exist for the provided formId
         if (!formDetails) {
             return res.status(400).json(new apiError(400, "No such form exists."));
         }
 
-        // Retrieve collection name from formDetails
         const collectionName = formDetails.collectionName;
 
-        // Access the MongoDB collection using mongoose connection
         const collection = mongoose.connection.collection(collectionName);
 
-        // Fetch all data from the collection
         const result = await collection.find({}).toArray(); // Fetch all documents
 
-        // Return the fetched data as a response
         res.status(200).json(new apiResponse(200, result, "Data fetched successfully."));
     } catch (error) {
         console.error('Error in fetching the data.', error);

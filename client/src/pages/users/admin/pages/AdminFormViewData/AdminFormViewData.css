@@ -1,0 +1,54 @@
+.form-view-data-container {
+    background-color: #CDF0FF;
+    height: 75vh;
+    width: 95%;
+    border-radius: 18px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    margin: 20px auto;
+    padding: 20px;
+    transition: box-shadow 0.3s ease-in-out;
+    overflow: auto; 
+}
+
+table {
+    font-family: "Poppins", sans-serif;
+    font-size: 20px; 
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+    border-radius: 12px; /* Add border-radius to the table */
+    overflow: hidden; /* Ensure border-radius is applied properly */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better appearance */
+}
+
+thead {
+    background-color: #3751b6;
+    color: #fff;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    font-size: 16px;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+/* Add hover effect for table rows */
+tbody tr:hover {
+    background-color: #e0e0e0;
+}
+
+/* Add border-radius to thead and tbody separately for better control */
+thead {
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+tbody {
+    border-bottom-left-radius: 12px;
+    border-bottom-right-radius: 12px;
+}

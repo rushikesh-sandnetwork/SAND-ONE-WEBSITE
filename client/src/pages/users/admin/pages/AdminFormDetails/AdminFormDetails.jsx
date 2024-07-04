@@ -4,7 +4,7 @@ import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import './AdminFormDetails.css';
 import FormBox from '../../../../../components/FormBox/FormBox';
 
-const AdminFormDetails = ({ campaignId }) => {
+const AdminFormDetails = ({ campaignId  , setActiveTab}) => {
     const [formDetails, setFormDetails] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -41,9 +41,7 @@ const AdminFormDetails = ({ campaignId }) => {
             <div className="form-details-container">
                 {formDetails.length > 0 ? (
                     formDetails.map((formDetail) => (
-                        <FormBox formId={formDetail._id } formTitle={formDetail.collectionName} ></FormBox>
-
-                        
+                        <FormBox formId={formDetail._id } formTitle={formDetail.collectionName} setActiveTab={setActiveTab} ></FormBox>                     
 
                     ))
                 ) : (
