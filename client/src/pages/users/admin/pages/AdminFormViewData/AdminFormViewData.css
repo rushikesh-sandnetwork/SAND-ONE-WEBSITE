@@ -7,7 +7,23 @@
     margin: 20px auto;
     padding: 20px;
     transition: box-shadow 0.3s ease-in-out;
-    overflow: auto; 
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+}
+
+.table-container {
+    overflow-x: auto; /* Ensure horizontal scroll */
+    overflow-y: auto; /* Ensure vertical scroll */
+    width: 100%;
+    flex-grow: 1;
+    border-radius: 12px; /* Add border-radius to the container for proper scrolling */
+    -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
+    scrollbar-width: none;  /* Hide scrollbar in Firefox */
+}
+
+.table-container::-webkit-scrollbar {
+    display: none;  /* Hide scrollbar in Chrome, Safari, and Opera */
 }
 
 table {

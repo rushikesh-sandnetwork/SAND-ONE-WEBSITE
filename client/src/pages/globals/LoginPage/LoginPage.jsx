@@ -6,7 +6,6 @@ import axios from 'axios';
 // admin@gmail.com
 // Admin123
 
-
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -28,7 +27,6 @@ const LoginPage = () => {
                 email,
                 password
             });
-            console.log(response.data.data.user.role);
 
             if (response.status === 200) {
                 const role = response.data.data.user.role;
@@ -55,7 +53,7 @@ const LoginPage = () => {
         <div className="LoginPage-container">
             <div className="LoginPage-box">
                 <div className="LoginPage-logo">
-                    <img src="https://sandnetwork.in/wp-content/uploads/2024/02/sand-logo.png" alt="SAND Logo" />
+                    <img src="./src/pages/users/admin/utils/SAND 1 logo.png" alt="SAND Logo" />
                 </div>
                 <div className="LoginPage-content">
                     <div className="content-title">
@@ -101,3 +99,4 @@ const LoginPage = () => {
 };
 
 export default LoginPage;
+    

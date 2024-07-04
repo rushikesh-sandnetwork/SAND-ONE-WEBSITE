@@ -1,3 +1,4 @@
+import 'package:app/LoginPage.dart';
 import 'package:app/mainScreen.dart';
 import 'package:flutter/material.dart';
 
@@ -13,12 +14,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: MainScreenPage(),
+      home: LoginPage(),
     );
   }
 }
-

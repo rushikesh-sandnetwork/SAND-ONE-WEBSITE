@@ -27,7 +27,7 @@ const AdminLandingPage = () => {
     <div className='LandingPage-container'>
       <div className='sidebar'>
         <div className="navbar">
-          <img src="https://sandnetwork.in/wp-content/uploads/2024/02/sand-logo.png" alt="" />
+          <img src="./src/pages/users/admin/utils/SAND 1 logo.png" alt="" />
           <a onClick={() => setActiveTab('overview')}>Overview</a>
           <a onClick={() => setActiveTab('newClient')}>New Client</a>
           <a onClick={() => setActiveTab('viewClients')}>View Clients</a>
