@@ -22,7 +22,9 @@ class LongText extends StatelessWidget {
           ),
           SizedBox(height: 20),
           TextFormField(
-            onSaved: onSaved,
+            onSaved: (value) {
+              onSaved!(_textController.text);
+            },
             controller: _textController,
             maxLines: 10,
             decoration: InputDecoration(

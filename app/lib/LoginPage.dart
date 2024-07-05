@@ -17,42 +17,51 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController passwordController = TextEditingController();
   String errorText = '';
 
- Future<void> loginUser(String email, String password) async {
-  try {
-    var response = await http.post(
-      Uri.parse('http://192.168.31.139:8080/api/v1/promoter/loginPromoter'),
-      headers: <String, String>{
-        'Content-Type': 'application/json; charset=UTF-8',
-      },
-      body: jsonEncode(<String, String>{
-        'email': email,
-        'password': password,
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      // Parse the response JSON
-      var jsonResponse = jsonDecode(response.body);
-      var promoterId = jsonResponse['data']['_id'];
-
-      // Navigate to MainScreenPage and pass promoterId
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => MainScreenPage(promoterId: promoterId),
-        ),
+  Future<void> loginUser(String email, String password) async {
+    try {
+      var response = await http.post(
+        Uri.parse('http://192.168.31.139:8080/api/v1/promoter/loginPromoter'),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode(<String, String>{
+          'email': email,
+          'password': password,
+        }),
       );
-    } else {
+
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        var promoterId = jsonResponse['data']['_id'];
+
+        if (promoterId != null) {
+          // Navigate to MainScreenPage and pass promoterId
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => MainScreenPage(promoterId: promoterId),
+            ),
+          );
+        } else {
+          setState(() {
+            errorText = 'Login failed. Invalid response from server.';
+          });
+        }
+      } else {
+        setState(() {
+          errorText = 'Login failed. Please check your credentials.';
+        });
+      }
+    } catch (e) {
       setState(() {
-        errorText = 'Login failed. Please check your credentials.';
+        errorText = 'An error occurred. Please try again later.';
       });
+      print('Error: $e');
     }
-  } catch (e) {
-    setState(() {
-      errorText = 'An error occurred. Please try again later.';
-    });
   }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -151,6 +160,7 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
+                              print("hello");
                               String email = emailController.text;
                               String password = passwordController.text;
                               // Call loginUser function to send login request

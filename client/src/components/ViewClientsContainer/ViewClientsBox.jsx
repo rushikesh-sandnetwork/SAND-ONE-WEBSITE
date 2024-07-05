@@ -2,6 +2,9 @@ import React from 'react';
 import './ViewClientsBox.css';
 
 const ViewClientsBox = ({ imgSrc, clientName, clientId, setActiveTab }) => {
+
+
+
   return (
     <div className="viewClientsBox-container">
       <img src={imgSrc} alt="" className="clientImage" />

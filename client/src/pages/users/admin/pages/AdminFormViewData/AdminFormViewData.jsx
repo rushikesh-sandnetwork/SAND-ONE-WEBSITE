@@ -1,42 +1,70 @@
 import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom'; // Import useParams hook
+
 import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import './AdminFormViewData.css';
 
-const AdminFormViewData = ({ formId }) => {
+const AdminFormViewData = () => {
     const [formData, setFormData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const response = await fetch('http://localhost:8080/api/v1/promoter/fetchFormFilledData', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ formId }),
-                });
+    const { formId } = useParams(); // Get formId from URL parameters
 
-                const result = await response.json();
-                if (response.ok) {
-                    setFormData(result.data);
-                } else {
-                    setError(result.message);
-                }
-            } catch (err) {
-                setError('Error fetching data');
-            } finally {
-                setLoading(false);
+    const fetchData = async () => {
+        setLoading(true);
+        setError(null);
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/promoter/fetchFormFilledData', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ formId }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                setFormData(result.data);
+            } else {
+                setError(result.message);
             }
-        };
+        } catch (err) {
+            setError('Error fetching data');
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchData();
     }, [formId]);
 
+    const renderTableHeaders = () => {
+        if (formData.length === 0) return null;
+        const keys = Object.keys(formData[0]);
+        const filteredKeys = keys.filter(key => key !== '_id');
+        return filteredKeys.map((key) => <th key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</th>);
+    };
+
+    const renderTableRows = () => {
+        return formData.map((item) => (
+            <tr key={item._id}>
+                {/* Render only values excluding the '_id' field */}
+                {Object.keys(item)
+                    .filter(key => key !== '_id')
+                    .map((key) => (
+                        <td key={key}>{item[key]}</td>
+                    ))}
+            </tr>
+        ));
+    };
+
     return (
         <div className="form-view-data">
-            <PageTitle title="View Data"></PageTitle>
+            <div className="form-view-title-container">
+                <PageTitle title="View Data"></PageTitle>
+            </div>
             <div className="form-view-data-container">
                 {loading ? (
                     <p>Loading...</p>
@@ -46,30 +74,15 @@ const AdminFormViewData = ({ formId }) => {
                     <table>
                         <thead>
                             <tr>
-                                <th>Email</th>
-                                <th>Address</th>
-                                <th>Street Address</th>
-                                <th>Street Address Line 2</th>
-                                <th>City</th>
-                                <th>State</th>
-                                <th>Pincode</th>
+                                {renderTableHeaders()}
                             </tr>
                         </thead>
                         <tbody>
-                            {formData.map((item) => (
-                                <tr key={item._id}>
-                                    <td>{item.email}</td>
-                                    <td>{item.address}</td>
-                                    <td>{item.streetAddress}</td>
-                                    <td>{item.streetAddressLine2}</td>
-                                    <td>{item.city}</td>
-                                    <td>{item.state}</td>
-                                    <td>{item.pincode}</td>
-                                </tr>
-                            ))}
+                            {renderTableRows()}
                         </tbody>
                     </table>
                 )}
+                <button onClick={fetchData} className="refresh-button">Refresh</button>
             </div>
         </div>
     );
