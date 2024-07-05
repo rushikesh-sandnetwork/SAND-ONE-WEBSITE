@@ -18,7 +18,7 @@ const AdminFormItems = ({ formId  , setActiveTab}) => {
                     />
                     <FormDetailsBox
                         imgSrc="https://cdn-icons-png.flaticon.com/512/58/58679.png"
-                        title="ACCEPT DATA"
+                        title="ACCEPTED DATA"
                         formId={formId}
                         url="acceptData"
                         setActiveTab={setActiveTab}
@@ -28,7 +28,7 @@ const AdminFormItems = ({ formId  , setActiveTab}) => {
                 <div className="row">
                     <FormDetailsBox
                         imgSrc="https://cdn-icons-png.flaticon.com/512/7134/7134152.png"
-                        title="REJECT DATA"
+                        title="REJECTED DATA"
                         formId={formId}
                         url="rejectData"
                         setActiveTab={setActiveTab}

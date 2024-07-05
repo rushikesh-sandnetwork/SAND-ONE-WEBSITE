@@ -13,7 +13,8 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
     const fetchCampaigns = async () => {
       try {
         const response = await axios.post('http://localhost:8080/api/v1/admin/fetchAllCampaigns', { clientId });
-        setCampaigns(response.data.data);
+        // Reverse the order of campaigns array
+        setCampaigns(response.data.data.reverse());
         setLoading(false);
       } catch (error) {
         console.error('Error fetching campaigns:', error);

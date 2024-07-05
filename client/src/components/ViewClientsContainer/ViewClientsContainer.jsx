@@ -12,7 +12,7 @@ const ViewClientsContainer = ({ setActiveTab }) => {
     const fetchClients = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/v1/admin/fetchAllClient');
-        setClients(response.data.data);
+        setClients(response.data.data.reverse());
         setLoading(false);
       } catch (err) {
         console.error('Error fetching clients:', err);

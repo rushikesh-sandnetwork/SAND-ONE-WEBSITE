@@ -80,7 +80,7 @@ tbody {
     align-items: center;
     margin-top: 25px;
     padding: 10px 0;
-    width: 400px;
+    width: 200px;
     border: none;
     border-radius: 18px;
     background-color: #2d9bff;
@@ -91,6 +91,7 @@ tbody {
     cursor: pointer;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
+    margin-right: 10px;
 }
 
 .refresh-button:hover {
@@ -101,4 +102,10 @@ tbody {
 .refresh-button:active {
     transform: translateY(0);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+
+.buttons{
+    display: flex;
+    flex-direction: row;
 }
