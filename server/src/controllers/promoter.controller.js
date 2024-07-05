@@ -93,12 +93,15 @@ const fetchFormField = asyncHandler(async (req, res) => {
 
 const fillFormData = asyncHandler(async (req, res) => {
     try {
-        const reqData = req.body;
+        let reqData = req.body;
         const collectionName = req.params.collectionName;
 
         if (!reqData) {
             return res.status(400).json(new apiError(400, "Missing required data fields."));
         }
+
+        // Add the acceptedData field to reqData
+        reqData.acceptedData = true; // or set the value as needed
 
         // Use the collection directly
         const collection = mongoose.connection.collection(collectionName);
@@ -112,6 +115,7 @@ const fillFormData = asyncHandler(async (req, res) => {
         res.status(400).json(new apiError(400, "Error in saving the data"));
     }
 });
+
 
 
 const fetchFormFilledData = asyncHandler(async (req, res) => {

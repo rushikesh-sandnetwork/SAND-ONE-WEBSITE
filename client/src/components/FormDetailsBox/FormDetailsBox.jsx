@@ -14,6 +14,7 @@ const FormDetailsBox = ({ formId, title, imgSrc, url, setActiveTab  }) => {
 
 
 
+
   return (
     <div className='form-detail-box'>
       <div className="icon-box">

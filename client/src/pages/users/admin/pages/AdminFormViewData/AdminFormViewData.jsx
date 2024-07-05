@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom'; // Import useParams hook
+
 import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import './AdminFormViewData.css';
 
@@ -7,11 +8,8 @@ const AdminFormViewData = () => {
     const [formData, setFormData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { formId } = useParams();
 
-    useEffect(() => {
-        fetchData();
-    }, [formId]);
+    const { formId } = useParams(); // Get formId from URL parameters
 
     const fetchData = async () => {
         setLoading(true);
@@ -38,6 +36,10 @@ const AdminFormViewData = () => {
         }
     };
 
+    useEffect(() => {
+        fetchData();
+    }, [formId]);
+
     const renderTableHeaders = () => {
         if (formData.length === 0) return null;
         const keys = Object.keys(formData[0]);
@@ -48,56 +50,20 @@ const AdminFormViewData = () => {
     const renderTableRows = () => {
         return formData.map((item) => (
             <tr key={item._id}>
+                {/* Render only values excluding the '_id' field */}
                 {Object.keys(item)
                     .filter(key => key !== '_id')
                     .map((key) => (
-                        <td key={key}>{item[key]}</td>
+                        <td key={key}>{key === 'acceptedData' ? (item[key] ? 'True' : 'False') : item[key]}</td>
                     ))}
             </tr>
         ));
     };
 
-    const exportToExcel = () => {
-        const fileName = 'formData.csv';
-        const csv = convertToCSV(formData);
-        const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
-
-        if (navigator.msSaveBlob) { // IE 10+
-            navigator.msSaveBlob(blob, fileName);
-        } else {
-            const link = document.createElement('a');
-            if (link.download !== undefined) {
-                const url = URL.createObjectURL(blob);
-                link.setAttribute('href', url);
-                link.setAttribute('download', fileName);
-                link.style.visibility = 'hidden';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-            }
-        }
-    };
-
-    const convertToCSV = (data) => {
-        const keys = Object.keys(data[0]);
-        const header = keys.filter(key => key !== '_id').map(key => key.charAt(0).toUpperCase() + key.slice(1)).join(',');
-        const rows = data.map(row => {
-            return keys.filter(key => key !== '_id').map(key => {
-                let cell = row[key] === null || row[key] === undefined ? '' : row[key];
-                cell = cell.toString().replace(/"/g, '""');
-                if (cell.search(/("|,|\n)/g) >= 0) {
-                    cell = `"${cell}"`;
-                }
-                return cell;
-            }).join(',');
-        });
-        return `${header}\n${rows.join('\n')}`;
-    };
-
     return (
         <div className="form-view-data">
             <div className="form-view-title-container">
-                <PageTitle title="View Data" />
+                <PageTitle title="View Data"></PageTitle>
             </div>
             <div className="form-view-data-container">
                 {loading ? (
@@ -105,24 +71,18 @@ const AdminFormViewData = () => {
                 ) : error ? (
                     <p>{error}</p>
                 ) : (
-                    <React.Fragment>
-                        <table>
-                            <thead>
-                                <tr>
-                                    {renderTableHeaders()}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {renderTableRows()}
-                            </tbody>
-                        </table>
-                    </React.Fragment>
+                    <table>
+                        <thead>
+                            <tr>
+                                {renderTableHeaders()}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {renderTableRows()}
+                        </tbody>
+                    </table>
                 )}
-
-                <div className="buttons">  <button onClick={exportToExcel} className="refresh-button">Export to Excel</button>
-
-                    <button onClick={fetchData} className="refresh-button">Refresh</button></div>
-
+                <button onClick={fetchData} className="refresh-button">Refresh</button>
             </div>
         </div>
     );

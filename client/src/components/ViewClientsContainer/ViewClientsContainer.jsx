@@ -20,7 +20,7 @@ const ViewClientsContainer = ({ setActiveTab }) => {
         setLoading(false);
       }
     };
-
+    
     fetchClients();
   }, []);
 
