@@ -1,10 +1,18 @@
 const { Router } = require("express");
 const router = Router();
+const upload = require("../middlewares/multer.middleware");
 const adminController = require('../controllers/admins.controller');
 
     
 // create new client 
-router.route("/createNewClient").post(adminController.createNewClient);
+router.route("/createNewClient").post(
+    upload.fields([
+        {
+            name:"clientPhoto",
+            maxCount:1
+        }
+    ])
+    ,adminController.createNewClient);
 
 // fetchClient
 router.route("/fetchClient").post(adminController.fetchClient);

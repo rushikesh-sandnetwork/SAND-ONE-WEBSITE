@@ -7,7 +7,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     margin-top: 18px;
     padding: 20px;
@@ -15,17 +15,26 @@
 
 .viewClientsBox-container:hover {
     transform: translateY(-5px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
 .clientImage {
-    max-width: 100px;
-    max-height: 100px;
+    height: 100px;
+    width: 100%;
+    object-fit: contain;
+    border-radius: 16px; /* Subtle rounding for a modern look */
     margin-bottom: 20px;
+    transition: transform 0.3s ease; /* Smooth transform on hover */
+}
+
+.viewClientsBox-container img{
+    border-radius: 20px;
+}
+.viewClientsBox-container:hover .clientImage {
+    transform: scale(1.05); /* Slight zoom on hover */
 }
 
 .viewClientsBox-container h3 {
-    font-size: 20px;
     font-size: 18px;
     font-family: "Poppins", sans-serif;
     font-weight: bold;
@@ -48,7 +57,6 @@
     background-color: #2D9BFF;
     cursor: pointer; 
     transition: background-color 0.3s, transform 0.3s; 
-
 }
 
 .detailsBtn:hover {

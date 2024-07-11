@@ -34,6 +34,7 @@ const AdminFormItems = ({ formId  , setActiveTab}) => {
                         setActiveTab={setActiveTab}
 
                     />
+                    
                     <FormDetailsBox
                         imgSrc="https://cdn-icons-png.flaticon.com/512/9942/9942497.png"
                         title="VIEW PROMOTERS"

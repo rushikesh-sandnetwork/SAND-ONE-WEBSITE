@@ -12,6 +12,7 @@ const ViewClientsContainer = ({ setActiveTab }) => {
     const fetchClients = async () => {
       try {
         const response = await axios.get('http://localhost:8080/api/v1/admin/fetchAllClient');
+        console.log(response.data.data.reverse());
         setClients(response.data.data.reverse());
         setLoading(false);
       } catch (err) {
@@ -37,9 +38,9 @@ const ViewClientsContainer = ({ setActiveTab }) => {
       {clients.map((client, index) => (
         <ViewClientsBox
           key={index}
-          imgSrc="https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Adidas_Logo.svg/725px-Adidas_Logo.svg.png"
+          imgSrc={client["clientPhoto"]}
           clientName={client["clientName"]}
-          clientId={client["_id"]}
+          clientId={client["_id"]}  
           setActiveTab={setActiveTab}
         />
       ))}

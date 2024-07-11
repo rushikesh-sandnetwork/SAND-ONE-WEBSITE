@@ -7,6 +7,7 @@ const AdminCreateNewClient = () => {
   const [clientName, setClientName] = useState('');
   const [clientLocation, setClientLocation] = useState('');
   const [clientWebsite, setClientWebsite] = useState('');
+  const [clientPhoto, setClientPhoto] = useState(null); // New state for client photo
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -15,20 +16,35 @@ const AdminCreateNewClient = () => {
     setter(event.target.value);
   };
 
+  const handleFileChange = (event) => {
+    setClientPhoto(event.target.files[0]);
+  };
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
     setError('');
     setSuccess('');
 
+    const formData = new FormData();
+    formData.append('clientName', clientName);
+    formData.append('clientLocation', clientLocation);
+    formData.append('clientWebsite', clientWebsite);
+    formData.append('clientPhoto', clientPhoto); // Append file to form data
+
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/admin/createNewClient', { clientName, clientLocation, clientWebsite });
+      const response = await axios.post('http://localhost:8080/api/v1/admin/createNewClient', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
       if (response.status === 201) {
         const newClient = response.data.data;
         setSuccess(`Client created successfully: ${newClient.clientName} (ID: ${newClient._id})`);
         setClientName('');
         setClientLocation('');
         setClientWebsite('');
+        setClientPhoto(null);
       }
     } catch (error) {
       setError('An error occurred while creating new client. Try again later.');
@@ -42,7 +58,7 @@ const AdminCreateNewClient = () => {
       <PageTitle title="Create New Client" />
       <div className="create-new-client-container">
         <h3 className="container-heading">Enter Client Details</h3>
-        <form  className='client-Form' onSubmit={handleSubmit}>
+        <form className='client-Form' onSubmit={handleSubmit}>
           <div className="inputFields">
             <input
               type="text"
@@ -67,8 +83,14 @@ const AdminCreateNewClient = () => {
               value={clientWebsite}
               onChange={handleInputChange(setClientWebsite)}
             />
+          
           </div>
-
+          <input
+              type="file"
+              className="input-field"
+              onChange={handleFileChange}
+              required
+            />
           <button type="submit" className="submit-button" disabled={loading}>
             {loading ? 'Creating...' : 'Create Client'}
           </button>

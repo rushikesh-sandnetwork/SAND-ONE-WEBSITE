@@ -13,11 +13,11 @@ const clientSchema = new Schema({
     clientWebsite:{
         type:String,
         required:true
-    }
-    // clientLogo: {
-    //     type: String,
-    //     required: true,
-    // },
+    },
+    clientPhoto: {
+        type: String,
+        required: true,
+    },
 })
 
 module.exports= mongoose.model("Client",clientSchema);

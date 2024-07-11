@@ -2,7 +2,8 @@ const { Router } = require("express");
 const userController = require("../controllers/users.controller");
 const router = Router();
 const apiResponse = require("../utils/apiResponse");
-const apiError = require("../utils/apiError")
+const apiError = require("../utils/apiError");
+const uploadOnCloudinary = require("../utils/cloudinary");
 const mongoose = require("mongoose")
 const client = require("../models/client.model")
 const campaign = require("../models/campaign.model")
@@ -20,9 +21,22 @@ const createNewClient = asyncHandler(async (req, res) => {
 
         if (!clientName || !clientLocation || !clientWebsite) {
             return res.status(400).json(new apiError(400, "Client name, location, and website are required"));
-        }
+        };
 
-        const newClient = await client.create({ clientName, clientLocation, clientWebsite });
+        const clientPicFinalPath = req.files?.clientPhoto?.[0]?.path;
+
+        if (!clientPicFinalPath) {
+            throw new apiError(400, "Client Logo/Pic is required");
+        };
+
+        const clientPicFinal = await uploadOnCloudinary(clientPicFinalPath);
+        if (!clientPicFinal) {
+            throw new apiError(400, "Failed to upload client Photo");
+        };
+
+        const newClient = await client.create({
+            clientName, clientLocation, clientWebsite, clientPhoto: clientPicFinal.url,
+        });
 
         res.status(201).json(new apiResponse(201, newClient, "Client created successfully"));
     } catch (error) {
