@@ -2,15 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Number extends StatelessWidget {
-  final FormFieldSetter<String>? onSaved;
+  final FormFieldSetter<String>? onChanged;
+  final String? initialValue;
 
-  Number({Key? key, this.onSaved}) : super(key: key);
+  Number({Key? key, this.onChanged, this.initialValue}) : super(key: key);
+
   final TextEditingController _titleController = TextEditingController();
-
   final TextEditingController _numberController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    if (initialValue != null) {
+      _titleController.text = initialValue!;
+      _numberController.text = initialValue!;
+    }
+
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -18,7 +24,7 @@ class Number extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             TextFormField(
-              onSaved: onSaved,
+              onChanged: onChanged,
               controller: _titleController,
               decoration: InputDecoration(
                 labelText: 'Number',
@@ -34,7 +40,7 @@ class Number extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextFormField(
-              onSaved: onSaved,
+              onSaved: onChanged,
               controller: _numberController,
               keyboardType: TextInputType.number,
               decoration: InputDecoration(

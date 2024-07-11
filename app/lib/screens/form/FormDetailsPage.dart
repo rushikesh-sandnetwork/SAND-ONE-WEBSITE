@@ -9,14 +9,6 @@ import '../../utils/FormFields/FullName.dart';
 import '../../utils/FormFields/LongText.dart';
 import '../../utils/FormFields/Number.dart';
 
-class FormDetailsPage extends StatefulWidget {
-  final String formId;
-  const FormDetailsPage({required this.formId});
-
-  @override
-  State<FormDetailsPage> createState() => _FormDetailsPageState();
-}
-
 class FormService {
   static const String baseUrl =
       'http://192.168.31.139:8080/api/v1/promoter/fetchFormField';
@@ -38,11 +30,11 @@ class FormService {
         return FormDetails.fromJson(jsonResponse['data'][0]);
       } else {
         throw Exception(
-            'Failed to fetch promoter details. Status code: ${response.statusCode}');
+            'Failed to fetch form details. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching promoter details: $e');
-      throw Exception('Failed to fetch promoter details. Error: $e');
+      print('Error fetching form details: $e');
+      throw Exception('Failed to fetch form details. Error: $e');
     }
   }
 
@@ -63,11 +55,11 @@ class FormService {
         return jsonResponse['data'][0]['collectionName'];
       } else {
         throw Exception(
-            'Failed to fetch promoter details. Status code: ${response.statusCode}');
+            'Failed to fetch collection name. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching promoter details: $e');
-      throw Exception('Failed to fetch promoter details. Error: $e');
+      print('Error fetching collection name: $e');
+      throw Exception('Failed to fetch collection name. Error: $e');
     }
   }
 
@@ -98,17 +90,38 @@ class FormService {
 
 class FormDetails {
   final String campaignId;
-  final List<String> formFields;
+  final List<Map<String, dynamic>> formFields;
+  final String collectionName;
 
-  FormDetails({required this.campaignId, required this.formFields});
+  FormDetails({
+    required this.campaignId,
+    required this.formFields,
+    required this.collectionName,
+  });
 
   factory FormDetails.fromJson(Map<String, dynamic> json) {
+    List<Map<String, dynamic>> fields =
+        json['formFields'].map<Map<String, dynamic>>((field) {
+      return {
+        'key': field['value'],
+        '_id': field['_id'],
+      };
+    }).toList();
+
     return FormDetails(
       campaignId: json['campaignId'],
-      formFields:
-          List<String>.from(json['formFields'].map((form) => form.toString())),
+      formFields: fields,
+      collectionName: json['collectionName'],
     );
   }
+}
+
+class FormDetailsPage extends StatefulWidget {
+  final String formId;
+  const FormDetailsPage({required this.formId});
+
+  @override
+  State<FormDetailsPage> createState() => _FormDetailsPageState();
 }
 
 class _FormDetailsPageState extends State<FormDetailsPage> {
@@ -122,68 +135,94 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     _formDetailsFuture = FormService.fetchFormDetails(widget.formId);
   }
 
-  Widget _buildFormField(String fieldType) {
+  Widget _buildFormField(Map<String, dynamic> field) {
+    String fieldType = field['key'] ?? '';
     switch (fieldType) {
       case 'Address':
         return Address(
-          onSavedAddress: (value) {
-            _formData['address'] = value;
+          initialValue: _formData['address'],
+          onChangedAddress: (value) {
+            setState(() {
+              _formData['address'] = value;
+            });
           },
-          onSavedStreetAddress: (value) {
-            _formData['streetAddress'] = value;
+          onChangedStreetAddress: (value) {
+            setState(() {
+              _formData['streetAddress'] = value;
+            });
           },
-          onSavedStreetAddressLine2: (value) {
-            _formData['streetAddressLine2'] = value;
+          onChangedStreetAddressLine2: (value) {
+            setState(() {
+              _formData['streetAddressLine2'] = value;
+            });
           },
-          onSavedCity: (value) {
-            _formData['city'] = value;
+          onChangedCity: (value) {
+            setState(() {
+              _formData['city'] = value;
+            });
           },
-          onSavedState: (value) {
-            _formData['state'] = value;
+          onChangedState: (value) {
+            setState(() {
+              _formData['state'] = value;
+            });
           },
-          onSavedPincode: (value) {
-            _formData['pincode'] = value;
+          onChangedPincode: (value) {
+            setState(() {
+              _formData['pincode'] = value;
+            });
           },
         );
       case 'Appointment':
         return Appointment(
-          onSaved: (value) {
-            _formData['appointment'] = value;
+          initialValue: _formData['appointment'],
+          onChanged: (value) {
+            setState(() {
+              _formData['appointment'] = value;
+            });
           },
         );
       case 'Email':
         return Email(
-          onSaved: (value) {
-            _formData['email'] = value;
+          initialValue: _formData['email'],
+          onChanged: (value) {
+            setState(() {
+              _formData['email'] = value;
+            });
           },
         );
       case 'Full Name':
         return FullName(
-          onSavedFirstName: (value) {
-            _formData['firstName'] = value;
+          initialFirstName: _formData['firstName'],
+          initialLastName: _formData['lastName'],
+          onChangedFirstName: (value) {
+            setState(() {
+              _formData['firstName'] = value;
+            });
           },
-          onSavedLastName: (value) {
-            _formData['lastName'] = value;
+          onChangedLastName: (value) {
+            setState(() {
+              _formData['lastName'] = value;
+            });
           },
         );
       case 'LongText':
         return LongText(
-          onSaved: (value) {
-            _formData['longText'] = value;
+          initialValue: _formData['longText'],
+          onChanged: (value) {
+            setState(() {
+              _formData['longText'] = value;
+            });
           },
         );
       case 'Number':
         return Number(
-          onSaved: (value) {
-            _formData['number'] = value;
+          initialValue: _formData['number'],
+          onChanged: (value) {
+            setState(() {
+              _formData['number'] = value;
+            });
           },
         );
-      // case 'DatePicker':
-      //   return DatePicker(
-      //     onSaved: (value) {
-      //       _formData['date'] = value;
-      //     },
-      //   );
       default:
         return Container(); // or a placeholder widget
     }
@@ -193,7 +232,6 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
-        print('Form Data: $_formData');
         String collectionName =
             await FormService.fetchCollectionName(widget.formId);
         await FormService.submitFormData(collectionName, _formData);

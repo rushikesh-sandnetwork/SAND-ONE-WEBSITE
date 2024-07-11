@@ -33,7 +33,6 @@ const AdminAssignCreatedForm = () => {
             }
         };
         
-
         fetchPromoters();
     }, [formId]);
 
@@ -43,7 +42,7 @@ const AdminAssignCreatedForm = () => {
                 formId,
                 promoterId,
             });
-
+    
             if (response.status === 200) {
                 alert('Form assigned successfully!');
                 // Update local state to reflect the assignment
@@ -59,12 +58,14 @@ const AdminAssignCreatedForm = () => {
                     })
                 ));
             } else {
-                alert('Failed to assign form.');
+                alert('Failed to assign form. Status code: ' + response.status);
             }
         } catch (error) {
+            console.error('Error assigning form:', error);
             alert('An error occurred while assigning the form.');
         }
     };
+    
 
     const handleOpenModal = () => {
         setShowModal(true);
@@ -74,8 +75,20 @@ const AdminAssignCreatedForm = () => {
         setShowModal(false);
     };
 
-    const handleCreatePromoter = (newPromoter) => {
-        setPromoters(prevPromoters => [...prevPromoters, newPromoter]);
+    const handleCreatePromoter = async (newPromoter) => {
+        try {
+            // Assuming the backend returns the newly created promoter object with _id
+            const response = await axios.post('http://localhost:8080/api/v1/promoter/create', newPromoter);
+            if (response.status === 200) {
+                alert('Promoter created successfully!');
+                // Fetch updated list of promoters
+                fetchPromoters();
+            } else {
+                alert('Failed to create promoter.');
+            }
+        } catch (error) {
+            alert('An error occurred while creating the promoter.');
+        }
     };
 
     return (
@@ -84,8 +97,6 @@ const AdminAssignCreatedForm = () => {
                 <PageTitle title="Assign Promoters" />
             </div>
             <div className="formDetails">
-               
-
                 {loading ? (
                     <p>Loading...</p>
                 ) : error ? (
@@ -121,12 +132,10 @@ const AdminAssignCreatedForm = () => {
                         </tbody>
                     </table>
                 )}
-                
+
                 <button className="create-promoter-btn" onClick={handleOpenModal}>
                     Create New Promoter
                 </button>
-
-             
 
                 {showModal && (
                     <CreatePromoterModal

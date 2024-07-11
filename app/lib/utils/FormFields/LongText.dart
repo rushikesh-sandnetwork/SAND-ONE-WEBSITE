@@ -2,14 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LongText extends StatelessWidget {
-  final FormFieldSetter<String>? onSaved;
+  final FormFieldSetter<String>? onChanged;
+  final String? initialValue;
 
-  LongText({Key? key, this.onSaved}) : super(key: key);
+  LongText({Key? key, this.onChanged, this.initialValue}) : super(key: key);
 
   final TextEditingController _textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+    if (initialValue != null) {
+      _textController.text = initialValue!;
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -22,8 +27,8 @@ class LongText extends StatelessWidget {
           ),
           SizedBox(height: 20),
           TextFormField(
-            onSaved: (value) {
-              onSaved!(_textController.text);
+            onFieldSubmitted: (value) {
+              onChanged!(_textController.text);
             },
             controller: _textController,
             maxLines: 10,

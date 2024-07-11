@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Appointment extends StatelessWidget {
-  final FormFieldSetter<String>? onSaved;
+  final FormFieldSetter<String>? onChanged;
+  final String? initialValue;
 
-  Appointment({Key? key, this.onSaved}) : super(key: key);
+  Appointment({Key? key, this.onChanged, this.initialValue}) : super(key: key);
 
   final _formKey = GlobalKey<FormState>();
 
@@ -15,6 +16,10 @@ class Appointment extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (initialValue != null) {
+      _dateTimeController.text = initialValue!;
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Form(
@@ -29,8 +34,7 @@ class Appointment extends StatelessWidget {
             ),
             SizedBox(height: 20),
             TextFormField(
-                    onSaved: onSaved,
-
+              onChanged: onChanged,
               controller: _dateTimeController,
               decoration: InputDecoration(
                 hintText: 'Select Date and Time',
@@ -44,7 +48,6 @@ class Appointment extends StatelessWidget {
               onTap: () async {
                 FocusScope.of(context).requestFocus(FocusNode());
                 DateTime? pickedDate = await showDatePicker(
-                  
                   context: context,
                   initialDate: DateTime.now(),
                   firstDate: DateTime(2000),
@@ -57,7 +60,6 @@ class Appointment extends StatelessWidget {
                   );
                   if (pickedTime != null) {
                     DateTime finalDateTime = DateTime(
-                      
                       pickedDate.year,
                       pickedDate.month,
                       pickedDate.day,

@@ -22,6 +22,7 @@ const DropArea = ({ onDrop }) => {
       onDrop(item);
       setDroppedItems((prevItems) => [...prevItems, item]);
       setDroppedItemNames((prevNames) => [...prevNames, item.text]);
+      console.log(droppedItemNames);
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -35,11 +36,17 @@ const DropArea = ({ onDrop }) => {
     );
   };
 
+  function arrayToFormFields(array) {
+    return array.map((item) => ({ value: item }));
+  }
+  
   const handleSubmitForm = async () => {
     try {
+      const formFieldsArray = arrayToFormFields(droppedItemNames);
       const formData = {
         campaignId,
-        formFields: droppedItemNames,
+        formFields: formFieldsArray,
+        collectionName: 'exampleCollection', // Add your collection name here
       };
 
       const response = await axios.post('http://localhost:8080/api/v1/admin/createNewForm', formData);

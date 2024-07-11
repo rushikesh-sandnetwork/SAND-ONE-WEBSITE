@@ -44,7 +44,7 @@ const OverViewTileOne = () => {
           <OverViewTileOneBox title="TOTAL CLIENTS" number={data.numberOfClients}></OverViewTileOneBox>
           <OverViewTileOneBox title="TOTAL CAMPAIGNS" number={data.numberOfCampaigns}></OverViewTileOneBox>
           <OverViewTileOneBox title="ONGOING CAMPAIGNS" number={data.numberOfCampaigns}></OverViewTileOneBox>
-          <OverViewTileOneBox title="ON HOLD CAMPAIGNS" number="0"></OverViewTileOneBox>
+          <OverViewTileOneBox title="COMPLETED CAMPAIGNS" number="0"></OverViewTileOneBox>
         </>
       )}
     </div>

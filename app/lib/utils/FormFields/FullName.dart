@@ -2,17 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FullName extends StatelessWidget {
-  final FormFieldSetter<String>? onSavedFirstName;
-  final FormFieldSetter<String>? onSavedLastName;
+  final FormFieldSetter<String>? onChangedFirstName;
+  final FormFieldSetter<String>? onChangedLastName;
+  final String? initialFirstName;
+  final String? initialLastName;
 
   FullName({
     Key? key,
-    this.onSavedFirstName,
-    this.onSavedLastName,
+    this.onChangedFirstName,
+    this.onChangedLastName,
+    this.initialFirstName,
+    this.initialLastName,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    TextEditingController firstNameController = TextEditingController();
+    TextEditingController lastNameController = TextEditingController();
+
+    if (initialFirstName != null) {
+      firstNameController.text = initialFirstName!;
+    }
+
+    if (initialLastName != null) {
+      lastNameController.text = initialLastName!;
+    }
+
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -27,7 +42,8 @@ class FullName extends StatelessWidget {
             children: [
               Expanded(
                 child: TextFormField(
-                  onSaved: onSavedFirstName,
+                  controller: firstNameController,
+                  onFieldSubmitted: onChangedFirstName,
                   decoration: InputDecoration(
                     labelText: 'First Name',
                     border: OutlineInputBorder(
@@ -40,7 +56,8 @@ class FullName extends StatelessWidget {
               SizedBox(width: 16),
               Expanded(
                 child: TextFormField(
-                  onSaved: onSavedLastName,
+                  controller: lastNameController,
+                  onFieldSubmitted: onChangedLastName,
                   decoration: InputDecoration(
                     labelText: 'Last Name',
                     border: OutlineInputBorder(

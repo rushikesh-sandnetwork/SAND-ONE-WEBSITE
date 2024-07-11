@@ -1,21 +1,23 @@
 import 'package:flutter/material.dart';
 
 class Address extends StatelessWidget {
-  final FormFieldSetter<String>? onSavedAddress;
-  final FormFieldSetter<String>? onSavedStreetAddress;
-  final FormFieldSetter<String>? onSavedStreetAddressLine2;
-  final FormFieldSetter<String>? onSavedCity;
-  final FormFieldSetter<String>? onSavedState;
-  final FormFieldSetter<String>? onSavedPincode;
+  final FormFieldSetter<String>? onChangedAddress;
+  final FormFieldSetter<String>? onChangedStreetAddress;
+  final FormFieldSetter<String>? onChangedStreetAddressLine2;
+  final FormFieldSetter<String>? onChangedCity;
+  final FormFieldSetter<String>? onChangedState;
+  final FormFieldSetter<String>? onChangedPincode;
+  final String? initialValue;
 
   Address({
     Key? key,
-    this.onSavedAddress,
-    this.onSavedStreetAddress,
-    this.onSavedStreetAddressLine2,
-    this.onSavedCity,
-    this.onSavedState,
-    this.onSavedPincode,
+    this.onChangedAddress,
+    this.onChangedStreetAddress,
+    this.onChangedStreetAddressLine2,
+    this.onChangedCity,
+    this.onChangedState,
+    this.onChangedPincode,
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -31,7 +33,8 @@ class Address extends StatelessWidget {
           ),
           SizedBox(height: 12),
           TextFormField(
-            onSaved: onSavedAddress,
+            initialValue: initialValue,
+            onChanged: onChangedAddress,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter address';
@@ -52,7 +55,8 @@ class Address extends StatelessWidget {
           ),
           SizedBox(height: 12),
           TextFormField(
-            onSaved: onSavedStreetAddress,
+            initialValue: initialValue,
+            onChanged: onChangedStreetAddress,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -66,7 +70,8 @@ class Address extends StatelessWidget {
           ),
           SizedBox(height: 12),
           TextFormField(
-            onSaved: onSavedStreetAddressLine2,
+            initialValue: initialValue,
+            onChanged: onChangedStreetAddressLine2,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -86,7 +91,8 @@ class Address extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     TextFormField(
-                      onSaved: onSavedCity,
+                      initialValue: initialValue,
+                      onChanged: onChangedCity,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -107,7 +113,8 @@ class Address extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     TextFormField(
-                      onSaved: onSavedState,
+                      initialValue: initialValue,
+                      onChanged: onChangedState,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -126,7 +133,8 @@ class Address extends StatelessWidget {
           ),
           SizedBox(height: 12),
           TextFormField(
-            onSaved: onSavedPincode,
+            initialValue: initialValue,
+            onChanged: onChangedPincode,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               border: OutlineInputBorder(
