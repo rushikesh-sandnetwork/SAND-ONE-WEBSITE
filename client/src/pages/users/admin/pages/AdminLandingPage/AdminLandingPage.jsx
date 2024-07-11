@@ -48,30 +48,15 @@ const AdminLandingPage = () => {
         {activeTab.startsWith('createNewCampaign') && (
           <AdminCreateNewCampaign clientId={tabName2} setActiveTab={setActiveTab} />
         )}
-
-        {/* working */}
         {activeTab.startsWith('campaignDetailsPage') && (
           <AdminCampaignDetailsPage campaignId={tabName3} setActiveTab={setActiveTab} />
         )}
-
         {activeTab.startsWith('view-form-details') && (
           <AdminFormDetails campaignId={tabName4} setActiveTab={setActiveTab}></AdminFormDetails>
         )}
-
-
         {activeTab.startsWith('viewFormItems') && (
           <AdminFormItems formId={tabName5} setActiveTab={setActiveTab}/>
         )}
-
-
-        {activeTab.startsWith('viewFormData') && (
-          <AdminFormViewData formId={tabName6}></AdminFormViewData>
-        )}
-
-
-
-
-
       </div>
     </div>
   );

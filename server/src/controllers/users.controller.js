@@ -3,6 +3,7 @@ const apiError = require("../utils/apiError");
 const apiResponse = require("../utils/apiResponse");
 const User = require("../models/user.model");
 const jwt = require('jsonwebtoken');
+const { json } = require("express");
 
 const generateAccessAndRefreshTokens = async (email) => {
   try {
@@ -10,7 +11,7 @@ const generateAccessAndRefreshTokens = async (email) => {
     if (!user) {
       throw new apiError(404, "User not found");
     }
-    
+
     const accessToken = user.generateAccessToken();
     const refreshToken = user.generateRefreshToken();
 
@@ -128,5 +129,26 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new apiResponse(200, {}, "User logged out"));
 });
 
+const userDetails = asyncHandler(async (res, res) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400).json(new apiError(400, "User Id not provided."));
+    }
 
-module.exports = { loginUser, registerUser, refreshAccessToken, logoutUser };
+    const fetchedUser = await User.findById({ userId });
+
+    if (!fetchedUser) {
+      return res.status(400).json(new apiError(400, "No user found with the given ID"));
+    };
+
+    return res.status(200).json(new apiResponse(200 , fetchedUser , "User with the given Id fetched."));
+
+
+  } catch (error) {
+    return res.status(400).json(new apiError(400, "Error in fetching user."));
+  }
+})
+
+
+module.exports = { loginUser, registerUser, refreshAccessToken, logoutUser , userDetails};
