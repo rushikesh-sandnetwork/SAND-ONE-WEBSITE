@@ -13,7 +13,6 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
 
   const navigate = useNavigate();
 
-
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
   };
@@ -22,7 +21,6 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
     navigate(`/admin/createNewForm/${campaignId}`);
   };
 
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
@@ -30,8 +28,16 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
     setSuccess('');
 
     try {
-      console.log(clientId);
-      const response = await axios.post('http://localhost:8080/api/v1/admin/createNewCampaign', { title, clientId });
+      const formData = new FormData();
+      formData.append('title', title);
+      formData.append('clientId', clientId);
+      formData.append('campaignPhoto', event.target.campaignPhoto.files[0]);
+
+      const response = await axios.post('http://localhost:8080/api/v1/admin/createNewCampaign', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
 
       if (response.status === 201) {
         const newCampaign = response.data.data;
@@ -61,7 +67,13 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
               onChange={handleInputChange(setTitle)}
               required
             />
-
+            <input
+              type="file"
+              name="campaignPhoto"
+              accept="image/*"
+              className="input-field"
+              required
+            />
           </div>
 
           <button type="submit" className="submit-campaign-button" disabled={loading}>
@@ -71,8 +83,6 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
         {success && <input type="button" value="Generate Form" className='submit-campaign-button' onClick={handleNextClick} />}
-
-      
       </div>
     </div>
   );

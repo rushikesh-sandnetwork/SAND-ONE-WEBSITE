@@ -22,16 +22,16 @@
     height: 100px;
     width: 100%;
     object-fit: contain;
-    border-radius: 16px; /* Subtle rounding for a modern look */
+    border-radius: 16px;
     margin-bottom: 20px;
-    transition: transform 0.3s ease; /* Smooth transform on hover */
+    transition: transform 0.3s ease; 
 }
 
 .viewClientsBox-container img{
     border-radius: 20px;
 }
 .viewClientsBox-container:hover .clientImage {
-    transform: scale(1.05); /* Slight zoom on hover */
+    transform: scale(1.05); 
 }
 
 .viewClientsBox-container h3 {

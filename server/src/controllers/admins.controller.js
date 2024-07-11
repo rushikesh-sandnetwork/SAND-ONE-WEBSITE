@@ -179,7 +179,19 @@ const createNewCampaign = asyncHandler(async (req, res) => {
             return res.status(400).json(new apiError(400, "Title and Client ID are required"));
         }
 
-        const newCampaign = await campaign.create({ title, clientId });
+        
+        const campaignPicFinalPath = req.files?.campaignPhoto?.[0]?.path;
+
+        if (!campaignPicFinalPath) {
+            throw new apiError(400, "campaign Logo/Pic is required");
+        };
+
+        const campaignPicFinal = await uploadOnCloudinary(campaignPicFinalPath);
+        if (!campaignPicFinal) {
+            throw new apiError(400, "Failed to upload campaign Photo");
+        };
+
+        const newCampaign = await campaign.create({ title, clientId, campaignLogo: campaignPicFinal.url });
 
         res.status(201).json(new apiResponse(201, newCampaign, "New campaign created successfully"));
     } catch (error) {

@@ -6,10 +6,10 @@ const campaignSchema = new Schema({
         type:String,
         required:true,
     },
-    // campaignLogo:{
-    //     type:String,
-    //     required:true
-    // },
+    campaignLogo:{
+        type:String,
+        required:true
+    },
     clientId:{
         type:Schema.Types.ObjectId,
         ref:"Client"

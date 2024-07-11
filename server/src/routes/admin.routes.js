@@ -29,7 +29,14 @@ router.route("/fetchCampaignDetails").post(adminController.fetchCampaignDetails)
 
 
 // create new campaign
-router.route("/createNewCampaign").post(adminController.createNewCampaign);
+router.route("/createNewCampaign").post(
+    upload.fields([
+        {
+            name:"campaignPhoto",
+            maxCount:1
+        }
+    ]),
+    adminController.createNewCampaign);
 
 
 // create new form

@@ -45,7 +45,7 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
 
       <div className="allCampaignsContainer">
         {campaigns.map(campaign => (
-          <ViewCampaignsBox key={campaign._id} campaign={campaign} campaignId={campaign._id} setActiveTab= {setActiveTab}/>
+          <ViewCampaignsBox key={campaign._id} url={campaign.campaignLogo} campaign={campaign} campaignId={campaign._id} setActiveTab= {setActiveTab}/>
         ))}
       </div>
     </div>
