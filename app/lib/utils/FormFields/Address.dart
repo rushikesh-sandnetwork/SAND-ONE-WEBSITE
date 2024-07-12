@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class Address extends StatelessWidget {
+class Address extends StatefulWidget {
   final FormFieldSetter<String>? onChangedAddress;
   final FormFieldSetter<String>? onChangedStreetAddress;
   final FormFieldSetter<String>? onChangedStreetAddressLine2;
@@ -21,6 +22,41 @@ class Address extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _AddressState createState() => _AddressState();
+}
+
+class _AddressState extends State<Address> {
+  late TextEditingController addressController;
+  late TextEditingController streetAddressController;
+  late TextEditingController streetAddressLine2Controller;
+  late TextEditingController cityController;
+  late TextEditingController stateController;
+  late TextEditingController pincodeController;
+
+  @override
+  void initState() {
+    super.initState();
+    addressController = TextEditingController(text: widget.initialValue);
+    streetAddressController = TextEditingController(text: widget.initialValue);
+    streetAddressLine2Controller =
+        TextEditingController(text: widget.initialValue);
+    cityController = TextEditingController(text: widget.initialValue);
+    stateController = TextEditingController(text: widget.initialValue);
+    pincodeController = TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  void dispose() {
+    addressController.dispose();
+    streetAddressController.dispose();
+    streetAddressLine2Controller.dispose();
+    cityController.dispose();
+    stateController.dispose();
+    pincodeController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16.0),
@@ -29,12 +65,13 @@ class Address extends StatelessWidget {
         children: [
           Text(
             'Address',
-            style: Theme.of(context).textTheme.subtitle1,
+            style:
+                GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           SizedBox(height: 12),
           TextFormField(
-            initialValue: initialValue,
-            onChanged: onChangedAddress,
+            controller: addressController,
+            onChanged: widget.onChangedAddress,
             validator: (value) {
               if (value == null || value.isEmpty) {
                 return 'Please enter address';
@@ -55,8 +92,8 @@ class Address extends StatelessWidget {
           ),
           SizedBox(height: 12),
           TextFormField(
-            initialValue: initialValue,
-            onChanged: onChangedStreetAddress,
+            controller: streetAddressController,
+            onChanged: widget.onChangedStreetAddress,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -70,8 +107,8 @@ class Address extends StatelessWidget {
           ),
           SizedBox(height: 12),
           TextFormField(
-            initialValue: initialValue,
-            onChanged: onChangedStreetAddressLine2,
+            controller: streetAddressLine2Controller,
+            onChanged: widget.onChangedStreetAddressLine2,
             decoration: InputDecoration(
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -91,8 +128,8 @@ class Address extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     TextFormField(
-                      initialValue: initialValue,
-                      onChanged: onChangedCity,
+                      controller: cityController,
+                      onChanged: widget.onChangedCity,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -113,8 +150,8 @@ class Address extends StatelessWidget {
                     ),
                     SizedBox(height: 12),
                     TextFormField(
-                      initialValue: initialValue,
-                      onChanged: onChangedState,
+                      controller: stateController,
+                      onChanged: widget.onChangedState,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -133,8 +170,8 @@ class Address extends StatelessWidget {
           ),
           SizedBox(height: 12),
           TextFormField(
-            initialValue: initialValue,
-            onChanged: onChangedPincode,
+            controller: pincodeController,
+            onChanged: widget.onChangedPincode,
             keyboardType: TextInputType.number,
             decoration: InputDecoration(
               border: OutlineInputBorder(

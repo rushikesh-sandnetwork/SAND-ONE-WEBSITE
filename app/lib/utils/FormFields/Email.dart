@@ -1,20 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class Email extends StatelessWidget {
+class Email extends StatefulWidget {
   final FormFieldSetter<String>? onChanged;
   final String? initialValue;
 
   Email({Key? key, this.onChanged, this.initialValue}) : super(key: key);
 
-  final TextEditingController _emailController = TextEditingController();
+  @override
+  _EmailState createState() => _EmailState();
+}
+
+class _EmailState extends State<Email> {
+  late TextEditingController _emailController;
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController = TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (initialValue != null) {
-      _emailController.text = initialValue!;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -27,7 +40,7 @@ class Email extends StatelessWidget {
           ),
           SizedBox(height: 20),
           TextFormField(
-            onFieldSubmitted: onChanged,
+            onChanged: widget.onChanged,
             controller: _emailController,
             decoration: InputDecoration(
               hintText: 'Enter your email here:',

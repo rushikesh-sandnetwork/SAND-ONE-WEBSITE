@@ -11,7 +11,7 @@ import '../../utils/FormFields/Number.dart';
 
 class FormService {
   static const String baseUrl =
-      'http://192.168.31.139:8080/api/v1/promoter/fetchFormField';
+      'http://192.168.33.65:8080/api/v1/promoter/fetchFormField';
 
   static Future<FormDetails> fetchFormDetails(String formId) async {
     try {
@@ -66,7 +66,7 @@ class FormService {
   static Future<void> submitFormData(
       String collectionName, Map<String, dynamic> data) async {
     final url = Uri.parse(
-        'http://192.168.31.139:8080/api/v1/promoter/fillFormData/$collectionName');
+        'http://192.168.33.65:8080/api/v1/promoter/fillFormData/$collectionName');
 
     try {
       final response = await http.post(

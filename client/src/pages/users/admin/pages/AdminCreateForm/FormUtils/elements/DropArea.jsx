@@ -46,7 +46,6 @@ const DropArea = ({ onDrop }) => {
       const formData = {
         campaignId,
         formFields: formFieldsArray,
-        collectionName: 'exampleCollection', // Add your collection name here
       };
 
       const response = await axios.post('http://localhost:8080/api/v1/admin/createNewForm', formData);

@@ -129,7 +129,7 @@ const logoutUser = asyncHandler(async (req, res) => {
     .json(new apiResponse(200, {}, "User logged out"));
 });
 
-const userDetails = asyncHandler(async (res, res) => {
+const userDetails = asyncHandler(async (req, res) => {
   try {
     const { userId } = req.body;
     if (!userId) {

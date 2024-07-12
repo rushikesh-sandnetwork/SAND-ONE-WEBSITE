@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class FullName extends StatelessWidget {
+class FullName extends StatefulWidget {
   final FormFieldSetter<String>? onChangedFirstName;
   final FormFieldSetter<String>? onChangedLastName;
   final String? initialFirstName;
@@ -16,18 +16,29 @@ class FullName extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  _FullNameState createState() => _FullNameState();
+}
+
+class _FullNameState extends State<FullName> {
+  late TextEditingController firstNameController;
+  late TextEditingController lastNameController;
+
+  @override
+  void initState() {
+    super.initState();
+    firstNameController = TextEditingController(text: widget.initialFirstName);
+    lastNameController = TextEditingController(text: widget.initialLastName);
+  }
+
+  @override
+  void dispose() {
+    firstNameController.dispose();
+    lastNameController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    TextEditingController firstNameController = TextEditingController();
-    TextEditingController lastNameController = TextEditingController();
-
-    if (initialFirstName != null) {
-      firstNameController.text = initialFirstName!;
-    }
-
-    if (initialLastName != null) {
-      lastNameController.text = initialLastName!;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -35,7 +46,8 @@ class FullName extends StatelessWidget {
         children: [
           Text(
             'Full Name',
-            style: Theme.of(context).textTheme.subtitle1,
+            style:
+                GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 20),
           ),
           SizedBox(height: 20),
           Row(
@@ -43,7 +55,7 @@ class FullName extends StatelessWidget {
               Expanded(
                 child: TextFormField(
                   controller: firstNameController,
-                  onFieldSubmitted: onChangedFirstName,
+                  onChanged: widget.onChangedFirstName,
                   decoration: InputDecoration(
                     labelText: 'First Name',
                     border: OutlineInputBorder(
@@ -57,7 +69,7 @@ class FullName extends StatelessWidget {
               Expanded(
                 child: TextFormField(
                   controller: lastNameController,
-                  onFieldSubmitted: onChangedLastName,
+                  onChanged: widget.onChangedLastName,
                   decoration: InputDecoration(
                     labelText: 'Last Name',
                     border: OutlineInputBorder(
