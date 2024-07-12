@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 import '../../utils/FormFields/Address.dart';
@@ -11,7 +12,7 @@ import '../../utils/FormFields/Number.dart';
 
 class FormService {
   static const String baseUrl =
-      'http://192.168.33.65:8080/api/v1/promoter/fetchFormField';
+      'http://192.168.31.139:8080/api/v1/promoter/fetchFormField';
 
   static Future<FormDetails> fetchFormDetails(String formId) async {
     try {
@@ -66,7 +67,7 @@ class FormService {
   static Future<void> submitFormData(
       String collectionName, Map<String, dynamic> data) async {
     final url = Uri.parse(
-        'http://192.168.33.65:8080/api/v1/promoter/fillFormData/$collectionName');
+        'http://192.168.31.139:8080/api/v1/promoter/fillFormData/$collectionName');
 
     try {
       final response = await http.post(
@@ -249,40 +250,99 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: Text('Form Details'),
+        automaticallyImplyLeading: false, // This removes the leading icon
+        title: Text(
+          'Form Details',
+          style: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              letterSpacing: 1.5),
+        ),
+        titleSpacing: 2,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
+        elevation: 3,
+        shadowColor: Colors.grey.shade50,
+        scrolledUnderElevation: 4,
+        surfaceTintColor: Colors.grey.shade50,
+        centerTitle: true,
+        backgroundColor: Color.fromRGBO(21, 25, 24, 1),
       ),
-      body: FutureBuilder<FormDetails>(
-        future: _formDetailsFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text('Error: ${snapshot.error}'));
-          } else if (!snapshot.hasData || snapshot.data == null) {
-            return Center(child: Text('No data available'));
-          } else {
-            return Form(
-              key: _formKey,
-              child: ListView.builder(
-                itemCount: snapshot.data!.formFields.length + 1,
-                itemBuilder: (context, index) {
-                  if (index == snapshot.data!.formFields.length) {
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 16.0),
-                      child: ElevatedButton(
-                        onPressed: _submitForm,
-                        child: Text('Submit'),
+      body: Container(
+        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Colors.white,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.1), // Shadow color
+              spreadRadius: 5, // Spread radius
+              blurRadius: 7, // Blur radius
+              offset: Offset(0, 3), // Offset in x and y directions
+            ),
+          ],
+        ),
+        child: FutureBuilder<FormDetails>(
+          future: _formDetailsFuture,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(child: Text('Error: ${snapshot.error}'));
+            } else if (!snapshot.hasData || snapshot.data == null) {
+              return Center(child: Text('No data available'));
+            } else {
+              return SingleChildScrollView(
+                padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ...snapshot.data!.formFields.map((field) {
+                            return Container(
+                              child: _buildFormField(field),
+                            );
+                          }).toList(),
+                          SizedBox(height: 20),
+                          Container(
+                            margin: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 20),
+                            child: ElevatedButton(
+                              style: ButtonStyle(
+                                padding: MaterialStateProperty.all<EdgeInsets>(
+                                  EdgeInsets.all(
+                                      16.0), // Adjust padding as needed
+                                ),
+                                backgroundColor: MaterialStateColor.resolveWith(
+                                  (states) => Color.fromRGBO(21, 25, 24, 1),
+                                ),
+                              ),
+                              onPressed: _submitForm,
+                              child: Text(
+                                'Submit',
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    letterSpacing: 1),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    );
-                  } else {
-                    return _buildFormField(snapshot.data!.formFields[index]);
-                  }
-                },
-              ),
-            );
-          }
-        },
+                    ),
+                  ],
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }

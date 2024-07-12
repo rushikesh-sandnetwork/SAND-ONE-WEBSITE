@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> loginUser(String email, String password) async {
     try {
       var response = await http.post(
-        Uri.parse('http://192.168.33.65:8080/api/v1/promoter/loginPromoter'),
+        Uri.parse('http://192.168.31.139:8080/api/v1/promoter/loginPromoter'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -90,7 +90,7 @@ class _LoginPageState extends State<LoginPage> {
                   SizedBox(height: 200),
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: Color.fromRGBO(21, 25, 24, 1),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(

@@ -15,7 +15,7 @@ class _FormTabsState extends State<FormTabs> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 12),
+      margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.grey.shade900,
@@ -54,7 +54,10 @@ class _FormTabsState extends State<FormTabs> {
             ],
           ),
           SizedBox(width: 10),
-          Icon(Icons.arrow_forward_ios_rounded),
+          Icon(
+            Icons.arrow_forward_ios_rounded,
+            color: Colors.white,
+          ),
         ],
       ),
     );

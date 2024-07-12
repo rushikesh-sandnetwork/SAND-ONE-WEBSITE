@@ -1,12 +1,13 @@
 import 'dart:convert';
 import 'package:app/screens/form/FormDetailsPage.dart';
-import 'package:app/utils/FormButtons/FormButton.dart';
+import 'package:app/utils/FormButtons/FormTabs.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
 class PromoterService {
   static const String baseUrl =
-      'http://192.168.33.65:8080/api/v1/promoter/fetchPromoterDetails'; // Replace with your actual API URL
+      'http://192.168.31.139:8080/api/v1/promoter/fetchPromoterDetails'; // Replace with your actual API URL
 
   static Future<PromoterDetails> fetchPromoterDetails(String promoterId) async {
     final url = Uri.parse(baseUrl);
@@ -64,10 +65,18 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('View your Forms'),
+        automaticallyImplyLeading: false, // This removes the leading icon
+        title: Text(
+          'View your Forms',
+          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+        ),
+        surfaceTintColor: Colors.white,
+        centerTitle: true,
+        backgroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      body: Container(
+        decoration: BoxDecoration(color: Colors.white),
+        padding: const EdgeInsets.all(10.0),
         child: Column(
           children: <Widget>[
             FutureBuilder<PromoterDetails>(
