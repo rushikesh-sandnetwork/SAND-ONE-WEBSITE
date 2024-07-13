@@ -1,5 +1,7 @@
+// DropArea.js
 import React, { useState } from 'react';
 import { useDrop } from 'react-dnd';
+import { useSelector } from 'react-redux';
 import DraggableItem from './DraggableItem';
 import './DropArea.css';
 import axios from 'axios';
@@ -10,11 +12,13 @@ const DropArea = ({ onDrop }) => {
   const [droppedItems, setDroppedItems] = useState([]);
   const [droppedItemNames, setDroppedItemNames] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
   const [formId, setFormId] = useState('');
 
-  const { campaignId } = useParams(); 
-  const navigate = useNavigate(); // Initialize navigate
+  const { campaignId } = useParams();
+  const navigate = useNavigate();
+
+  const fullNameData = useSelector((state) => state.fullName.fullNameData);
 
   const [{ isOver }, dropRef] = useDrop(() => ({
     accept: 'item',
@@ -37,9 +41,9 @@ const DropArea = ({ onDrop }) => {
   };
 
   function arrayToFormFields(array) {
-    return array.map((item) => ({ value: item }));
+    return array.map((item, index) => ({ id: index + 1, value: item }));
   }
-  
+
   const handleSubmitForm = async () => {
     try {
       const formFieldsArray = arrayToFormFields(droppedItemNames);
@@ -47,6 +51,8 @@ const DropArea = ({ onDrop }) => {
         campaignId,
         formFields: formFieldsArray,
       };
+
+      console.log('Full Name JSON from store:', JSON.stringify(fullNameData, null, 2));
 
       const response = await axios.post('http://localhost:8080/api/v1/admin/createNewForm', formData);
       if (response.status === 201) {
