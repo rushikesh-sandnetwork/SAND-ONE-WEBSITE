@@ -3,27 +3,28 @@ import React, { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import './FullName.css';
-import { setFullNameData } from '../actions/fullNameActions'; // Updated action import
+import { setFullNameData } from '../actions/fullNameActions';
+import { v4 as uuidv4 } from 'uuid';
 
-const FullName = ({ fullNameData, setFullNameData }) => {
+const FullName = ({ fullNameDataList, setFullNameData }) => {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      // Dispatch action to save fullName data in JSON format to Redux store
-      setFullNameData(event.target.value, 'Full Name'); // Pass the component name
+      const id = uuidv4(); // Generate a unique ID
+      setFullNameData(id, event.target.value, 'Full Name'); // Dispatch action with ID
     }
   };
 
   const [{ isDragging }, dragRef] = useDrag({
     type: 'item',
-    item: { type: 'Full Name', text: fullNameData.title || 'Full Name' },
+    item: { id: uuidv4(), type: 'Full Name', text: 'Full Name' },
     collect: (monitor) => ({
       isDragging: monitor.isDragging(),
     }),
   });
 
   useEffect(() => {
-    console.log('Full Name JSON:', JSON.stringify(fullNameData, null, 2));
-  }, [fullNameData]);
+    console.log('Full Name Data List:', fullNameDataList);
+  }, [fullNameDataList]);
 
   return (
     <div className="fullName-container" ref={dragRef}>
@@ -49,7 +50,7 @@ const FullName = ({ fullNameData, setFullNameData }) => {
 };
 
 const mapStateToProps = (state) => ({
-  fullNameData: state.fullName.fullNameData.length > 0 ? state.fullName.fullNameData[state.fullName.fullNameData.length - 1] : {},
+  fullNameDataList: state.fullName.fullNameDataList,
 });
 
 const mapDispatchToProps = {
