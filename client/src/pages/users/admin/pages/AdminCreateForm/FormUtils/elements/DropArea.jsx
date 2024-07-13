@@ -1,5 +1,4 @@
-// DropArea.js
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 import { useSelector } from 'react-redux';
 import DraggableItem from './DraggableItem';
@@ -18,7 +17,7 @@ const DropArea = ({ onDrop }) => {
   const { campaignId } = useParams();
   const navigate = useNavigate();
 
-  const fullNameData = useSelector((state) => state.fullName.fullNameData);
+  const fullNameDataList = useSelector((state) => state.fullName.fullNameDataList);
 
   const [{ isOver }, dropRef] = useDrop(() => ({
     accept: 'item',
@@ -26,7 +25,6 @@ const DropArea = ({ onDrop }) => {
       onDrop(item);
       setDroppedItems((prevItems) => [...prevItems, item]);
       setDroppedItemNames((prevNames) => [...prevNames, item.text]);
-      console.log(droppedItemNames);
     },
     collect: (monitor) => ({
       isOver: monitor.isOver(),
@@ -52,7 +50,7 @@ const DropArea = ({ onDrop }) => {
         formFields: formFieldsArray,
       };
 
-      console.log('Full Name JSON from store:', JSON.stringify(fullNameData, null, 2));
+      console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
 
       const response = await axios.post('http://localhost:8080/api/v1/admin/createNewForm', formData);
       if (response.status === 201) {
