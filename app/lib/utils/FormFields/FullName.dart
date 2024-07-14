@@ -6,6 +6,7 @@ class FullName extends StatefulWidget {
   final FormFieldSetter<String>? onChangedLastName;
   final String? initialFirstName;
   final String? initialLastName;
+  final String fullNameTitle;
 
   FullName({
     Key? key,
@@ -13,6 +14,7 @@ class FullName extends StatefulWidget {
     this.onChangedLastName,
     this.initialFirstName,
     this.initialLastName,
+    required this.fullNameTitle,
   }) : super(key: key);
 
   @override
@@ -45,7 +47,7 @@ class _FullNameState extends State<FullName> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Full Name',
+            widget.fullNameTitle,
             style:
                 GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 20),
           ),

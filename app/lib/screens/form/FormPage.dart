@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 
 class PromoterService {
   static const String baseUrl =
-      'http://192.168.31.139:8080/api/v1/promoter/fetchPromoterDetails'; // Replace with your actual API URL
+      'http://192.168.212.65:8080/api/v1/promoter/fetchPromoterDetails'; // Replace with your actual API URL
 
   static Future<PromoterDetails> fetchPromoterDetails(String promoterId) async {
     final url = Uri.parse(baseUrl);

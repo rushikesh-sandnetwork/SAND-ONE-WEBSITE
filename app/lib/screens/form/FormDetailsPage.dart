@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-
 import '../../utils/FormFields/Address.dart';
 import '../../utils/FormFields/Appointment.dart';
 import '../../utils/FormFields/Email.dart';
@@ -12,7 +11,7 @@ import '../../utils/FormFields/Number.dart';
 
 class FormService {
   static const String baseUrl =
-      'http://192.168.31.139:8080/api/v1/promoter/fetchFormField';
+      'http://192.168.212.65:8080/api/v1/promoter/fetchFormField';
 
   static Future<FormDetails> fetchFormDetails(String formId) async {
     try {
@@ -67,7 +66,7 @@ class FormService {
   static Future<void> submitFormData(
       String collectionName, Map<String, dynamic> data) async {
     final url = Uri.parse(
-        'http://192.168.31.139:8080/api/v1/promoter/fillFormData/$collectionName');
+        'http://192.168.212.65:8080/api/v1/promoter/fillFormData/$collectionName');
 
     try {
       final response = await http.post(
@@ -102,10 +101,11 @@ class FormDetails {
 
   factory FormDetails.fromJson(Map<String, dynamic> json) {
     List<Map<String, dynamic>> fields =
-        json['formFields'].map<Map<String, dynamic>>((field) {
+        (json['formFields'] as List).map((field) {
       return {
-        'key': field['value'],
-        '_id': field['_id'],
+        'type': field['type'],
+        'title': field['title'],
+        'uniqueId': field['uniqueId'],
       };
     }).toList();
 
@@ -137,7 +137,8 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
   }
 
   Widget _buildFormField(Map<String, dynamic> field) {
-    String fieldType = field['key'] ?? '';
+    String fieldType = field['type'] ?? '';
+    String fieldTitle = field['title'] ?? '';
     switch (fieldType) {
       case 'Address':
         return Address(
@@ -184,27 +185,29 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
         );
       case 'Email':
         return Email(
-          initialValue: _formData['email'],
+          initialValue: _formData[fieldTitle],
           onChanged: (value) {
             setState(() {
-              _formData['email'] = value;
+              _formData[fieldTitle] = value;
             });
           },
+          emailTitle: fieldTitle,
         );
       case 'Full Name':
         return FullName(
-          initialFirstName: _formData['firstName'],
-          initialLastName: _formData['lastName'],
+          initialFirstName: _formData[fieldTitle + " " + "1"],
+          initialLastName: _formData[fieldTitle + " " + '2'],
           onChangedFirstName: (value) {
             setState(() {
-              _formData['firstName'] = value;
+              _formData[fieldTitle + " " + "1"] = value;
             });
           },
           onChangedLastName: (value) {
             setState(() {
-              _formData['lastName'] = value;
+              _formData[fieldTitle + " " + '2'] = value;
             });
           },
+          fullNameTitle: fieldTitle,
         );
       case 'LongText':
         return LongText(

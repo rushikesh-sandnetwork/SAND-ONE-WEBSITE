@@ -3,11 +3,18 @@ const { Schema } = mongoose;
 
 // Define a schema for the form field
 const FormFieldItemSchema = new Schema({
-    value: {
+    uniqueId: {
         type: String,
         required: true,
     },
-
+    title: {
+        type: String,
+        required: true,
+    },
+    type: {
+        type: String,
+        required: true,
+    },
 });
 
 // Define the main schema

@@ -4,8 +4,10 @@ import 'package:google_fonts/google_fonts.dart';
 class Email extends StatefulWidget {
   final FormFieldSetter<String>? onChanged;
   final String? initialValue;
+  final String emailTitle;
 
-  Email({Key? key, this.onChanged, this.initialValue}) : super(key: key);
+  Email({Key? key, this.onChanged, this.initialValue, required this.emailTitle})
+      : super(key: key);
 
   @override
   _EmailState createState() => _EmailState();
@@ -34,7 +36,7 @@ class _EmailState extends State<Email> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Email",
+            widget.emailTitle,
             style:
                 GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 20),
           ),

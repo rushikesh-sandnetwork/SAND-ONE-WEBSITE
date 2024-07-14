@@ -47,7 +47,7 @@ const DropArea = ({ onDrop }) => {
       const formFieldsArray = arrayToFormFields(droppedItemNames);
       const formData = {
         campaignId,
-        formFields: formFieldsArray,
+        formFields: fullNameDataList,
       };
 
       console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
