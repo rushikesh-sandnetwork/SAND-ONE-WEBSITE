@@ -1,27 +1,28 @@
-.email-container{
+/* Email.css */
+.email-container {
     display: flex;
     flex-direction: column;
     padding-left: 10px;
     background-color: transparent;
-}
-
-.email-container input{
+  }
+  
+  .email-container input {
     font-family: "Poppins", sans-serif;
     letter-spacing: 1px;
     outline: none;
     background-color: transparent;
-}
-
-.emailTitle{
+  }
+  
+  .email-title {
     font-size: 20px;
     font-weight: bold;
     border: none;
-   
-}
-
-.emailInput{
+  }
+  
+  .email-input {
     margin-top: 10px;
     border: 1px solid grey;
-    padding:8px;
+    padding: 8px;
     border-radius: 8px;
-}
+  }
+  

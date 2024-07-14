@@ -10,7 +10,7 @@ const FullName = ({ fullNameDataList, setFullNameData }) => {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
       const id = uuidv4(); // Generate a unique ID
-      setFullNameData(id, event.target.value, 'Full Name'); // Dispatch action with ID
+      setFullNameData(id, event.target.value, 'Full Name');
     }
   };
 
