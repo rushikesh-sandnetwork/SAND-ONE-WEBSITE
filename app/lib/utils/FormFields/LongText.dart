@@ -1,18 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class LongText extends StatelessWidget {
+class LongText extends StatefulWidget {
   final FormFieldSetter<String>? onChanged;
   final String? initialValue;
+  final String longTextTitle;
 
-  LongText({Key? key, this.onChanged, this.initialValue}) : super(key: key);
+  LongText(
+      {Key? key,
+      this.onChanged,
+      this.initialValue,
+      required this.longTextTitle})
+      : super(key: key);
 
+  @override
+  State<LongText> createState() => _LongTextState();
+}
+
+class _LongTextState extends State<LongText> {
   final TextEditingController _textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    if (initialValue != null) {
-      _textController.text = initialValue!;
+    if (widget.initialValue != null) {
+      _textController.text = widget.initialValue!;
     }
 
     return Padding(
@@ -21,17 +32,17 @@ class LongText extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Long Text",
+            widget.longTextTitle,
             style:
                 GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 20),
           TextFormField(
             onFieldSubmitted: (value) {
-              onChanged!(_textController.text);
+              widget.onChanged!(_textController.text);
             },
             controller: _textController,
-            maxLines: 10,
+            maxLines: 1,
             decoration: InputDecoration(
               hintText: 'Enter your long text here...',
               border: OutlineInputBorder(

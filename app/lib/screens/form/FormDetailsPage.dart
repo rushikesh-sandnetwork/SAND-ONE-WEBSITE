@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:app/utils/FormFields/Image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -8,6 +9,8 @@ import '../../utils/FormFields/Email.dart';
 import '../../utils/FormFields/FullName.dart';
 import '../../utils/FormFields/LongText.dart';
 import '../../utils/FormFields/Number.dart';
+
+import 'package:intl/intl.dart';
 
 class FormService {
   static const String baseUrl =
@@ -68,11 +71,20 @@ class FormService {
     final url = Uri.parse(
         'http://192.168.212.65:8080/api/v1/promoter/fillFormData/$collectionName');
 
+    // Convert DateTime objects to a more human-readable string format
+    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
+    Map<String, dynamic> convertedData = data.map((key, value) {
+      if (value is DateTime) {
+        return MapEntry(key, formatter.format(value));
+      }
+      return MapEntry(key, value);
+    });
+
     try {
       final response = await http.post(
         url,
         headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(data),
+        body: jsonEncode(convertedData),
       );
 
       if (response.statusCode == 200) {
@@ -146,7 +158,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
           initialValue: _formData["$fieldTitle Address"],
           onChangedAddress: (value) {
             setState(() {
-              _formData['$fieldTitle Address'] = value;
+              _formData['$fieldTitle Office/Building Name'] = value;
             });
           },
           onChangedStreetAddress: (value) {
@@ -175,12 +187,14 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             });
           },
         );
-      case 'Appointment':
+      case 'Date Picker':
         return Appointment(
-          initialValue: _formData['appointment'],
+          appointmentTitle: fieldTitle,
+          initialValue: _formData[fieldTitle],
           onChanged: (value) {
+            print("Appointment value: $value");
             setState(() {
-              _formData['appointment'] = value;
+              _formData[fieldTitle] = value;
             });
           },
         );
@@ -210,12 +224,13 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
           },
           fullNameTitle: fieldTitle,
         );
-      case 'LongText':
+      case 'Short Text':
         return LongText(
-          initialValue: _formData['longText'],
+          longTextTitle: fieldTitle,
+          initialValue: _formData[fieldTitle],
           onChanged: (value) {
             setState(() {
-              _formData['longText'] = value;
+              _formData[fieldTitle] = value;
             });
           },
         );
@@ -228,6 +243,8 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             });
           },
         );
+      case 'Image':
+        return ImagePickerWidget();
       default:
         return Container(); // or a placeholder widget
     }
@@ -237,6 +254,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       try {
+        print(_formData);
         String collectionName =
             await FormService.fetchCollectionName(widget.formId);
         await FormService.submitFormData(collectionName, _formData);
