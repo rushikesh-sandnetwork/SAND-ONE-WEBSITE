@@ -19,7 +19,7 @@ class _FormTabsState extends State<FormTabs> {
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Colors.grey.shade900,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
             color: Colors.grey.shade400,

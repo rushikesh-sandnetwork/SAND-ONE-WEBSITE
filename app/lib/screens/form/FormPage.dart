@@ -64,18 +64,40 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
         automaticallyImplyLeading: false, // This removes the leading icon
         title: Text(
-          'View your Forms',
-          style: GoogleFonts.poppins(fontWeight: FontWeight.bold),
+          'View Your Forms',
+          style: GoogleFonts.poppins(
+              fontWeight: FontWeight.bold,
+              color: Colors.white,
+              letterSpacing: 1.5),
         ),
-        surfaceTintColor: Colors.white,
+        titleSpacing: 2,
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
+        elevation: 3,
+        shadowColor: Colors.grey.shade50,
+        scrolledUnderElevation: 4,
+        surfaceTintColor: Colors.grey.shade50,
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Color.fromRGBO(21, 25, 24, 1),
       ),
       body: Container(
-        decoration: BoxDecoration(color: Colors.white),
+        margin: EdgeInsets.symmetric(horizontal: 10, vertical: 16),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.2), // Shadow color
+              spreadRadius: 5, // Spread radius
+              blurRadius: 7, // Blur radius
+              offset: Offset(0, 3), // Offset in x and y directions
+            ),
+          ],
+        ),
         padding: const EdgeInsets.all(10.0),
         child: Column(
           children: <Widget>[
