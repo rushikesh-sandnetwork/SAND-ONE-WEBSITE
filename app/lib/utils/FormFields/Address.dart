@@ -9,6 +9,7 @@ class Address extends StatefulWidget {
   final FormFieldSetter<String>? onChangedState;
   final FormFieldSetter<String>? onChangedPincode;
   final String? initialValue;
+  final String addressTitle;
 
   Address({
     Key? key,
@@ -19,6 +20,7 @@ class Address extends StatefulWidget {
     this.onChangedState,
     this.onChangedPincode,
     this.initialValue,
+    required this.addressTitle,
   }) : super(key: key);
 
   @override
@@ -64,7 +66,7 @@ class _AddressState extends State<Address> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Address',
+            widget.addressTitle,
             style:
                 GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 20),
           ),

@@ -142,35 +142,36 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     switch (fieldType) {
       case 'Address':
         return Address(
-          initialValue: _formData['address'],
+          addressTitle: fieldTitle,
+          initialValue: _formData["$fieldTitle Address"],
           onChangedAddress: (value) {
             setState(() {
-              _formData['address'] = value;
+              _formData['$fieldTitle Address'] = value;
             });
           },
           onChangedStreetAddress: (value) {
             setState(() {
-              _formData['streetAddress'] = value;
+              _formData['$fieldTitle Street Address'] = value;
             });
           },
           onChangedStreetAddressLine2: (value) {
             setState(() {
-              _formData['streetAddressLine2'] = value;
+              _formData['$fieldTitle Street Address Line 2'] = value;
             });
           },
           onChangedCity: (value) {
             setState(() {
-              _formData['city'] = value;
+              _formData["$fieldTitle City"] = value;
             });
           },
           onChangedState: (value) {
             setState(() {
-              _formData['state'] = value;
+              _formData['$fieldTitle State'] = value;
             });
           },
           onChangedPincode: (value) {
             setState(() {
-              _formData['pincode'] = value;
+              _formData['$fieldTitle Pincode'] = value;
             });
           },
         );
@@ -195,11 +196,11 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
         );
       case 'Full Name':
         return FullName(
-          initialFirstName: _formData[fieldTitle + " " + "1"],
+          initialFirstName: _formData["$fieldTitle 1"],
           initialLastName: _formData[fieldTitle + " " + '2'],
           onChangedFirstName: (value) {
             setState(() {
-              _formData[fieldTitle + " " + "1"] = value;
+              _formData["$fieldTitle 1"] = value;
             });
           },
           onChangedLastName: (value) {

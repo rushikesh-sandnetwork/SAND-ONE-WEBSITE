@@ -109,18 +109,22 @@ const AdminFormViewData = () => {
                     <p>{error}</p>
                 ) : (
                     <React.Fragment>
-                        <table>
-                            <thead>
-                                <tr>
-                                    {renderTableHeaders()}
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {renderTableRows()}
-                            </tbody>
-                        </table>
-                        <button onClick={exportToExcel} className="refresh-button">Export to Excel</button>
-                        <button onClick={fetchData} className="refresh-button">Refresh</button>
+                        <div className="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        {renderTableHeaders()}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {renderTableRows()}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className="buttons">
+                            <button onClick={exportToExcel} className="refresh-button">Export to Excel</button>
+                            <button onClick={fetchData} className="refresh-button">Refresh</button>
+                        </div>
                     </React.Fragment>
                 )}
             </div>

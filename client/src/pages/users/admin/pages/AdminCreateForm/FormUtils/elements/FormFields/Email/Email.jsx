@@ -4,7 +4,6 @@ import { connect } from 'react-redux';
 import { useDrag } from 'react-dnd';
 import './Email.css';
 import { setFullNameData } from '../actions/fullNameActions';
-
 import { v4 as uuidv4 } from 'uuid';
 
 const Email = ({ fullNameDataList, setFullNameData  }) => {
