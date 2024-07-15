@@ -6,7 +6,6 @@ const upload = require("../middlewares/multer.middleware");
 router.route('/fetchFormFilledData').post(promoterController.fetchFormFilledData);
 router.route('/loginPromoter').post(promoterController.promoterLogin);
 router.post('/fillFormData/:collectionName', upload.any(), promoterController.fillFormData);
-
 router.route('/fetchPromoters').get(promoterController.fetchAllPromoters);
 router.route('/fetchPromoterDetails').post(promoterController.fetchPromoterDetails);
 router.route('/fetchFormField').post(promoterController.fetchFormField);

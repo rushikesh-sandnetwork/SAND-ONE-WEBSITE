@@ -99,15 +99,16 @@ const fillFormData = asyncHandler(async (req, res) => {
         if (!reqData) {
             return res.status(400).json(new apiError(400, "Missing required data fields."));
         }
-      
+
         reqData.acceptedData = true;
-        
+
         const fileUrls = {};
 
-        for (const file of req.files) {
-            const finalFileName = await uploadOnCloudinary(file.path); 
-
-            fileUrls[file.fieldname] = finalFileName.url;
+        if (req.files) {
+            for (const file of req.files) {
+                const finalFileName = await uploadOnCloudinary(file.path); 
+                fileUrls[file.fieldname] = finalFileName.url;
+            }
         }
 
         Object.keys(fileUrls).forEach((key) => {
@@ -115,9 +116,7 @@ const fillFormData = asyncHandler(async (req, res) => {
         });
 
         const collection = mongoose.connection.collection(collectionName);
-
         const result = await collection.insertOne(reqData);
-        console.log(result);
 
         res.status(200).json(new apiResponse(200, result.ops ? result.ops[0] : reqData, "Data saved successfully."));
     } catch (error) {
@@ -125,7 +124,6 @@ const fillFormData = asyncHandler(async (req, res) => {
         res.status(400).json(new apiError(400, "Error in saving the data"));
     }
 });
-
 
 const fetchFormFilledData = asyncHandler(async (req, res) => {
     try {
