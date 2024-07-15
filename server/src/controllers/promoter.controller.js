@@ -4,6 +4,7 @@ const apiResponse = require('../utils/apiResponse');
 const apiError = require('../utils/apiError');
 const formsFieldsModel = require('../models/forms.fields.model');
 const Promoter = require("../models/promoter.model");
+const uploadOnCloudinary = require('../utils/cloudinary');
 const fetchAllPromoters = asyncHandler(async (req, res) => {
     try {
         const promoters = await Promoter.find();
@@ -100,25 +101,30 @@ const fillFormData = asyncHandler(async (req, res) => {
         }
       
         reqData.acceptedData = true;
+        
+        const fileUrls = {};
 
-        // const numOfImages = req.files.length;
-        // console.log(`Number of images received: ${numOfImages}`);
+        for (const file of req.files) {
+            const finalFileName = await uploadOnCloudinary(file.path); 
 
-        // req.files.forEach((file, index) => {
-        //     console.log(`Image ${index + 1} field name: ${file.fieldname}`);
-        // });
+            fileUrls[file.fieldname] = finalFileName.url;
+        }
+
+        Object.keys(fileUrls).forEach((key) => {
+            reqData[key] = fileUrls[key];
+        });
 
         const collection = mongoose.connection.collection(collectionName);
 
         const result = await collection.insertOne(reqData);
         console.log(result);
+
         res.status(200).json(new apiResponse(200, result.ops ? result.ops[0] : reqData, "Data saved successfully."));
     } catch (error) {
         console.error('Error in saving the data.', error);
         res.status(400).json(new apiError(400, "Error in saving the data"));
     }
 });
-
 
 
 const fetchFormFilledData = asyncHandler(async (req, res) => {

@@ -51,10 +51,25 @@ const AdminFormViewData = () => {
                 {Object.keys(item)
                     .filter(key => key !== '_id')
                     .map((key) => (
-                        <td key={key}>{key === 'acceptedData' ? (item[key] ? 'True' : 'False') : item[key]}</td>
+                        <td key={key}>
+                            {key === 'acceptedData' ? (item[key] ? 'True' : 'False') : 
+                                // Render image if key ends with "Image" and value is a URL
+                                (key.endsWith('Image') && isURL(item[key])) ? 
+                                    <img src={item[key]} alt={key} style={{ maxWidth: '100px', maxHeight: '100px' }} /> : 
+                                    item[key]}
+                        </td>
                     ))}
             </tr>
         ));
+    };
+
+    const isURL = (value) => {
+        try {
+            new URL(value);
+            return true;
+        } catch {
+            return false;
+        }
     };
 
     const exportToExcel = () => {
