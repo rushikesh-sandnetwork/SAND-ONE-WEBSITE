@@ -1,16 +1,17 @@
 import 'dart:convert';
-import 'package:app/utils/FormFields/Image.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'package:async/async.dart';
 import '../../utils/FormFields/Address.dart';
 import '../../utils/FormFields/Appointment.dart';
 import '../../utils/FormFields/Email.dart';
 import '../../utils/FormFields/FullName.dart';
+import '../../utils/FormFields/Image.dart';
 import '../../utils/FormFields/LongText.dart';
 import '../../utils/FormFields/Number.dart';
-
-import 'package:intl/intl.dart';
 
 class FormService {
   static const String baseUrl =
@@ -25,9 +26,6 @@ class FormService {
         body: jsonEncode({'formId': formId}),
       );
 
-      print('API Response Status Code: ${response.statusCode}');
-      print('API Response Body: ${response.body}');
-
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
         return FormDetails.fromJson(jsonResponse['data'][0]);
@@ -36,7 +34,6 @@ class FormService {
             'Failed to fetch form details. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching form details: $e');
       throw Exception('Failed to fetch form details. Error: $e');
     }
   }
@@ -50,9 +47,6 @@ class FormService {
         body: jsonEncode({'formId': formId}),
       );
 
-      print('API Response Status Code: ${response.statusCode}');
-      print('API Response Body: ${response.body}');
-
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
         return jsonResponse['data'][0]['collectionName'];
@@ -61,7 +55,6 @@ class FormService {
             'Failed to fetch collection name. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error fetching collection name: $e');
       throw Exception('Failed to fetch collection name. Error: $e');
     }
   }
@@ -71,21 +64,22 @@ class FormService {
     final url = Uri.parse(
         'http://192.168.31.139:8080/api/v1/promoter/fillFormData/$collectionName');
 
-    // Convert DateTime objects to a more human-readable string format
-    final DateFormat formatter = DateFormat('yyyy-MM-dd HH:mm:ss');
-    Map<String, dynamic> convertedData = data.map((key, value) {
-      if (value is DateTime) {
-        return MapEntry(key, formatter.format(value));
+    var request = http.MultipartRequest('POST', url);
+
+    data.forEach((key, value) async {
+      if (value is File) {
+        var stream = http.ByteStream(DelegatingStream.typed(value.openRead()));
+        var length = await value.length();
+        var multipartFile = http.MultipartFile(key, stream, length,
+            filename: basename(value.path));
+        request.files.add(multipartFile);
+      } else {
+        request.fields[key] = value.toString();
       }
-      return MapEntry(key, value);
     });
 
     try {
-      final response = await http.post(
-        url,
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode(convertedData),
-      );
+      var response = await request.send();
 
       if (response.statusCode == 200) {
         print('Data saved successfully');
@@ -142,6 +136,14 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final Map<String, dynamic> _formData = {};
 
+  void _handleImageChange(String fieldTitle, File? imageFile) {
+    if (imageFile != null) {
+      setState(() {
+        _formData[fieldTitle] = imageFile;
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -161,38 +163,13 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
               _formData['$fieldTitle Office/Building Name'] = value;
             });
           },
-          onChangedStreetAddress: (value) {
-            setState(() {
-              _formData['$fieldTitle Street Address'] = value;
-            });
-          },
-          onChangedStreetAddressLine2: (value) {
-            setState(() {
-              _formData['$fieldTitle Street Address Line 2'] = value;
-            });
-          },
-          onChangedCity: (value) {
-            setState(() {
-              _formData["$fieldTitle City"] = value;
-            });
-          },
-          onChangedState: (value) {
-            setState(() {
-              _formData['$fieldTitle State'] = value;
-            });
-          },
-          onChangedPincode: (value) {
-            setState(() {
-              _formData['$fieldTitle Pincode'] = value;
-            });
-          },
+          // Add other onChanged handlers for Address fields as needed
         );
       case 'Date Picker':
         return Appointment(
           appointmentTitle: fieldTitle,
           initialValue: _formData[fieldTitle],
           onChanged: (value) {
-            print("Appointment value: $value");
             setState(() {
               _formData[fieldTitle] = value;
             });
@@ -224,7 +201,15 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
           },
           fullNameTitle: fieldTitle,
         );
-      case 'Short Text':
+      case 'Image':
+        return ImagePickerWidget(
+          imageTitle: fieldTitle,
+          onChanged: (String title, File? file) {
+            _handleImageChange(fieldTitle, file);
+          },
+        );
+
+      case 'Long Text':
         return LongText(
           longTextTitle: fieldTitle,
           initialValue: _formData[fieldTitle],
@@ -236,38 +221,25 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
         );
       case 'Number':
         return Number(
-          initialValue: _formData['number'],
+          initialValue: _formData[fieldTitle],
           onChanged: (value) {
             setState(() {
-              _formData['number'] = value;
+              _formData[fieldTitle] = value;
             });
           },
         );
-      case 'Image':
-        return ImagePickerWidget(
-          imageTitle: fieldTitle,
-        );
       default:
-        return Container(); // or a placeholder widget
+        return SizedBox.shrink();
     }
   }
 
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      try {
-        print(_formData);
-        String collectionName =
-            await FormService.fetchCollectionName(widget.formId);
-        await FormService.submitFormData(collectionName, _formData);
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Form submitted successfully!')),
-        );
-      } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to submit form: $e')),
-        );
-      }
+
+      String collectionName =
+          await FormService.fetchCollectionName(widget.formId);
+      await FormService.submitFormData(collectionName, _formData);
     }
   }
 
@@ -315,55 +287,29 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
               return Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (!snapshot.hasData || snapshot.data == null) {
-              return Center(child: Text('No data available'));
-            } else {
+            } else if (snapshot.hasData) {
+              FormDetails formDetails = snapshot.data!;
               return SingleChildScrollView(
-                padding: EdgeInsets.symmetric(horizontal: 5.0, vertical: 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          ...snapshot.data!.formFields.map((field) {
-                            return Container(
-                              child: _buildFormField(field),
-                            );
-                          }).toList(),
-                          SizedBox(height: 20),
-                          Container(
-                            margin: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 20),
-                            child: ElevatedButton(
-                              style: ButtonStyle(
-                                padding: MaterialStateProperty.all<EdgeInsets>(
-                                  EdgeInsets.all(
-                                      16.0), // Adjust padding as needed
-                                ),
-                                backgroundColor: MaterialStateColor.resolveWith(
-                                  (states) => Color.fromRGBO(21, 25, 24, 1),
-                                ),
-                              ),
-                              onPressed: _submitForm,
-                              child: Text(
-                                'Submit',
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 14,
-                                    letterSpacing: 1),
-                              ),
-                            ),
-                          ),
-                        ],
+                padding: EdgeInsets.all(16.0),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      ...formDetails.formFields
+                          .map((field) => _buildFormField(field))
+                          .toList(),
+                      SizedBox(height: 20),
+                      ElevatedButton(
+                        onPressed: _submitForm,
+                        child: Text('Submit', style: GoogleFonts.poppins()),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               );
+            } else {
+              return Center(child: Text('No form details available.'));
             }
           },
         ),
