@@ -1,5 +1,11 @@
 .form-view-data {
-    padding: 10px 10px;
+    max-height: 100vh;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 15px;
+    background-color: #f9f9f9;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .form-view-data-container {
@@ -7,14 +13,18 @@
     height: 75vh;
     width: 95%;
     border-radius: 18px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     margin: 20px auto;
-    padding: 20px;
+    padding: 30px;
     transition: box-shadow 0.3s ease-in-out;
     display: flex;
     flex-direction: column;
     align-items: center;
     overflow: hidden; /* Hide overflow in the main container */
+}
+
+.form-view-data-container:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3); /* Add a slight hover effect */
 }
 
 .table-container {
@@ -25,6 +35,8 @@
     border-radius: 12px; /* Add border-radius to the container for proper scrolling */
     -ms-overflow-style: none;  /* Hide scrollbar in IE and Edge */
     scrollbar-width: none;  /* Hide scrollbar in Firefox */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    scroll-behavior: smooth; /* Add smooth scrolling */
 }
 
 .table-container::-webkit-scrollbar {
@@ -33,50 +45,60 @@
 
 table {
     font-family: "Poppins", sans-serif;
-    font-size: 20px; 
+    font-size: 18px; 
     width: 100%;
     border-collapse: collapse;
-    margin-top: 10px;
     border-radius: 12px; /* Add border-radius to the table */
     overflow: hidden; /* Ensure border-radius is applied properly */
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better appearance */
+    background-color: #fff; /* Add a background color to the table */
 }
 
 thead {
-    background-color: #3751b6;
+    background-color: #2d9bff;
     color: #fff;
 }
 
-th, td {
-    padding: 12px;
+th {
+    padding: 16px;
     border: 1px solid #dee2e6;
     text-align: left;
     font-size: 16px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    font-family: "Poppins", sans-serif;
+    transition: background-color 0.3s;    
+}
+
+th:hover {
+    background-color: #1b7dcc; /* Add hover effect for table headers */
+}
+
+td {
+    padding: 14px;
+    border: 1px solid #dee2e6;
+    text-align: left;
+    font-size: 16px;
+    font-family: "Poppins", sans-serif;
+}
+
+tbody tr {
+    background-color: #f4f6f8;
+    transition: background-color 0.3s;
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f2f2f2;
+    background-color: #e9ebed;
 }
 
 /* Add hover effect for table rows */
 tbody tr:hover {
-    background-color: #e0e0e0;
-}
-
-/* Add border-radius to thead and tbody separately for better control */
-thead {
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-}
-
-tbody {
-    border-bottom-left-radius: 12px;
-    border-bottom-right-radius: 12px;
+    background-color: #d3d6d9;
 }
 
 .refresh-button {
     align-items: center;
-    margin-top: 25px;
+    margin-top: 10px;
     padding: 10px 0;
     width: 200px;
     border: none;
@@ -93,7 +115,7 @@ tbody {
 }
 
 .refresh-button:hover {
-    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.30);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
     transform: translateY(-2px);
 }
 
@@ -105,5 +127,9 @@ tbody {
 .buttons {
     display: flex;
     flex-direction: row;
+    margin-top: 20px;
 }
-    
+
+.buttons .refresh-button {
+    margin-right: 15px; /* Add spacing between buttons */
+}

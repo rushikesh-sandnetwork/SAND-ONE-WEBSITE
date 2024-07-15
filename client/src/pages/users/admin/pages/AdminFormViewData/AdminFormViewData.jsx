@@ -62,7 +62,7 @@ const AdminFormViewData = () => {
         const csv = convertToCSV(formData);
         const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
 
-        if (navigator.msSaveBlob) { // IE 10+
+        if (navigator.msSaveBlob) {
             navigator.msSaveBlob(blob, fileName);
         } else {
             const link = document.createElement('a');
