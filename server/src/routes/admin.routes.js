@@ -21,8 +21,12 @@ router.route("/fetchClient").post(adminController.fetchClient);
 router.route("/fetchAllClient").get(adminController.fetchAllClients);
 
 
-// fetch all campaigns
-router.route("/fetchAllCampaigns").post(adminController.fetchAllCampaigns);
+// fetch all client specific campaigns
+router.route("/fetchAllCampaigns").post(adminController.fetchAllClientSpecificCampaigns);
+
+// fetch last 4 campaigns
+router.route("/fetchLastCampaigns").get(adminController.fetchAllCampaigns);
+
 
 // fetch campaign details
 router.route("/fetchCampaignDetails").post(adminController.fetchCampaignDetails);

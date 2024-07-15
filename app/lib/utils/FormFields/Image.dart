@@ -4,6 +4,9 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 
 class ImagePickerWidget extends StatefulWidget {
+  final String imageTitle;
+
+  const ImagePickerWidget({ required this.imageTitle});
   @override
   _ImagePickerWidgetState createState() => _ImagePickerWidgetState();
 }
@@ -37,7 +40,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            'Image',
+            widget.imageTitle,
             style:
                 GoogleFonts.poppins(fontWeight: FontWeight.bold, fontSize: 20),
           ),

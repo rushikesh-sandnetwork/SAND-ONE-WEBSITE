@@ -244,7 +244,9 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
           },
         );
       case 'Image':
-        return ImagePickerWidget();
+        return ImagePickerWidget(
+          imageTitle: fieldTitle,
+        );
       default:
         return Container(); // or a placeholder widget
     }

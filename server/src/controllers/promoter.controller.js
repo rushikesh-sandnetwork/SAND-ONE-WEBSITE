@@ -4,7 +4,6 @@ const apiResponse = require('../utils/apiResponse');
 const apiError = require('../utils/apiError');
 const formsFieldsModel = require('../models/forms.fields.model');
 const Promoter = require("../models/promoter.model");
-
 const fetchAllPromoters = asyncHandler(async (req, res) => {
     try {
         const promoters = await Promoter.find();
@@ -99,14 +98,18 @@ const fillFormData = asyncHandler(async (req, res) => {
         if (!reqData) {
             return res.status(400).json(new apiError(400, "Missing required data fields."));
         }
+      
+        reqData.acceptedData = true;
 
-        // Add the acceptedData field to reqData
-        reqData.acceptedData = true; // or set the value as needed
+        // const numOfImages = req.files.length;
+        // console.log(`Number of images received: ${numOfImages}`);
 
-        // Use the collection directly
+        // req.files.forEach((file, index) => {
+        //     console.log(`Image ${index + 1} field name: ${file.fieldname}`);
+        // });
+
         const collection = mongoose.connection.collection(collectionName);
 
-        // Insert the document into the specified collection
         const result = await collection.insertOne(reqData);
         console.log(result);
         res.status(200).json(new apiResponse(200, result.ops ? result.ops[0] : reqData, "Data saved successfully."));

@@ -102,6 +102,17 @@ const deleteClient = asyncHandler(async (req, res) => {
 
 const fetchAllCampaigns = asyncHandler(async (req, res) => {
     try {
+        const campaigns = await campaign.find({}).sort({ createdAt: -1 }).limit(4);
+        res.status(200).json(new apiResponse(200, campaigns, "Last 4 Campaigns Fetched Successfully."));
+    } catch (error) {
+        console.error('Error fetching campaigns:', error);
+        res.status(500).json(new apiError(500, "An error occurred while fetching campaigns"));
+    }
+});
+
+
+const fetchAllClientSpecificCampaigns = asyncHandler(async (req, res) => {
+    try {
         const { clientId } = req.body;
 
         if (!clientId) {
@@ -373,6 +384,7 @@ module.exports = {
     createNewCampaign,
     fetchCampaignDetails,
     fetchAllCampaigns,
+    fetchAllClientSpecificCampaigns,
     deleteClient,
     fetchAllClients,
     fetchClient,
