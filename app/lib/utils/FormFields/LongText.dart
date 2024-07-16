@@ -6,26 +6,34 @@ class LongText extends StatefulWidget {
   final String? initialValue;
   final String longTextTitle;
 
-  LongText(
-      {Key? key,
-      this.onChanged,
-      this.initialValue,
-      required this.longTextTitle})
-      : super(key: key);
+  LongText({
+    Key? key,
+    this.onChanged,
+    this.initialValue,
+    required this.longTextTitle,
+  }) : super(key: key);
 
   @override
   State<LongText> createState() => _LongTextState();
 }
 
 class _LongTextState extends State<LongText> {
-  final TextEditingController _textController = TextEditingController();
+  late TextEditingController _textController;
+
+  @override
+  void initState() {
+    super.initState();
+    _textController = TextEditingController(text: widget.initialValue);
+  }
+
+  @override
+  void dispose() {
+    _textController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (widget.initialValue != null) {
-      _textController.text = widget.initialValue!;
-    }
-
     return Padding(
       padding: const EdgeInsets.all(16.0),
       child: Column(
@@ -33,16 +41,13 @@ class _LongTextState extends State<LongText> {
         children: [
           Text(
             widget.longTextTitle,
-            style:
-                GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
+            style: GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.bold),
           ),
           SizedBox(height: 20),
           TextFormField(
-            onFieldSubmitted: (value) {
-              widget.onChanged!(_textController.text);
-            },
             controller: _textController,
-            maxLines: 1,
+            onChanged: widget.onChanged,
+            maxLines: null,
             decoration: InputDecoration(
               hintText: 'Enter your long text here...',
               border: OutlineInputBorder(

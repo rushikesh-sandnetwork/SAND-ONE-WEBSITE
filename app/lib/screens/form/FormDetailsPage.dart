@@ -66,19 +66,23 @@ class FormService {
 
     var request = http.MultipartRequest('POST', url);
 
-    data.forEach((key, value) async {
-      if (value is File) {
-        var stream = http.ByteStream(DelegatingStream.typed(value.openRead()));
-        var length = await value.length();
-        var multipartFile = http.MultipartFile(key, stream, length,
-            filename: basename(value.path));
-        request.files.add(multipartFile);
-      } else {
-        request.fields[key] = value.toString();
-      }
-    });
-
     try {
+      for (var entry in data.entries) {
+        var key = entry.key;
+        var value = entry.value;
+
+        if (value is File) {
+          var stream =
+              http.ByteStream(DelegatingStream.typed(value.openRead()));
+          var length = await value.length();
+          var multipartFile = http.MultipartFile(key, stream, length,
+              filename: basename(value.path));
+          request.files.add(multipartFile);
+        } else {
+          request.fields[key] = value.toString();
+        }
+      }
+
       var response = await request.send();
 
       if (response.statusCode == 200) {
@@ -163,7 +167,31 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
               _formData['$fieldTitle Office/Building Name'] = value;
             });
           },
-          // Add other onChanged handlers for Address fields as needed
+          onChangedStreetAddress: (value) {
+            setState(() {
+              _formData['$fieldTitle Street Address'] = value;
+            });
+          },
+          onChangedStreetAddressLine2: (value) {
+            setState(() {
+              _formData['$fieldTitle Street Address Line 2'] = value;
+            });
+          },
+          onChangedCity: (value) {
+            setState(() {
+              _formData["$fieldTitle City"] = value;
+            });
+          },
+          onChangedState: (value) {
+            setState(() {
+              _formData['$fieldTitle State'] = value;
+            });
+          },
+          onChangedPincode: (value) {
+            setState(() {
+              _formData['$fieldTitle Pincode'] = value;
+            });
+          },
         );
       case 'Date Picker':
         return Appointment(
@@ -219,6 +247,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             });
           },
         );
+
       case 'Number':
         return Number(
           initialValue: _formData[fieldTitle],
@@ -236,10 +265,16 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
   void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-
-      String collectionName =
-          await FormService.fetchCollectionName(widget.formId);
-      await FormService.submitFormData(collectionName, _formData);
+      print(_formData);
+      try {
+        String collectionName =
+            await FormService.fetchCollectionName(widget.formId);
+        await FormService.submitFormData(collectionName, _formData);
+        print('Form submitted successfully!');
+      } catch (e) {
+        print('Error submitting form: $e');
+        // Handle error as needed
+      }
     }
   }
 

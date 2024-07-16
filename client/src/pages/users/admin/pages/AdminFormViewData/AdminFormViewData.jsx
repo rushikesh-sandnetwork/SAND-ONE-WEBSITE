@@ -52,15 +52,19 @@ const AdminFormViewData = () => {
                     .filter(key => key !== '_id')
                     .map((key) => (
                         <td key={key}>
-                            {key === 'acceptedData' ? (item[key] ? 'True' : 'False') : 
-                                // Render image if key ends with "Image" and value is a URL
-                                (key.endsWith('Image') && isURL(item[key])) ? 
-                                    <img src={item[key]} alt={key} style={{ maxWidth: '100px', maxHeight: '100px' }} /> : 
-                                    item[key]}
+                            {renderCellContent(item[key])}
                         </td>
                     ))}
             </tr>
         ));
+    };
+
+    const renderCellContent = (value) => {
+        if (isURL(value)) {
+            return <img src={value} alt="Image" style={{ maxWidth: '100px', maxHeight: '100px' }} />;
+        } else {
+            return value;
+        }
     };
 
     const isURL = (value) => {
@@ -99,9 +103,6 @@ const AdminFormViewData = () => {
         const rows = data.map(row => {
             return keys.filter(key => key !== '_id').map(key => {
                 let cell = row[key] === null || row[key] === undefined ? '' : row[key];
-                if (key === 'acceptedData') {
-                    cell = row[key] ? 'True' : 'False';
-                }
                 cell = cell.toString().replace(/"/g, '""');
                 if (cell.search(/("|,|\n)/g) >= 0) {
                     cell = `"${cell}"`;
