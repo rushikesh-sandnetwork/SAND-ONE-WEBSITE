@@ -90,7 +90,7 @@ class _AddressState extends State<Address> {
           SizedBox(height: 20),
           Text(
             'Street Address',
-            style: Theme.of(context).textTheme.subtitle1,
+            // style: ,
           ),
           SizedBox(height: 12),
           TextFormField(
@@ -105,7 +105,7 @@ class _AddressState extends State<Address> {
           SizedBox(height: 20),
           Text(
             'Street Address Line 2',
-            style: Theme.of(context).textTheme.subtitle1,
+            // style: Theme.of(context).textTheme.subtitle1,
           ),
           SizedBox(height: 12),
           TextFormField(
@@ -126,7 +126,7 @@ class _AddressState extends State<Address> {
                   children: [
                     Text(
                       'City',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      // style: Theme.of(context).textTheme.subtitle1,
                     ),
                     SizedBox(height: 12),
                     TextFormField(
@@ -148,7 +148,7 @@ class _AddressState extends State<Address> {
                   children: [
                     Text(
                       'State/Province',
-                      style: Theme.of(context).textTheme.subtitle1,
+                      // style: Theme.of(context).textTheme.subtitle1,
                     ),
                     SizedBox(height: 12),
                     TextFormField(
@@ -168,7 +168,7 @@ class _AddressState extends State<Address> {
           SizedBox(height: 20),
           Text(
             'Pincode/Zip Code',
-            style: Theme.of(context).textTheme.subtitle1,
+            // style: Theme.of(context).textTheme.subtitle1,
           ),
           SizedBox(height: 12),
           TextFormField(
