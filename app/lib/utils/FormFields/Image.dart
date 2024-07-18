@@ -93,7 +93,10 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
             children: <Widget>[
               ListTile(
                 leading: Icon(Icons.photo_library),
-                title: Text('Choose from Gallery'),
+                title: Text(
+                  'Choose from Gallery',
+                  style: GoogleFonts.poppins(),
+                ),  
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.gallery);
@@ -101,7 +104,10 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
               ),
               ListTile(
                 leading: Icon(Icons.camera_alt),
-                title: Text('Take a Photo'),
+                title: Text(
+                  'Take a Photo',
+                  style: GoogleFonts.poppins(),
+                ),
                 onTap: () {
                   Navigator.of(context).pop();
                   _pickImage(ImageSource.camera);
