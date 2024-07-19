@@ -7,6 +7,7 @@ const AdminFormViewData = () => {
     const [formData, setFormData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [modalImage, setModalImage] = useState(null);
     const { formId } = useParams();
 
     useEffect(() => {
@@ -61,7 +62,14 @@ const AdminFormViewData = () => {
 
     const renderCellContent = (value) => {
         if (isURL(value)) {
-            return <img src={value} alt="Image" style={{ maxWidth: '100px', maxHeight: '100px' }} />;
+            return (
+                <img
+                    src={value}
+                    alt="Image"
+                    style={{ maxWidth: '100px', maxHeight: '100px', cursor: 'pointer' }}
+                    onClick={() => setModalImage(value)}
+                />
+            );
         } else {
             return value;
         }
@@ -144,8 +152,15 @@ const AdminFormViewData = () => {
                     </React.Fragment>
                 )}
             </div>
+            {modalImage && (
+                <div className="modal" onClick={() => setModalImage(null)}>
+                    <span className="close" onClick={() => setModalImage(null)}>&times;</span>
+                    <img className="modal-content" src={modalImage} alt="Zoomed" />
+                </div>
+            )}
         </div>
     );
 };
 
 export default AdminFormViewData;
+    
