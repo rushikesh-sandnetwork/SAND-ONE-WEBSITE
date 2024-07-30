@@ -1,7 +1,4 @@
 import 'dart:convert';
-import 'package:app/screens/attendance/AttendanceWidget.dart';
-import 'package:app/screens/form/FormDetailsPage.dart';
-import 'package:app/screens/form/PromoterDetailsPage.dart';
 import 'package:app/screens/form/SelectedFormsPage.dart';
 import 'package:app/utils/FormButtons/FormTabs.dart';
 import 'package:flutter/material.dart';
@@ -10,8 +7,7 @@ import 'package:http/http.dart' as http;
 
 class PromoterService {
   static const String baseUrl =
-      'http://192.168.31.140:8080/api/v1/promoter/fetchPromoterDetails'; // Replace with your actual API URL
-
+      'http://192.168.31.140:8080/api/v1/promoter/fetchPromoterDetails'; 
   static Future<PromoterDetails> fetchPromoterDetails(String promoterId) async {
     final url = Uri.parse(baseUrl);
     final response = await http.post(

@@ -1,4 +1,5 @@
 import 'package:app/screens/attendance/AttendanceWidget.dart';
+import 'package:app/screens/attendance/MarkYourAttendancePage.dart';
 import 'package:app/screens/form/FormAllFormsPage.dart';
 import 'package:app/screens/profile/Profile.dart';
 import 'package:app/utils/MainPageBox/MainPageBoxOne.dart';
@@ -59,7 +60,17 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
             Column(
               children: [
                 const SizedBox(height: 15),
-                const AttendanceWidget(),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => MarkYourAttendancePage(
+                              promoterId: widget.promoterId),
+                        ),
+                      );
+                    },
+                    child: const AttendanceWidget()),
                 const SizedBox(height: 25),
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
