@@ -5,6 +5,7 @@ const apiError = require('../utils/apiError');
 const formsFieldsModel = require('../models/forms.fields.model');
 const Promoter = require("../models/promoter.model");
 const uploadOnCloudinary = require('../utils/cloudinary');
+const AttendanceModel = require("../models/attendance.model")
 const fetchAllPromoters = asyncHandler(async (req, res) => {
     try {
         const promoters = await Promoter.find();
@@ -20,14 +21,14 @@ const fetchAllPromoters = asyncHandler(async (req, res) => {
 
 const createNewPromoter = asyncHandler(async (req, res) => {
     try {
-        const { promoterName, promoterEmailId , password } = req.body;
+        const { promoterName, promoterEmailId, password } = req.body;
 
-        if (!promoterName || !promoterEmailId ||!password) {
+        if (!promoterName || !promoterEmailId || !password) {
             return res.status(400).json(new apiError(400, "Missing required fields"));
         };
 
 
-        const newPromoter = await Promoter.create({ promoterName,promoterEmailId , password });
+        const newPromoter = await Promoter.create({ promoterName, promoterEmailId, password });
 
         if (!newPromoter) {
             return res.status(400).json(new apiError(400, "Promoter not created"));
@@ -100,13 +101,14 @@ const fillFormData = asyncHandler(async (req, res) => {
             return res.status(400).json(new apiError(400, "Missing required data fields."));
         }
 
+
         reqData.acceptedData = true;
 
         const fileUrls = {};
 
         if (req.files) {
             for (const file of req.files) {
-                const finalFileName = await uploadOnCloudinary(file.path); 
+                const finalFileName = await uploadOnCloudinary(file.path);
                 fileUrls[file.fieldname] = finalFileName.url;
             }
         }
@@ -161,7 +163,7 @@ const promoterLogin = asyncHandler(async (req, res) => {
         };
 
 
-        const promoterDetails = await Promoter.findOne({ promoterEmailId:email });
+        const promoterDetails = await Promoter.findOne({ promoterEmailId: email });
 
         if (!promoterDetails) {
             return res.status(400).json(new apiError(400, "There doesnt exist such a promoter with the given id."));
@@ -181,4 +183,106 @@ const promoterLogin = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails };
+const fillAttendancePunchIn = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Missing required data fields."));
+        }
+
+        console.log(`Promoter ID: ${promoterId}`);
+
+        const currentDate = new Date().toISOString().split('T')[0];
+        const punchInTime = new Date();
+
+        console.log(currentDate, punchInTime);
+
+        // Use findOne to check for existing attendance
+        const checkAttendance = await AttendanceModel.findOne({ promoterId, date: currentDate });
+        console.log(checkAttendance);
+
+        if (checkAttendance) {
+            return res.status(400).json(new apiError(400, "Already punched in"));
+        }
+
+        // Uncomment and adjust if image upload is needed
+        
+        const logInImagePath = req.files?.loginPhoto?.[0]?.path;
+
+        if (!logInImagePath) {
+            throw new apiError(400, "Login Image Required");
+        }
+
+        const logInFinalImage = await uploadOnCloudinary(logInImagePath);
+        if (!logInFinalImage) {
+            throw new apiError(400, "Failed to upload client Photo");
+        }
+        
+        const newAttendance = await AttendanceModel.create({
+            promoterId: promoterId,
+            date: currentDate,
+            punchInTime: punchInTime,
+            punchInImage: logInFinalImage.url, 
+            punchOutImage: ''
+        });
+
+        res.status(201).json(new apiResponse(201, newAttendance, "Attendance Created"));
+    } catch (error) {
+        console.error('Error in fetching the data.', error);
+        res.status(400).json(new apiError(400, "Error in filling Attendance"));
+    }
+});
+
+
+// punchOut
+
+const fillAttendancePunchOut = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Missing required data fields."));
+        }
+
+        console.log(`Promoter ID: ${promoterId}`);
+
+        const currentDate = new Date().toISOString().split('T')[0];
+        const punchOutTime = new Date();
+
+        console.log(currentDate, punchOutTime);
+
+        // Use findOne to check for existing attendance
+        const checkAttendance = await AttendanceModel.findOne({ promoterId, date: currentDate });
+        console.log(checkAttendance);
+
+        if (!checkAttendance) {
+            return res.status(400).json(new apiError(400, "No punch in found." ));
+        }
+
+        // Uncomment and adjust if image upload is needed
+        const logOutImagePath = req.files?.logOutPhoto?.[0]?.path;
+
+        if (!logOutImagePath) {
+            throw new apiError(400, "LogOut Image Required");
+        }
+
+        const logOutFinalImage = await uploadOnCloudinary(logOutImagePath);
+        if (!logOutFinalImage) {
+            throw new apiError(400, "Failed to upload client Photo");
+        }
+
+        // Update the existing attendance with punch out time and image
+        checkAttendance.punchOutTime = punchOutTime;
+        checkAttendance.punchOutImage = logOutFinalImage.url;
+
+        await checkAttendance.save();
+
+        res.status(200).json(new apiResponse(200, checkAttendance, "Attendance Updated"));
+    } catch (error) {
+        console.error('Error in fetching the data.', error);
+        res.status(400).json(new apiError(400, "Error in filling Attendance"));
+    }
+});
+
+module.exports = { promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails , fillAttendancePunchIn, fillAttendancePunchOut};
