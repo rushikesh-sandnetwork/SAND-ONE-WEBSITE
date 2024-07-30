@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:awesome_bottom_bar/awesome_bottom_bar.dart';
-import 'package:app/screens/form/FormPage.dart';
+import 'package:app/screens/form/PromoterDetailsPage.dart';
 import 'package:app/screens/profile/Profile.dart';
 
 class MainScreenPage extends StatefulWidget {

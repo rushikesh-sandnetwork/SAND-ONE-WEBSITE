@@ -5,7 +5,7 @@ const AdminProfilePage = () => {
     return (
         <div className="adminProfilePage-container">
             <PageTitle title="Profile" />
-            <div className="Profile-container">
+            <div className="profile-container">
                 
             </div>
         </div>

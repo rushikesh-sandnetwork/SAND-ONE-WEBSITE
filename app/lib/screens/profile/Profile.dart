@@ -8,12 +8,30 @@ class Profile extends StatefulWidget {
   State<Profile> createState() => _ProfileState();
 }
 
+
+Future<void> fetchDetails()async {
+  
+}
+
 class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text("THis is the profile"),
+    return const Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+        children: [
+          Positioned(
+            top: 20,
+            left: 5,
+            right: 5,
+            child: Center(
+              child: CircleAvatar(
+                radius: 40,
+                backgroundColor: Colors.white,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

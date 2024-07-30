@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:app/mainScreen.dart';
+import 'package:app/screens/form/PromoterDetailsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http; // Import http package
@@ -20,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> loginUser(String email, String password) async {
     try {
       var response = await http.post(
-        Uri.parse('http://192.168.31.139:8080/api/v1/promoter/loginPromoter'),
+        Uri.parse('http://192.168.31.140:8080/api/v1/promoter/loginPromoter'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -42,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => MainScreenPage(promoterId: promoterId),
+              builder: (context) => PromoterDetailsPage(promoterId: promoterId),
             ),
           );
         } else {

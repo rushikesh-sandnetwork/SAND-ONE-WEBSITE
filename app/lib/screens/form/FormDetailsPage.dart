@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -119,7 +120,6 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             _handleImageChange(fieldTitle, file);
           },
         );
-
       case 'Long Text':
         return LongText(
           longTextTitle: fieldTitle,
@@ -130,7 +130,6 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             });
           },
         );
-
       case 'Number':
         return Number(
           initialValue: _formData[fieldTitle],
@@ -148,12 +147,21 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
   Future<String> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
-      print(_formData);
       try {
         String collectionName =
             await FormService.fetchCollectionName(widget.formId);
+        final formData = Map<String, dynamic>.from(_formData);
+
+        for (var key in formData.keys) {
+          if (formData[key] is File) {
+            final file = formData[key] as File;
+            final bytes = await file.readAsBytes();
+            formData[key] = base64Encode(bytes);
+          }
+        }
+
         String message =
-            await FormService.submitFormData(collectionName, _formData);
+            await FormService.submitFormData(collectionName, formData);
         return message;
       } catch (e) {
         print('Error submitting form: $e');
@@ -168,7 +176,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        automaticallyImplyLeading: false, // This removes the leading icon
+        automaticallyImplyLeading: false,
         title: Text(
           'Form Details',
           style: GoogleFonts.poppins(
@@ -193,10 +201,10 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1), // Shadow color
-              spreadRadius: 5, // Spread radius
-              blurRadius: 7, // Blur radius
-              offset: Offset(0, 3), // Offset in x and y directions
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3),
             ),
           ],
         ),
@@ -223,6 +231,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
                       ElevatedButton(
                         onPressed: () async {
                           String message = await _submitForm();
+                          // Handle response or show a message
                         },
                         child: Text('Submit', style: GoogleFonts.poppins()),
                       ),

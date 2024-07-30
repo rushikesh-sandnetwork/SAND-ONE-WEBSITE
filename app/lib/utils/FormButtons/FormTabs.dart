@@ -18,16 +18,9 @@ class _FormTabsState extends State<FormTabs> {
       margin: EdgeInsets.symmetric(vertical: 10, horizontal: 5),
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.grey.shade900,
+        color: Color.fromRGBO(36, 37, 43, 1),
         borderRadius: BorderRadius.circular(16),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade400,
-            spreadRadius: 2,
-            blurRadius: 4,
-            offset: Offset(0, 4),
-          ),
-        ],
+        
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
