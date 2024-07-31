@@ -21,61 +21,67 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
   File? _checkInImage;
   File? _checkOutImage;
 
-  final ImagePicker _picker = ImagePicker();
+  final ImagePicker _picker = ImagePicker(); // For picking images
 
   Future<void> _pickImage(String choice) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       setState(() {
         if (choice == "checkIn") {
-          _checkInImage = File(pickedFile.path); // Convert PickedFile to File
+          _checkInImage = File(pickedFile.path);
         } else {
-          _checkOutImage = File(pickedFile.path); // Convert PickedFile to File
+          _checkOutImage = File(pickedFile.path);
         }
       });
     }
   }
 
-  void _submit(String choice, File? imageFile, String promoterId) async {
-    if (imageFile == null) {
-      return;
-    }
-
-    String fileInput = '';
-
-    if (choice == "fillAttendancePunchIn") {
-      fileInput = "loginPhoto";
-    } else {
-      fileInput = "logOutPhoto";
-    }
-
+  Future<String> _submit(
+      String choice, File? imageFile, String promoterId) async {
     try {
       final url =
           Uri.parse('http://192.168.31.139:8080/api/v1/promoter/$choice');
 
       var request = http.MultipartRequest('POST', url);
+
       request.fields['promoterId'] = promoterId;
 
-      var stream =
-          http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
-      var length = await imageFile.length();
-      var multipartFile = http.MultipartFile(
-        fileInput,
-        stream,
-        length,
-        filename: basename(imageFile.path),
-      );
+      String fileOption;
 
-      request.files.add(multipartFile);
+      if (choice == "fillAttendancePunchIn") {
+        fileOption = "loginPhoto";
+      } else {
+        fileOption = "logOutPhoto";
+      }
+
+      if (imageFile != null) {
+        var stream =
+            http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+        var length = await imageFile.length();
+        var multipartFile = http.MultipartFile(
+          fileOption,
+          stream,
+          length,
+          filename: basename(imageFile.path),
+        );
+        request.files.add(multipartFile);
+      }
 
       var response = await request.send();
+      var responseBody = await http.Response.fromStream(response);
 
       if (response.statusCode == 201) {
-        var responseBody = await http.Response.fromStream(response);
         var responseData = json.decode(responseBody.body);
+        return "Submitted successfully.";
       } else if (response.statusCode == 400) {
-      } else {}
-    } catch (error) {}
+        var responseData = json.decode(responseBody.body);
+        return "Error: ${responseData['message']}";
+      } else {
+        return "Error: ${response.statusCode}";
+      }
+    } catch (error) {
+      return "Error: $error";
+    }
   }
 
   @override
@@ -158,8 +164,6 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                         children: [
                           _checkInImage == null
                               ? Container()
-
-                              // view the image captured
                               : Container(
                                   height: 200,
                                   width: 200,
@@ -170,7 +174,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                                         color: Colors.black.withOpacity(0.2),
                                         spreadRadius: 2,
                                         blurRadius: 5,
-                                        offset: Offset(0, 3),
+                                        offset: const Offset(0, 3),
                                       ),
                                     ],
                                     border: Border.all(
@@ -191,7 +195,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.grey,
                               foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
@@ -214,7 +218,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.grey,
                               foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
@@ -222,9 +226,15 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                               shadowColor: Colors.black.withOpacity(0.25),
                               elevation: 5,
                             ),
-                            onPressed: () => {
-                              _submit('fillAttendancePunchIn', _checkInImage,
-                                  widget.promoterId)
+                            onPressed: () async {
+                              String message = await _submit(
+                                  'fillAttendancePunchIn',
+                                  _checkInImage,
+                                  widget.promoterId);
+                              setState(() {
+                                _checkInImage = null; // Clear the image
+                              });
+                              showCustomSnackBar(context, message);
                             },
                             child: Text(
                               'Punch In',
@@ -244,7 +254,6 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                         children: [
                           _checkOutImage == null
                               ? Container()
-                              // view the image captured
                               : Container(
                                   height: 200,
                                   width: 200,
@@ -255,7 +264,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                                         color: Colors.black.withOpacity(0.2),
                                         spreadRadius: 2,
                                         blurRadius: 5,
-                                        offset: Offset(0, 3),
+                                        offset: const Offset(0, 3),
                                       ),
                                     ],
                                     border: Border.all(
@@ -271,14 +280,14 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                                     ),
                                   ),
                                 ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.grey,
                               foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
@@ -296,12 +305,12 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                               ),
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.grey,
                               foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(
+                              padding: const EdgeInsets.symmetric(
                                   horizontal: 50, vertical: 15),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(18.0),
@@ -309,9 +318,16 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                               shadowColor: Colors.black.withOpacity(0.25),
                               elevation: 5,
                             ),
-                            onPressed: () => {
-                              _submit('fillAttendancePunchOut', _checkOutImage,
-                                  widget.promoterId)
+                            onPressed: () async {
+                              String message = await _submit(
+                                  'fillAttendancePunchOut',
+                                  _checkOutImage,
+                                  widget.promoterId);
+                              setState(() {
+                                _checkOutImage = null;
+                              });
+                              // Clear the image
+                              showCustomSnackBar(context, message);
                             },
                             child: Text(
                               'Punch Out',
@@ -325,14 +341,6 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                         ],
                       ),
                     ),
-                  ] else ...[
-                    Center(
-                      child: Icon(
-                        Icons.timelapse_rounded,
-                        size: 100,
-                        color: Colors.grey.shade50.withOpacity(0.1),
-                      ),
-                    ),
                   ],
                 ],
               ),
@@ -342,4 +350,26 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
       ),
     );
   }
+}
+
+void showCustomSnackBar(BuildContext context, String message) {
+  ScaffoldMessenger.of(context).showSnackBar(
+    SnackBar(
+      content: Text(
+        message,
+        style: GoogleFonts.poppins(
+            fontSize: 16, fontWeight: FontWeight.bold, color: Colors.black),
+      ),
+      backgroundColor: Colors.white, // Background color
+      behavior: SnackBarBehavior
+          .floating, // Makes the Snackbar float above the content
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15.0), // Rounded corners
+      ),
+      margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      padding:
+          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0), // Padding
+      duration: const Duration(seconds: 3), // Duration before the Snackbar disappears
+    ),
+  );
 }

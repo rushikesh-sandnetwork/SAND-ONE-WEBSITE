@@ -278,7 +278,7 @@ const fillAttendancePunchOut = asyncHandler(async (req, res) => {
 
         await checkAttendance.save();
 
-        res.status(200).json(new apiResponse(200, checkAttendance, "Attendance Updated"));
+        res.status(201).json(new apiResponse(200, checkAttendance, "Attendance Updated"));
     } catch (error) {
         console.error('Error in fetching the data.', error);
         res.status(400).json(new apiError(400, "Error in filling Attendance"));
