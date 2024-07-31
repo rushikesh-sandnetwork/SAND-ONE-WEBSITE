@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> loginUser(String email, String password) async {
     try {
       var response = await http.post(
-        Uri.parse('http://192.168.31.140:8080/api/v1/promoter/loginPromoter'),
+        Uri.parse('http://192.168.31.139:8080/api/v1/promoter/loginPromoter'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

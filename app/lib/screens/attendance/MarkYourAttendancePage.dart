@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:app/screens/attendance/CheckWidgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -32,7 +31,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
   void _submit() {
     // Implement your submit logic here
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
+      const SnackBar(
         content: Text('Submitted successfully!'),
       ),
     );
@@ -72,7 +71,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                     checkChoice = 'CheckIn';
                   });
                 },
-                child: CheckWidgets(
+                child: const CheckWidgets(
                   checkTitle: "Punch In",
                   icon: Icons.more_time_sharp,
                 ),
@@ -83,7 +82,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                     checkChoice = 'CheckOut';
                   });
                 },
-                child: CheckWidgets(
+                child: const CheckWidgets(
                   checkTitle: "Punch Out",
                   icon: Icons.timer_outlined,
                 ),
@@ -93,15 +92,15 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
 
           Expanded(
             child: Container(
-              margin: EdgeInsets.only(top: 20),
-              padding: EdgeInsets.all(16.0),
+              margin: const EdgeInsets.only(top: 20),
+              padding: const EdgeInsets.all(16.0),
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [Colors.grey.shade800.withOpacity(0.1), Colors.black],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(40.0),
                   topRight: Radius.circular(40.0),
                 ),
@@ -122,21 +121,79 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                                   size: 100,
                                   color: Colors.grey.shade50.withOpacity(0.5),
                                 )
-                              : Image.file(
-                                  File(_image!.path),
+
+                              // view the image captured
+                              : Container(
                                   height: 200,
                                   width: 200,
-                                  fit: BoxFit.cover,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
+                                    border: Border.all(
+                                      color: Colors.grey.withOpacity(0.8),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image.file(
+                                      File(_image!.path),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
                                 ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                              shadowColor: Colors.black.withOpacity(0.25),
+                              elevation: 5,
+                            ),
                             onPressed: _pickImage,
-                            child: Text('Click Photo'),
+                            child: Text(
+                              'Click Photo',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                              shadowColor: Colors.black.withOpacity(0.25),
+                              elevation: 5,
+                            ),
                             onPressed: _submit,
-                            child: Text('Submit'),
+                            child: Text(
+                              'Punch In',
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  letterSpacing: 1),
+                            ),
                           ),
                         ],
                       ),
@@ -145,28 +202,87 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                     Center(
                       child: Column(
                         children: [
-                          Icon(
-                            Icons.camera_alt,
-                            size: 100,
-                            color: Colors.grey.shade50.withOpacity(0.5),
+                          _image == null
+                              ? Icon(
+                                  Icons.camera_alt,
+                                  size: 100,
+                                  color: Colors.grey.shade50.withOpacity(0.5),
+                                )
+
+                              // view the image captured
+                              : Container(
+                                  height: 200,
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(20),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.2),
+                                        spreadRadius: 2,
+                                        blurRadius: 5,
+                                        offset: Offset(0, 3),
+                                      ),
+                                    ],
+                                    border: Border.all(
+                                      color: Colors.grey.withOpacity(0.8),
+                                      width: 2,
+                                    ),
+                                  ),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: Image.file(
+                                      File(_image!.path),
+                                      fit: BoxFit.cover,
+                                    ),
+                                  ),
+                                ),
+                          SizedBox(
+                            height: 20,
                           ),
-                          SizedBox(height: 20),
-                          Text(
-                            'Take a photo and submit.',
-                            style: GoogleFonts.poppins(
-                                color: Colors.grey,
-                                fontSize: 22,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(height: 20),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                              shadowColor: Colors.black.withOpacity(0.25),
+                              elevation: 5,
+                            ),
                             onPressed: _pickImage,
-                            child: Text('Click Photo'),
+                            child: Text(
+                              'Click Photo',
+                              style: GoogleFonts.poppins(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
                           ),
                           SizedBox(height: 20),
                           ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.grey,
+                              foregroundColor: Colors.white,
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 15),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(18.0),
+                              ),
+                              shadowColor: Colors.black.withOpacity(0.25),
+                              elevation: 5,
+                            ),
                             onPressed: _submit,
-                            child: Text('Submit'),
+                            child: Text(
+                              'Punch Out',
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16,
+                                  letterSpacing: 1),
+                            ),
                           ),
                         ],
                       ),
