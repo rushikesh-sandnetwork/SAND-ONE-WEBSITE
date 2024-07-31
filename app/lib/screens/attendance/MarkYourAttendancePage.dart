@@ -1,9 +1,12 @@
 import 'dart:io';
 import 'package:app/screens/attendance/CheckWidgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:path/path.dart';
+import 'package:async/async.dart';
 
 class MarkYourAttendancePage extends StatefulWidget {
   final String promoterId;
@@ -15,26 +18,64 @@ class MarkYourAttendancePage extends StatefulWidget {
 
 class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
   String checkChoice = 'default';
-  XFile? _image; // To hold the captured image
+  File? _checkInImage;
+  File? _checkOutImage;
 
-  final ImagePicker _picker = ImagePicker(); // For picking images
+  final ImagePicker _picker = ImagePicker();
 
-  Future<void> _pickImage() async {
+  Future<void> _pickImage(String choice) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
     if (pickedFile != null) {
       setState(() {
-        _image = pickedFile;
+        if (choice == "checkIn") {
+          _checkInImage = File(pickedFile.path); // Convert PickedFile to File
+        } else {
+          _checkOutImage = File(pickedFile.path); // Convert PickedFile to File
+        }
       });
     }
   }
 
-  void _submit() {
-    // Implement your submit logic here
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Submitted successfully!'),
-      ),
-    );
+  void _submit(String choice, File? imageFile, String promoterId) async {
+    if (imageFile == null) {
+      return;
+    }
+
+    String fileInput = '';
+
+    if (choice == "fillAttendancePunchIn") {
+      fileInput = "loginPhoto";
+    } else {
+      fileInput = "logOutPhoto";
+    }
+
+    try {
+      final url =
+          Uri.parse('http://192.168.31.139:8080/api/v1/promoter/$choice');
+
+      var request = http.MultipartRequest('POST', url);
+      request.fields['promoterId'] = promoterId;
+
+      var stream =
+          http.ByteStream(DelegatingStream.typed(imageFile.openRead()));
+      var length = await imageFile.length();
+      var multipartFile = http.MultipartFile(
+        fileInput,
+        stream,
+        length,
+        filename: basename(imageFile.path),
+      );
+
+      request.files.add(multipartFile);
+
+      var response = await request.send();
+
+      if (response.statusCode == 201) {
+        var responseBody = await http.Response.fromStream(response);
+        var responseData = json.decode(responseBody.body);
+      } else if (response.statusCode == 400) {
+      } else {}
+    } catch (error) {}
   }
 
   @override
@@ -115,12 +156,8 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                     Center(
                       child: Column(
                         children: [
-                          _image == null
-                              ? Icon(
-                                  Icons.camera_alt,
-                                  size: 100,
-                                  color: Colors.grey.shade50.withOpacity(0.5),
-                                )
+                          _checkInImage == null
+                              ? Container()
 
                               // view the image captured
                               : Container(
@@ -144,7 +181,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
                                     child: Image.file(
-                                      File(_image!.path),
+                                      _checkInImage!,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -162,7 +199,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                               shadowColor: Colors.black.withOpacity(0.25),
                               elevation: 5,
                             ),
-                            onPressed: _pickImage,
+                            onPressed: () => {_pickImage('checkIn')},
                             child: Text(
                               'Click Photo',
                               style: GoogleFonts.poppins(
@@ -185,7 +222,10 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                               shadowColor: Colors.black.withOpacity(0.25),
                               elevation: 5,
                             ),
-                            onPressed: _submit,
+                            onPressed: () => {
+                              _submit('fillAttendancePunchIn', _checkInImage,
+                                  widget.promoterId)
+                            },
                             child: Text(
                               'Punch In',
                               style: GoogleFonts.poppins(
@@ -202,13 +242,8 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                     Center(
                       child: Column(
                         children: [
-                          _image == null
-                              ? Icon(
-                                  Icons.camera_alt,
-                                  size: 100,
-                                  color: Colors.grey.shade50.withOpacity(0.5),
-                                )
-
+                          _checkOutImage == null
+                              ? Container()
                               // view the image captured
                               : Container(
                                   height: 200,
@@ -231,7 +266,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(20),
                                     child: Image.file(
-                                      File(_image!.path),
+                                      _checkOutImage!,
                                       fit: BoxFit.cover,
                                     ),
                                   ),
@@ -251,7 +286,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                               shadowColor: Colors.black.withOpacity(0.25),
                               elevation: 5,
                             ),
-                            onPressed: _pickImage,
+                            onPressed: () => {_pickImage('checkOut')},
                             child: Text(
                               'Click Photo',
                               style: GoogleFonts.poppins(
@@ -274,7 +309,10 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
                               shadowColor: Colors.black.withOpacity(0.25),
                               elevation: 5,
                             ),
-                            onPressed: _submit,
+                            onPressed: () => {
+                              _submit('fillAttendancePunchOut', _checkOutImage,
+                                  widget.promoterId)
+                            },
                             child: Text(
                               'Punch Out',
                               style: GoogleFonts.poppins(
