@@ -152,9 +152,9 @@ const fetchCampaignDetails = asyncHandler(async (req, res) => {
 
 const createNewForm = asyncHandler(async (req, res) => {
     try {
-        const { campaignId, formFields } = req.body;
+        const { campaignId, formFields, formName } = req.body;
 
-        if (!campaignId || !formFields) {
+        if (!campaignId || !formFields || !formName) {
             return res.status(400).json(new apiError(400, "All data is required."));
         }
 
@@ -168,11 +168,11 @@ const createNewForm = asyncHandler(async (req, res) => {
         const user = {
             campaignId,
             formFields,
-            collectionName: campaignDetails.title,
+            collectionName: formName,
         };
 
         const newForm = await FormFieldSchema.create(user);
-        await mongoose.connection.db.createCollection(campaignDetails.title);
+        await mongoose.connection.db.createCollection(formName);
 
         return res.status(201).json(new apiResponse(201, newForm, "New Form Successfully Created."));
     } catch (error) {
@@ -181,6 +181,40 @@ const createNewForm = asyncHandler(async (req, res) => {
     }
 });
 
+// need to be worked on 
+const createNestedForm = asyncHandler(async (req, res) => {
+    try {
+        const { mainFormId, campaignId, formName, formFields } = req.body;
+
+        if (!mainFormId || !campaignId) {
+            return res.status(400).json(new apiError(400, "mainFormId and campaignId are required"));
+        }
+
+        const fetchFormDetails = await FormFieldSchema.findOne({ _id: mainFormId });
+        console.log(fetchFormDetails);
+        if (!fetchFormDetails) {
+            return res.status(404).json(new apiError(404, "Form not found."));
+        }
+
+        const user = {
+            campaignId,
+            formFields,
+            collectionName: formName,
+        };
+
+        const newForm = await FormFieldSchema.create(user);
+        await mongoose.connection.db.createCollection(formName);
+        
+        fetchFormDetails.nestedForms.push(newForm._id);
+        await fetchFormDetails.save();
+
+        return res.status(200).json(new apiResponse(200, fetchFormDetails, "Form Details Fetched"));
+
+    } catch (error) {
+        console.error('Error creating new campaign:', error);
+        res.status(500).json(new apiError(500, "An error occurred while creating new campaign"));
+    }
+});
 
 const createNewCampaign = asyncHandler(async (req, res) => {
     try {
@@ -189,7 +223,6 @@ const createNewCampaign = asyncHandler(async (req, res) => {
         if (!title || !clientId) {
             return res.status(400).json(new apiError(400, "Title and Client ID are required"));
         }
-
         
         const campaignPicFinalPath = req.files?.campaignPhoto?.[0]?.path;
 
@@ -380,6 +413,7 @@ module.exports = {
     fetchUserRights,
     updateUserRights,
     assignCreatedForm,
+    createNestedForm,
     createNewForm,
     createNewCampaign,
     fetchCampaignDetails,

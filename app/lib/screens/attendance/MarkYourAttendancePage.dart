@@ -21,7 +21,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
   File? _checkInImage;
   File? _checkOutImage;
 
-  final ImagePicker _picker = ImagePicker(); // For picking images
+  final ImagePicker _picker = ImagePicker(); 
 
   Future<void> _pickImage(String choice) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
@@ -367,9 +367,9 @@ void showCustomSnackBar(BuildContext context, String message) {
         borderRadius: BorderRadius.circular(15.0), // Rounded corners
       ),
       margin: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      padding:
-          const EdgeInsets.symmetric(horizontal: 20.0, vertical: 15.0), // Padding
-      duration: const Duration(seconds: 3), // Duration before the Snackbar disappears
+      padding: const EdgeInsets.symmetric(
+          horizontal: 20.0, vertical: 15.0), // Padding
+      duration: const Duration(seconds: 3),
     ),
   );
 }

@@ -4,6 +4,8 @@ const upload = require("../middlewares/multer.middleware");
 const adminController = require('../controllers/admins.controller');
 
     
+router.route("/createNestedForm").post(adminController.createNestedForm);
+
 // create new client 
 router.route("/createNewClient").post(
     upload.fields([

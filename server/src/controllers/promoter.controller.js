@@ -145,8 +145,7 @@ const fetchFormFilledData = asyncHandler(async (req, res) => {
 
         const collection = mongoose.connection.collection(collectionName);
 
-        const result = await collection.find({}).toArray(); // Fetch all documents
-
+        const result = await collection.find({}).toArray(); 
         res.status(200).json(new apiResponse(200, result, "Data fetched successfully."));
     } catch (error) {
         console.error('Error in fetching the data.', error);
@@ -198,15 +197,12 @@ const fillAttendancePunchIn = asyncHandler(async (req, res) => {
 
         console.log(currentDate, punchInTime);
 
-        // Use findOne to check for existing attendance
         const checkAttendance = await AttendanceModel.findOne({ promoterId, date: currentDate });
         console.log(checkAttendance);
 
         if (checkAttendance) {
             return res.status(400).json(new apiError(400, "Already punched in"));
         }
-
-        // Uncomment and adjust if image upload is needed
         
         const logInImagePath = req.files?.loginPhoto?.[0]?.path;
 
@@ -236,7 +232,6 @@ const fillAttendancePunchIn = asyncHandler(async (req, res) => {
 
 
 // punchOut
-
 const fillAttendancePunchOut = asyncHandler(async (req, res) => {
     try {
         const { promoterId } = req.body;
@@ -252,7 +247,6 @@ const fillAttendancePunchOut = asyncHandler(async (req, res) => {
 
         console.log(currentDate, punchOutTime);
 
-        // Use findOne to check for existing attendance
         const checkAttendance = await AttendanceModel.findOne({ promoterId, date: currentDate });
         console.log(checkAttendance);
 
@@ -260,7 +254,6 @@ const fillAttendancePunchOut = asyncHandler(async (req, res) => {
             return res.status(400).json(new apiError(400, "No punch in found." ));
         }
 
-        // Uncomment and adjust if image upload is needed
         const logOutImagePath = req.files?.logOutPhoto?.[0]?.path;
 
         if (!logOutImagePath) {
@@ -285,4 +278,37 @@ const fillAttendancePunchOut = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails , fillAttendancePunchIn, fillAttendancePunchOut};
+const fetchAttendance = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Missing required data fields."));
+        }
+
+        const completeAttendance = await AttendanceModel.find({ promoterId });
+
+        const attendanceWithTotalTime = completeAttendance.map(record => {
+            const punchInTime = new Date(record.punchInTime);
+            const punchOutTime = new Date(record.punchOutTime);
+
+            let totalTime = 0;
+            if (punchInTime && punchOutTime) {
+                totalTime = (punchOutTime - punchInTime) / (1000 * 60 * 60); 
+            }
+
+            return {
+                ...record.toObject(), 
+                totalTime: totalTime.toFixed(2) 
+            };
+        });
+
+        res.status(200).json(new apiResponse(200, attendanceWithTotalTime, "Complete Attendance"));
+
+    } catch (error) {
+        console.error('Error in fetching the data.', error);
+        res.status(400).json(new apiError(400, "Error in fetching Attendance"));
+    }
+});
+
+
+module.exports = { promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails , fillAttendancePunchIn, fillAttendancePunchOut, fetchAttendance};
