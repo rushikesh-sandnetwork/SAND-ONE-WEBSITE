@@ -1,13 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
+import { connect } from 'react-redux';
+
 import { useSelector } from 'react-redux';
 import DraggableItem from './DraggableItem';
 import './DropArea.css';
 import axios from 'axios';
+import { setFullNameData } from './FormFields/actions/fullNameActions';
+import { v4 as uuidv4 } from 'uuid';
+
 import { useParams, useNavigate } from 'react-router-dom';
 import Modal from './Modal';
 
-const DropArea = ({ onDrop }) => {
+const DropArea = ({ onDrop , setFullNameData }) => {
   const [droppedItems, setDroppedItems] = useState([]);
   const [droppedItemNames, setDroppedItemNames] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
@@ -30,6 +35,20 @@ const DropArea = ({ onDrop }) => {
       isOver: monitor.isOver(),
     }),
   }));
+
+  
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const id = uuidv4(); // Generate a unique ID
+      setFullNameData(id, event.target.value, 'Form Title');
+    }
+  };
+
+  useEffect(() => {
+    console.log('Full Name Data List:', fullNameDataList);
+  }, [fullNameDataList]);
+
+
 
   const handleDelete = (id) => {
     setDroppedItems((prevItems) => prevItems.filter((item) => item.id !== id));
@@ -75,7 +94,13 @@ const DropArea = ({ onDrop }) => {
     <div className='drop-area-container'>
       <div className='drop-area' ref={dropRef}>
         <div className="drop-area-title">
-          <p>Create Form Here</p>
+        <input 
+        type="text" 
+        name="formTitle"
+        className="formTitle" placeholder='Create Form Here'
+        onKeyDown={handleKeyPress}
+
+        />
           <input
             type="button"
             className="create-form-btn"
@@ -106,4 +131,11 @@ const DropArea = ({ onDrop }) => {
   );
 };
 
-export default DropArea;
+const mapStateToProps = (state) => ({
+  fullNameDataList: state.fullName.fullNameDataList,
+});
+
+const mapDispatchToProps = {
+  setFullNameData,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(DropArea);

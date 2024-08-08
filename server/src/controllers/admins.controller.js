@@ -125,7 +125,7 @@ const fetchAllClientSpecificCampaigns = asyncHandler(async (req, res) => {
         console.error('Error fetching all campaigns:', error);
         res.status(500).json(new apiError(500, "An error occurred while fetching campaigns"));
     }
-});
+}); 
 
 
 const fetchCampaignDetails = asyncHandler(async (req, res) => {
@@ -152,12 +152,13 @@ const fetchCampaignDetails = asyncHandler(async (req, res) => {
 
 const createNewForm = asyncHandler(async (req, res) => {
     try {
-        const { campaignId, formFields, formName } = req.body;
+        const { campaignId, formFields } = req.body;
 
-        if (!campaignId || !formFields || !formName) {
+        if (!campaignId || !formFields) {
             return res.status(400).json(new apiError(400, "All data is required."));
         }
 
+        const formName = formFields[0]["title"];
 
         const campaignDetails = await campaign.findById(campaignId);
 
