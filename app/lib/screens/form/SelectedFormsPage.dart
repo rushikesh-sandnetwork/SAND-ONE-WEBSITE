@@ -7,11 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../ViewFilledData/FilledData.dart';
+
 class SelectedFormsPage extends StatefulWidget {
   final String formId;
   final String formTitle;
+  final String promoterId;
   const SelectedFormsPage(
-      {super.key, required this.formId, required this.formTitle});
+      {super.key,
+      required this.formId,
+      required this.formTitle,
+      required this.promoterId});
 
   @override
   State<SelectedFormsPage> createState() => _SelectedFormsPageState();
@@ -54,14 +60,25 @@ class _SelectedFormsPageState extends State<SelectedFormsPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) =>
-                                  FormDetailsPage(formId: widget.formId)));
+                              builder: (context) => FormDetailsPage(
+                                  promoterId: widget.promoterId,
+                                  formId: widget.formId)));
                     },
                     child: const Mainpageboxone(
                         title: "Fill Form", icon: Icons.edit_calendar_outlined),
                   ),
-                  const Mainpageboxone(
-                      title: "View Data", icon: Icons.table_chart_rounded)
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                FormDataScreen(formId: widget.formId),
+                          ));
+                    },
+                    child: Mainpageboxone(
+                        title: "View Data", icon: Icons.table_chart_rounded),
+                  )
                 ],
               ),
               const SizedBox(
@@ -72,7 +89,10 @@ class _SelectedFormsPageState extends State<SelectedFormsPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => ViewAllNestedForms(formId : widget.formId)));
+                            builder: (context) => ViewAllNestedForms(
+                                  formId: widget.formId,
+                                  promoterId: widget.promoterId,
+                                )));
                   },
                   child: SelectedPageFormSecondBox(formId: widget.formId)),
               const SizedBox(

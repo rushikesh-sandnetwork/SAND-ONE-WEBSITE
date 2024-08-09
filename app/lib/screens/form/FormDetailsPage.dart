@@ -13,7 +13,8 @@ import '../../utils/FormFields/Number.dart';
 
 class FormDetailsPage extends StatefulWidget {
   final String formId;
-  const FormDetailsPage({required this.formId});
+  final String promoterId;
+  const FormDetailsPage({required this.formId, required this.promoterId});
 
   @override
   State<FormDetailsPage> createState() => _FormDetailsPageState();
@@ -35,6 +36,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
   @override
   void initState() {
     super.initState();
+    _formData["promoterId"] = widget.promoterId;
     _formDetailsFuture = FormService.fetchFormDetails(widget.formId);
   }
 
@@ -150,6 +152,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
       try {
         String collectionName =
             await FormService.fetchCollectionName(widget.formId);
+
         final formData = Map<String, dynamic>.from(_formData);
 
         for (var key in formData.keys) {
@@ -159,6 +162,9 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             formData[key] = base64Encode(bytes);
           }
         }
+
+        // Ensure promoterId is included in the form data
+        formData["promoterId"] = widget.promoterId;
 
         String message =
             await FormService.submitFormData(collectionName, formData);

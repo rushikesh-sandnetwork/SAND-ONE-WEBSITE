@@ -88,6 +88,7 @@ class _FormallformspageState extends State<Formallformspage> {
                                 context,
                                 MaterialPageRoute(
                                     builder: (context) => SelectedFormsPage(
+                                      promoterId: widget.promoterId,
                                         formTitle:
                                             "Form " + (index + 1).toString(),
                                         formId:

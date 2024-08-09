@@ -154,6 +154,10 @@ const fetchFormFilledData = asyncHandler(async (req, res) => {
 });
 
 
+
+
+
+
 const promoterLogin = asyncHandler(async (req, res) => {
     try {
         const { email, password } = req.body;
@@ -311,4 +315,5 @@ const fetchAttendance = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails , fillAttendancePunchIn, fillAttendancePunchOut, fetchAttendance};
+module.exports = { 
+    promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails , fillAttendancePunchIn, fillAttendancePunchOut, fetchAttendance};

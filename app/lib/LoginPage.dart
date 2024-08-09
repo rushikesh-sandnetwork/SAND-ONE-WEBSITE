@@ -39,7 +39,6 @@ class _LoginPageState extends State<LoginPage> {
         var promoterId = jsonResponse['data']['_id'];
 
         if (promoterId != null) {
-          // Navigate to MainScreenPage and pass promoterId
           Navigator.push(
             context,
             MaterialPageRoute(

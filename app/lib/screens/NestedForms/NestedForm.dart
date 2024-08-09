@@ -7,8 +7,9 @@ import '../form/FormAllFormsPage.dart';
 import '../form/SelectedFormsPage.dart';
 
 class ViewAllNestedForms extends StatefulWidget {
+  final String promoterId;
   final String formId;
-  const ViewAllNestedForms({super.key, required this.formId});
+  const ViewAllNestedForms({super.key, required this.formId, required this.promoterId});
 
   @override
   State<ViewAllNestedForms> createState() => _ViewAllNestedFormsState();
@@ -69,7 +70,7 @@ class _ViewAllNestedFormsState extends State<ViewAllNestedForms> {
                               builder: (context) => SelectedFormsPage(
                                   formTitle: "Form " + (index + 1).toString(),
                                   formId:
-                                      snapshot.data!.nestedFormIds[index])));
+                                      snapshot.data!.nestedFormIds[index], promoterId: widget.promoterId,)));
                     },
                     child: FormTabs(
                       id: snapshot.data!.nestedFormIds[index],
