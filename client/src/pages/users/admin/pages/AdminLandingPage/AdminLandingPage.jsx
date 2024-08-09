@@ -4,24 +4,22 @@ import AdminViewClientsPage from '../AdminViewClientsPage/AdminViewClientsPage';
 import AdminProfilePage from '../AdminProfilePage/AdminProfilePage';
 import AdminViewCampaignsPage from '../AdminViewCampaignsPage/AdminViewCampaignsPage';
 import AdminCreateNewClient from '../AdminCreateNewClient/AdminCreateNewClient';
-import AdminCreateNewCampaign from '../AdminCreateNewCampaign/AdminCreateNewCampaign';
 import AdminCampaignDetailsPage from '../AdminCampaignDetailsPage/AdminCampaignDetailsPage';
 import AdminFormDetails from '../AdminFormDetails/AdminFormDetails';
-import AdminFormItems from '../AdminFormItems/AdminFormItems';
 import './AdminLandingPage.css';
-import AdminFormViewData from '../AdminFormViewData/AdminFormViewData';
+import AdminCreateNewCampaign from '../AdminCreateNewCampaign/AdminCreateNewCampaign';
+import AdminFormItems from '../AdminFormItems/AdminFormItems';
 
 const AdminLandingPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [activeClient, setActiveClient] = useState('');
 
-  // Extract the part of activeTab other than 'client-detail'
   const tabName = activeTab.startsWith('client-detail') ? activeTab.substring('client-detail'.length + 1) : activeTab;
   const tabName2 = activeTab.startsWith('createNewCampaign') ? activeTab.substring('createNewCampaign'.length + 1) : activeTab;
   const tabName3 = activeTab.startsWith('campaignDetailsPage') ? activeTab.substring('campaignDetailsPage'.length + 1) : activeTab;
-  const tabName4 = activeTab.startsWith('view-form-details') ? activeTab.substring('view-form-details'.length + 1) : activeTab;
-  const tabName5 = activeTab.startsWith('viewFormItems') ? activeTab.substring('viewFormItems'.length + 1) : activeTab;
-  const tabName6 = activeTab.startsWith('viewFormData') ? activeTab.substring('viewFormData'.length + 1) : activeTab;
+  const tabName4 = activeTab.startsWith('view-all-forms') ? activeTab.substring('view-all-forms'.length + 1) : activeTab;
+  const tabName5 = activeTab.startsWith('viewFormData') ? activeTab.substring('viewFormData'.length + 1) : activeTab;
+  // const tabName6 = activeTab.startsWith('viewFormData') ? activeTab.substring('viewFormData'.length + 1) : activeTab;
 
   return (
     <div className='LandingPage-container'>
@@ -51,12 +49,15 @@ const AdminLandingPage = () => {
         {activeTab.startsWith('campaignDetailsPage') && (
           <AdminCampaignDetailsPage campaignId={tabName3} setActiveTab={setActiveTab} />
         )}
-        {activeTab.startsWith('view-form-details') && (
+        {activeTab.startsWith('view-all-forms') && (
           <AdminFormDetails campaignId={tabName4} setActiveTab={setActiveTab}></AdminFormDetails>
         )}
-        {activeTab.startsWith('viewFormItems') && (
-          <AdminFormItems formId={tabName5} setActiveTab={setActiveTab}/>
+
+        {activeTab.startsWith('viewFormData') && (
+          <AdminFormItems formId={tabName5} setActiveTab={setActiveTab}></AdminFormItems>
         )}
+
+
       </div>
     </div>
   );
