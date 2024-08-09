@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
 import { connect } from 'react-redux';
-
 import { useSelector } from 'react-redux';
 import DraggableItem from './DraggableItem';
 import './DropArea.css';
 import axios from 'axios';
 import { setFullNameData } from './FormFields/actions/fullNameActions';
 import { v4 as uuidv4 } from 'uuid';
-
 import { useParams, useNavigate } from 'react-router-dom';
 import Modal from './Modal';
 
@@ -18,6 +16,8 @@ const DropArea = ({ onDrop , setFullNameData }) => {
   const [successMessage, setSuccessMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formId, setFormId] = useState('');
+  const [nested, setNested] = useState(false);
+
 
   const { campaignId } = useParams();
   const navigate = useNavigate();
@@ -35,6 +35,16 @@ const DropArea = ({ onDrop , setFullNameData }) => {
       isOver: monitor.isOver(),
     }),
   }));
+
+
+  useEffect(() => {
+    const uri = window.location.pathname; // Fetch the current URI
+    if (uri.includes('createNestedForm')) {
+      setNested(true);
+    }
+  }, []);
+
+
 
   
   const handleKeyPress = (event) => {
@@ -64,15 +74,29 @@ const DropArea = ({ onDrop , setFullNameData }) => {
   const handleSubmitForm = async () => {
     try {
       const formFieldsArray = arrayToFormFields(droppedItemNames);
-      const formData = {
-        campaignId,
-        formFields: fullNameDataList,
-      };
+      let response;
+      if(!nested){
+        const formData = {
+          campaignId,
+          formFields: fullNameDataList,
+        };
+  
+        console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
+  
+        response = await axios.post('http://localhost:8080/api/v1/admin/createNewForm', formData);
+      }else{
+        const formData = {
+          mainFormId: campaignId,
+          formFields: fullNameDataList,
+        };
+  
+        console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
+  
+        response = await axios.post('http://localhost:8080/api/v1/admin/createNestedForm', formData);
+      }
 
-      console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
-
-      const response = await axios.post('http://localhost:8080/api/v1/admin/createNewForm', formData);
-      if (response.status === 201) {
+     
+      if (response.status === 200) {
         setSuccessMessage('Form submitted successfully!');
         setShowModal(true);
         setFormId(response.data.data._id); // Ensure you access the correct path in response
