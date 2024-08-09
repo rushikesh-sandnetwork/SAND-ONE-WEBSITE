@@ -123,7 +123,8 @@ const DropArea = ({ onDrop , setFullNameData }) => {
       </div>
       {showModal && (
         <Modal
-          message={successMessage}
+        formId={formId}
+          message={`Form Created Successfully.`}
           onClose={closeModal}
         />
       )}
