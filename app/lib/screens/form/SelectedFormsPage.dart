@@ -1,6 +1,8 @@
+import 'package:app/screens/NestedForms/NestedForm.dart';
 import 'package:app/screens/form/FormDetailsPage.dart';
 import 'package:app/utils/MainPageBox/MainPageBoxOne.dart';
 import 'package:app/utils/MainPageBox/SelectedPageFormBox.dart';
+import 'package:app/utils/MainPageBox/SelectedPageFormSecondBox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -40,7 +42,7 @@ class _SelectedFormsPageState extends State<SelectedFormsPage> {
         ),
         backgroundColor: Colors.black,
         body: Container(
-          margin: EdgeInsets.fromLTRB(20, 10, 20, 10),
+          margin: const EdgeInsets.fromLTRB(20, 10, 20, 10),
           child: Column(
             children: [
               Row(
@@ -55,18 +57,29 @@ class _SelectedFormsPageState extends State<SelectedFormsPage> {
                               builder: (context) =>
                                   FormDetailsPage(formId: widget.formId)));
                     },
-                    child: Mainpageboxone(
+                    child: const Mainpageboxone(
                         title: "Fill Form", icon: Icons.edit_calendar_outlined),
                   ),
-                  Mainpageboxone(
+                  const Mainpageboxone(
                       title: "View Data", icon: Icons.table_chart_rounded)
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
-              SelectedPageFormBox(
-                  title: "Forms Filled", icon: Icons.check_rounded)
+              GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => ViewAllNestedForms(formId : widget.formId)));
+                  },
+                  child: SelectedPageFormSecondBox(formId: widget.formId)),
+              const SizedBox(
+                height: 20,
+              ),
+              const SelectedPageFormBox(
+                  title: "Forms Filled", icon: Icons.check_rounded),
             ],
           ),
         ));

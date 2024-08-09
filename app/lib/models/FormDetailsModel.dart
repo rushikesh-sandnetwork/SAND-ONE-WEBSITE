@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:async/async.dart';
@@ -10,6 +8,7 @@ class FormService {
   static const String baseUrl =
       'http://192.168.31.139:8080/api/v1/promoter/fetchFormField';
 
+  /// Fetch form details including campaignId, formFields, and collectionName
   static Future<FormDetails> fetchFormDetails(String formId) async {
     try {
       final url = Uri.parse(baseUrl);
@@ -31,6 +30,7 @@ class FormService {
     }
   }
 
+  /// Fetch collection name for a specific form
   static Future<String> fetchCollectionName(String formId) async {
     try {
       final url = Uri.parse(baseUrl);
@@ -52,6 +52,7 @@ class FormService {
     }
   }
 
+  /// Submit form data to the server
   static Future<String> submitFormData(
       String collectionName, Map<String, dynamic> data) async {
     final url = Uri.parse(
@@ -79,30 +80,32 @@ class FormService {
       var response = await request.send();
 
       if (response.statusCode == 200) {
-        print('Data saved successfully');
         return "Data Saved Successfully";
       } else {
         throw Exception(
             'Failed to save data. Status code: ${response.statusCode}');
       }
     } catch (e) {
-      print('Error saving data: $e');
       throw Exception('Failed to save data. Error: $e');
     }
   }
 }
 
+/// Model class to represent form details
 class FormDetails {
   final String campaignId;
   final List<Map<String, dynamic>> formFields;
   final String collectionName;
+  final List<String> nestedFormIds; // Added nested form IDs
 
   FormDetails({
     required this.campaignId,
     required this.formFields,
     required this.collectionName,
+    required this.nestedFormIds, // Initialize nested form IDs
   });
 
+  /// Factory method to parse JSON data into FormDetails
   factory FormDetails.fromJson(Map<String, dynamic> json) {
     List<Map<String, dynamic>> fields =
         (json['formFields'] as List).map((field) {
@@ -113,10 +116,14 @@ class FormDetails {
       };
     }).toList();
 
+    List<String> nestedForms = 
+        List<String>.from(json['nestedForms'] as List);
+
     return FormDetails(
       campaignId: json['campaignId'],
       formFields: fields,
       collectionName: json['collectionName'],
+      nestedFormIds: nestedForms, // Parse nested form IDs
     );
   }
 }

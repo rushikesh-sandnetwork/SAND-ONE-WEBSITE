@@ -4,29 +4,7 @@ import 'package:app/utils/FormButtons/FormTabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-
-class PromoterService {
-  static const String baseUrl =
-      'http://192.168.31.139:8080/api/v1/promoter/fetchPromoterDetails';
-  static Future<PromoterDetails> fetchPromoterDetails(String promoterId) async {
-    final url = Uri.parse(baseUrl);
-    final response = await http.post(
-      url,
-      headers: {'Content-Type': 'application/json'},
-      body: jsonEncode({'promoterId': promoterId}),
-    );
-
-    print('API Response Status Code: ${response.statusCode}');
-    print('API Response Body: ${response.body}');
-
-    if (response.statusCode == 200) {
-      var jsonResponse = jsonDecode(response.body);
-      return PromoterDetails.fromJson(jsonResponse['data']);
-    } else {
-      throw Exception('Failed to fetch promoter details');
-    }
-  }
-}
+import '../../service/promoterService.dart';
 
 class PromoterDetails {
   final String id;
