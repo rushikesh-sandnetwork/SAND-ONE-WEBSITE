@@ -16,6 +16,7 @@ function App() {
         <Route path="/" element={<LoginPage />} />
         <Route path="/admin" element={<AdminLandingPage />} />
         <Route path="/admin/createNewForm/:campaignId" element={<AdminCreateForms />} />
+        <Route path="/admin/createNestedForm/:campaignId" element={<AdminCreateForms />} />
         <Route path="/admin/viewFormData/:formId" element={<AdminFormViewData></AdminFormViewData>} />
         <Route path="/admin/assignForm/:formId" element={<AdminAssignCreatedForm />} />
         <Route path="/admin/acceptData/:formId" element={<AdminAcceptedData />} />

@@ -1,21 +1,32 @@
-import React from 'react'
+import React from 'react';
 import './CampaignDetailsBox.css';
-const CampaignDetailsBox = ({campaignId, title , url , imgSrc,setActiveTab}  ) => {
+import { useNavigate } from 'react-router-dom';
+
+const CampaignDetailsBox = ({ campaignId, title, url, imgSrc, setActiveTab }) => {
+  const navigate = useNavigate();
+
+  const handleNextClick = () => {
+    if (url == "create-form") {
+      navigate(`/admin/createNewForm/${campaignId}`);
+
+    } else {
+      setActiveTab(`${url}/${campaignId}`)
+    }
+  };
+
   return (
     <div className="campaign-detail-box">
-        <div className="icon-box">
-            <img src={imgSrc} alt="" />
-        </div>
-        <input type="button" className='detailsBtn' value={title} onClick={()=>{setActiveTab(`${url}/${campaignId}`)}}/>
+      <div className="icon-box">
+        <img src={imgSrc} alt="" />
+      </div>
+      <input
+        type="button"
+        className="detailsBtn"
+        value={title}
+        onClick={handleNextClick}
+      />
     </div>
-  )
+  );
 }
 
-
-
-// imgSrc="https://cdn-icons-png.flaticon.com/512/4074/4074958.png"
-//             title="CREATE FORM"
-//             url="create-form"
-//             setActiveTab={setActiveTab}
-//             campaignId={campaignId}
-export default CampaignDetailsBox
+export default CampaignDetailsBox;
