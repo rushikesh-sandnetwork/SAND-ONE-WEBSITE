@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -25,7 +24,7 @@ Future<List<Map<String, dynamic>>> fetchFormFilledData(String formId) async {
 class FormDataScreen extends StatelessWidget {
   final String formId;
 
-  FormDataScreen({required this.formId});
+  const FormDataScreen({super.key, required this.formId});
 
   @override
   Widget build(BuildContext context) {
@@ -54,31 +53,31 @@ class FormDataScreen extends StatelessWidget {
         future: fetchFormFilledData(formId),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return Center(child: CircularProgressIndicator());
+            return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
                 child: Text('Error: ${snapshot.error}',
-                    style: TextStyle(color: Colors.white)));
+                    style: const TextStyle(color: Colors.white)));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(
+            return const Center(
                 child: Text('No data available',
                     style: TextStyle(color: Colors.white)));
           } else {
             final data = snapshot.data!;
             return ListView.builder(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               itemCount: data.length,
               itemBuilder: (context, index) {
                 final entry = data[index];
                 return Card(
-                  margin: EdgeInsets.only(bottom: 16.0),
+                  margin: const EdgeInsets.only(bottom: 16.0),
                   color: Colors.grey[900], // Dark card background
                   elevation: 4.0,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10.0),
                   ),
                   child: Padding(
-                    padding: EdgeInsets.all(16.0),
+                    padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: entry.entries.map((e) {
@@ -91,7 +90,7 @@ class FormDataScreen extends StatelessWidget {
                                 flex: 5,
                                 child: Text(
                                   '${e.key}:',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.bold,
                                     color: Colors
                                         .teal[200], // Light teal for key text
@@ -102,9 +101,8 @@ class FormDataScreen extends StatelessWidget {
                                 flex: 7,
                                 child: Text(
                                   e.value.toString(),
-                                  style: TextStyle(
-                                    color: Colors
-                                        .grey[300], // Light grey for value text
+                                  style: GoogleFonts.poppins(
+                                    color: Colors.grey[300],
                                   ),
                                 ),
                               ),

@@ -10,7 +10,8 @@ const campaign = require("../models/campaign.model")
 const Promoter = require("../models/promoter.model")
 const campaignRights = require("../models/campaignsRightSchema.model")
 const FormFieldSchema = require("../models/forms.fields.model")
-const asyncHandler = require("../utils/asyncHandler")
+const asyncHandler = require("../utils/asyncHandler");
+const formsFieldsModel = require("../models/forms.fields.model");
 
 
 
@@ -383,10 +384,12 @@ const fetchNumberOfClientsAndCampaigns = asyncHandler(async (req, res) => {
     try {
         const numberOfClients = await client.countDocuments();
         const numberOfCampaigns = await campaign.countDocuments();
+        const numberOfForms = await formsFieldsModel.countDocuments();
 
         const data = {
             "numberOfClients": numberOfClients,
-            "numberOfCampaigns": numberOfCampaigns
+            "numberOfCampaigns": numberOfCampaigns,
+            "numberOfForms": numberOfForms
         }
 
         res.status(200).json(new apiResponse(200, data, "Number of Documents fetched."));
