@@ -20,6 +20,6 @@ router.route("/registerUser").post(
 router.post('/logout', verifyJWT, userController.logoutUser);
 
 // fetching user details
-router.route('/userDetails').get(userController.userDetails);
+router.route('/userDetails').post(userController.userDetails);
 
 module.exports = router;

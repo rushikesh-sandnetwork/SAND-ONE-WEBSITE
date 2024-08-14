@@ -136,9 +136,11 @@ const userDetails = asyncHandler(async (req, res) => {
     if (!userId) {
       return res.status(400).json(new apiError(400, "User Id not provided."));
     }
-
-    const fetchedUser = await User.findById({ userId });
-
+    console.log(userId);
+    
+    const fetchedUser = await User.findById(userId);
+    console.log(fetchedUser);
+    
     if (!fetchedUser) {
       return res.status(400).json(new apiError(400, "No user found with the given ID"));
     };
