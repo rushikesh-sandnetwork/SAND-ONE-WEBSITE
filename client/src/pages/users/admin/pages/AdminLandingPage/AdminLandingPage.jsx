@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AdminOverViewPage from '../AdminOverViewPage/AdminOverViewPage';
 import AdminViewClientsPage from '../AdminViewClientsPage/AdminViewClientsPage';
 import AdminProfilePage from '../AdminProfilePage/AdminProfilePage';
@@ -14,12 +15,18 @@ const AdminLandingPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [activeClient, setActiveClient] = useState('');
 
+  const navigate = useNavigate(); // Initialize useNavigate
+
   const tabName = activeTab.startsWith('client-detail') ? activeTab.substring('client-detail'.length + 1) : activeTab;
   const tabName2 = activeTab.startsWith('createNewCampaign') ? activeTab.substring('createNewCampaign'.length + 1) : activeTab;
   const tabName3 = activeTab.startsWith('campaignDetailsPage') ? activeTab.substring('campaignDetailsPage'.length + 1) : activeTab;
   const tabName4 = activeTab.startsWith('view-all-forms') ? activeTab.substring('view-all-forms'.length + 1) : activeTab;
   const tabName5 = activeTab.startsWith('viewFormData') ? activeTab.substring('viewFormData'.length + 1) : activeTab;
-  // const tabName6 = activeTab.startsWith('viewFormData') ? activeTab.substring('viewFormData'.length + 1) : activeTab;
+
+  const handleLogout = () => {
+    // Perform any logout actions you need here (e.g., clearing tokens)
+    navigate('/'); // Redirect to login page
+  };
 
   return (
     <div className='LandingPage-container'>
@@ -30,7 +37,7 @@ const AdminLandingPage = () => {
           <a onClick={() => setActiveTab('newClient')}>New Client</a>
           <a onClick={() => setActiveTab('viewClients')}>View Clients</a>
           <a onClick={() => setActiveTab('profile')}>Profile</a>
-          <input type="button" value="Logout" />
+          <input type="button" value="Logout" onClick={handleLogout} /> {/* Updated Logout Button */}
         </div>
       </div>
       <div className='content'>
@@ -50,14 +57,11 @@ const AdminLandingPage = () => {
           <AdminCampaignDetailsPage campaignId={tabName3} setActiveTab={setActiveTab} />
         )}
         {activeTab.startsWith('view-all-forms') && (
-          <AdminFormDetails campaignId={tabName4} setActiveTab={setActiveTab}></AdminFormDetails>
+          <AdminFormDetails campaignId={tabName4} setActiveTab={setActiveTab} />
         )}
-
         {activeTab.startsWith('viewFormData') && (
-          <AdminFormItems formId={tabName5} setActiveTab={setActiveTab}></AdminFormItems>
+          <AdminFormItems formId={tabName5} setActiveTab={setActiveTab} />
         )}
-
-
       </div>
     </div>
   );
