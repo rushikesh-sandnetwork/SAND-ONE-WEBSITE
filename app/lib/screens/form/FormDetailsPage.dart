@@ -2,7 +2,9 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../../models/FormDetailsModel.dart';
+import 'package:http/http.dart' as http;
+import 'package:path/path.dart';
+import 'package:async/async.dart';
 import '../../utils/FormFields/Address.dart';
 import '../../utils/FormFields/Appointment.dart';
 import '../../utils/FormFields/Email.dart';
@@ -11,10 +13,123 @@ import '../../utils/FormFields/Image.dart';
 import '../../utils/FormFields/LongText.dart';
 import '../../utils/FormFields/Number.dart';
 
+class FormService {
+  static const String baseUrl =
+      'http://192.168.31.139:8080/api/v1/promoter/fetchFormField';
+
+  static Future<FormDetails> fetchFormDetails(String formId) async {
+    try {
+      final url = Uri.parse(baseUrl);
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'formId': formId}),
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        return FormDetails.fromJson(jsonResponse['data'][0]);
+      } else {
+        throw Exception(
+            'Failed to fetch form details. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch form details. Error: $e');
+    }
+  }
+
+  static Future<String> fetchCollectionName(String formId) async {
+    try {
+      final url = Uri.parse(baseUrl);
+      final response = await http.post(
+        url,
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'formId': formId}),
+      );
+
+      if (response.statusCode == 200) {
+        var jsonResponse = jsonDecode(response.body);
+        return jsonResponse['data'][0]['collectionName'];
+      } else {
+        throw Exception(
+            'Failed to fetch collection name. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      throw Exception('Failed to fetch collection name. Error: $e');
+    }
+  }
+
+  static Future<void> submitFormData(
+      String collectionName, Map<String, dynamic> data) async {
+    final url = Uri.parse(
+        'http://192.168.31.139:8080/api/v1/promoter/fillFormData/$collectionName');
+
+    var request = http.MultipartRequest('POST', url);
+
+    try {
+      for (var entry in data.entries) {
+        var key = entry.key;
+        var value = entry.value;
+
+        if (value is File) {
+          var stream =
+              http.ByteStream(DelegatingStream.typed(value.openRead()));
+          var length = await value.length();
+          var multipartFile = http.MultipartFile(key, stream, length,
+              filename: basename(value.path));
+          request.files.add(multipartFile);
+        } else {
+          request.fields[key] = value.toString();
+        }
+      }
+
+      var response = await request.send();
+
+      if (response.statusCode == 200) {
+        print('Data saved successfully');
+      } else {
+        throw Exception(
+            'Failed to save data. Status code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error saving data: $e');
+      throw Exception('Failed to save data. Error: $e');
+    }
+  }
+}
+
+class FormDetails {
+  final String campaignId;
+  final List<Map<String, dynamic>> formFields;
+  final String collectionName;
+
+  FormDetails({
+    required this.campaignId,
+    required this.formFields,
+    required this.collectionName,
+  });
+
+  factory FormDetails.fromJson(Map<String, dynamic> json) {
+    List<Map<String, dynamic>> fields =
+        (json['formFields'] as List).map((field) {
+      return {
+        'type': field['type'],
+        'title': field['title'],
+        'uniqueId': field['uniqueId'],
+      };
+    }).toList();
+
+    return FormDetails(
+      campaignId: json['campaignId'],
+      formFields: fields,
+      collectionName: json['collectionName'],
+    );
+  }
+}
+
 class FormDetailsPage extends StatefulWidget {
   final String formId;
-  final String promoterId;
-  const FormDetailsPage({required this.formId, required this.promoterId});
+  const FormDetailsPage({required this.formId, required String promoterId});
 
   @override
   State<FormDetailsPage> createState() => _FormDetailsPageState();
@@ -36,7 +151,6 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
   @override
   void initState() {
     super.initState();
-    _formData["promoterId"] = widget.promoterId;
     _formDetailsFuture = FormService.fetchFormDetails(widget.formId);
   }
 
@@ -122,6 +236,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             _handleImageChange(fieldTitle, file);
           },
         );
+
       case 'Long Text':
         return LongText(
           longTextTitle: fieldTitle,
@@ -132,6 +247,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             });
           },
         );
+
       case 'Number':
         return Number(
           initialValue: _formData[fieldTitle],
@@ -146,35 +262,20 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     }
   }
 
-  Future<String> _submitForm() async {
+  void _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
+      print(_formData);
       try {
         String collectionName =
             await FormService.fetchCollectionName(widget.formId);
-
-        final formData = Map<String, dynamic>.from(_formData);
-
-        for (var key in formData.keys) {
-          if (formData[key] is File) {
-            final file = formData[key] as File;
-            final bytes = await file.readAsBytes();
-            formData[key] = base64Encode(bytes);
-          }
-        }
-
-        // Ensure promoterId is included in the form data
-        formData["promoterId"] = widget.promoterId;
-
-        String message =
-            await FormService.submitFormData(collectionName, formData);
-        return message;
+        await FormService.submitFormData(collectionName, _formData);
+        print('Form submitted successfully!');
       } catch (e) {
         print('Error submitting form: $e');
-        return "Error submitting form";
+        // Handle error as needed
       }
     }
-    return "There is some error";
   }
 
   @override
@@ -182,7 +283,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
+        automaticallyImplyLeading: false, // This removes the leading icon
         title: Text(
           'Form Details',
           style: GoogleFonts.poppins(
@@ -207,10 +308,10 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3),
+              color: Colors.grey.withOpacity(0.1), // Shadow color
+              spreadRadius: 5, // Spread radius
+              blurRadius: 7, // Blur radius
+              offset: Offset(0, 3), // Offset in x and y directions
             ),
           ],
         ),
@@ -235,10 +336,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
                           .toList(),
                       SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: () async {
-                          String message = await _submitForm();
-                          // Handle response or show a message
-                        },
+                        onPressed: _submitForm,
                         child: Text('Submit', style: GoogleFonts.poppins()),
                       ),
                     ],

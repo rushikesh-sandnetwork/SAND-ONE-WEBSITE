@@ -87,19 +87,21 @@ class _SelectedFormsPageState extends State<SelectedFormsPage> {
               GestureDetector(
                   onTap: () {
                     Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => ViewAllNestedForms(
-                                  formId: widget.formId,
-                                  promoterId: widget.promoterId,
-                                )));
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ViewAllNestedForms(
+                          formId: widget.formId,
+                          promoterId: widget.promoterId,
+                        ),
+                      ),
+                    );
                   },
                   child: SelectedPageFormSecondBox(formId: widget.formId)),
               const SizedBox(
                 height: 20,
               ),
-              const SelectedPageFormBox(
-                  title: "Forms Filled", icon: Icons.check_rounded),
+              // const SelectedPageFormBox(
+              //     title: "Forms Filled", icon: Icons.check_rounded),
             ],
           ),
         ));
