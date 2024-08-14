@@ -43,6 +43,7 @@ const registerUser = asyncHandler(async (req, res) => {
   res.status(201).json(new apiResponse(201, createdUser, "User successfully registered"));
 });
 
+// this is the commit in phase 2
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;

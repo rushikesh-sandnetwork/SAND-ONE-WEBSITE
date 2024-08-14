@@ -9,7 +9,7 @@ import { v4 as uuidv4 } from 'uuid';
 const FullName = ({ fullNameDataList, setFullNameData }) => {
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      const id = uuidv4(); // Generate a unique ID
+      const id = uuidv4(); 
       setFullNameData(id, event.target.value, 'Full Name');
     }
   };
