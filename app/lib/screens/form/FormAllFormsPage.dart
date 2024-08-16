@@ -5,21 +5,29 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import '../../service/promoterService.dart';
-
 class PromoterDetails {
   final String id;
+  final String name;
+  final String email;
   final List<String> formIds;
 
-  PromoterDetails({required this.id, required this.formIds});
+  PromoterDetails({
+    required this.id,
+    required this.name,
+    required this.email,
+    required this.formIds,
+  });
 
   factory PromoterDetails.fromJson(Map<String, dynamic> json) {
-    print('JSON Data: $json');
     return PromoterDetails(
-      id: json['_id'],
-      formIds: List<String>.from(json['forms'].map((form) => form.toString())),
+      id: json['_id'] ?? '',
+      name: json['promoterName'] ?? '',
+      email: json['promoterEmailId'] ?? '',
+      formIds: List<String>.from(json['forms'] ?? []),
     );
   }
 }
+
 
 class Formallformspage extends StatefulWidget {
   final String promoterId;

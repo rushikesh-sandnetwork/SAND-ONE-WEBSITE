@@ -262,7 +262,7 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     }
   }
 
-  void _submitForm() async {
+  Future<String> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       print(_formData);
@@ -271,11 +271,15 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             await FormService.fetchCollectionName(widget.formId);
         await FormService.submitFormData(collectionName, _formData);
         print('Form submitted successfully!');
+        setState(() {
+          _formData.clear(); // This clears the data
+        });
+        return "Form Submitted Successfully!";
       } catch (e) {
-        print('Error submitting form: $e');
-        // Handle error as needed
+        return "Error in submitting form";
       }
     }
+    return "";
   }
 
   @override
@@ -308,10 +312,10 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
           color: Colors.white,
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1), // Shadow color
-              spreadRadius: 5, // Spread radius
-              blurRadius: 7, // Blur radius
-              offset: Offset(0, 3), // Offset in x and y directions
+              color: Colors.grey.withOpacity(0.1),
+              spreadRadius: 5,
+              blurRadius: 7,
+              offset: Offset(0, 3),
             ),
           ],
         ),
@@ -336,7 +340,21 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
                           .toList(),
                       SizedBox(height: 20),
                       ElevatedButton(
-                        onPressed: _submitForm,
+                        onPressed: () async {
+                          String msg = await _submitForm();
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                msg,
+                                style: GoogleFonts.poppins(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w300,
+                                    fontSize: 16),
+                              ),
+                              backgroundColor: Colors.black,
+                            ),
+                          );
+                        },
                         child: Text('Submit', style: GoogleFonts.poppins()),
                       ),
                     ],

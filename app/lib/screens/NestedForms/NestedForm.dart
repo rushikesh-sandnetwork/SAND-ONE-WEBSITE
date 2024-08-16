@@ -9,7 +9,8 @@ import '../form/SelectedFormsPage.dart';
 class ViewAllNestedForms extends StatefulWidget {
   final String promoterId;
   final String formId;
-  const ViewAllNestedForms({super.key, required this.formId, required this.promoterId});
+  const ViewAllNestedForms(
+      {super.key, required this.formId, required this.promoterId});
 
   @override
   State<ViewAllNestedForms> createState() => _ViewAllNestedFormsState();
@@ -58,27 +59,34 @@ class _ViewAllNestedFormsState extends State<ViewAllNestedForms> {
             if (snapshot.data!.nestedFormIds.isEmpty) {
               return const Center(child: Text('No form IDs found'));
             }
-            return Expanded(
-              child: ListView.builder(
-                itemCount: snapshot.data!.nestedFormIds.length,
-                itemBuilder: (context, index) {
-                  return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => SelectedFormsPage(
-                                  formTitle: "Form " + (index + 1).toString(),
-                                  formId:
-                                      snapshot.data!.nestedFormIds[index], promoterId: widget.promoterId,)));
+            return Column(
+              children: [
+                Expanded(
+                  child: ListView.builder(
+                    itemCount: snapshot.data!.nestedFormIds.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => SelectedFormsPage(
+                                        formTitle:
+                                            "Form " + (index + 1).toString(),
+                                        formId:
+                                            snapshot.data!.nestedFormIds[index],
+                                        promoterId: widget.promoterId,
+                                      )));
+                        },
+                        child: FormTabs(
+                          id: snapshot.data!.nestedFormIds[index],
+                          title: "Form " + (index + 1).toString(),
+                        ),
+                      );
                     },
-                    child: FormTabs(
-                      id: snapshot.data!.nestedFormIds[index],
-                      title: "Form " + (index + 1).toString(),
-                    ),
-                  );
-                },
-              ),
+                  ),
+                ),
+              ],
             );
           } else {
             return const Center(child: Text('No data found'));

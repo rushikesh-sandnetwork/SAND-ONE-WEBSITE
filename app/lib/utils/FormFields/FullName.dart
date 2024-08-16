@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FullName extends StatefulWidget {
-  final FormFieldSetter<String>? onChangedFirstName;
-  final FormFieldSetter<String>? onChangedLastName;
+  final ValueChanged<String>? onChangedFirstName;
+  final ValueChanged<String>? onChangedLastName;
   final String? initialFirstName;
   final String? initialLastName;
   final String fullNameTitle;
@@ -57,7 +57,11 @@ class _FullNameState extends State<FullName> {
               Expanded(
                 child: TextFormField(
                   controller: firstNameController,
-                  onChanged: widget.onChangedFirstName,
+                  onChanged: (value) {
+                    if (widget.onChangedFirstName != null) {
+                      widget.onChangedFirstName!(value);
+                    }
+                  },
                   decoration: InputDecoration(
                     labelText: 'First Name',
                     border: OutlineInputBorder(
@@ -71,7 +75,11 @@ class _FullNameState extends State<FullName> {
               Expanded(
                 child: TextFormField(
                   controller: lastNameController,
-                  onChanged: widget.onChangedLastName,
+                  onChanged: (value) {
+                    if (widget.onChangedLastName != null) {
+                      widget.onChangedLastName!(value);
+                    }
+                  },
                   decoration: InputDecoration(
                     labelText: 'Last Name',
                     border: OutlineInputBorder(
