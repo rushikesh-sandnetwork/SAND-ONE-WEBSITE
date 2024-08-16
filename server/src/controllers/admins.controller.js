@@ -126,7 +126,7 @@ const fetchAllClientSpecificCampaigns = asyncHandler(async (req, res) => {
         console.error('Error fetching all campaigns:', error);
         res.status(500).json(new apiError(500, "An error occurred while fetching campaigns"));
     }
-}); 
+});
 
 
 const fetchCampaignDetails = asyncHandler(async (req, res) => {
@@ -160,7 +160,7 @@ const createNewForm = asyncHandler(async (req, res) => {
         }
 
         console.log("wkring");
-        
+
 
         const formName = formFields[0]["title"];
 
@@ -171,7 +171,7 @@ const createNewForm = asyncHandler(async (req, res) => {
         }
 
         console.log("working till here");
-        
+
 
         const user = {
             campaignId,
@@ -181,7 +181,7 @@ const createNewForm = asyncHandler(async (req, res) => {
 
 
         console.log(user);
-        
+
 
         const newForm = await FormFieldSchema.create(user);
         await mongoose.connection.db.createCollection(formName);
@@ -217,11 +217,11 @@ const createNestedForm = asyncHandler(async (req, res) => {
 
         const newForm = await FormFieldSchema.create(user);
         await mongoose.connection.db.createCollection(formName);
-        
+
         fetchFormDetails.nestedForms.push(newForm._id);
         await fetchFormDetails.save();
         console.log("finally created but message issue");
-        
+
         return res.status(200).json(new apiResponse(200, fetchFormDetails, "Form Details Fetched"));
 
     } catch (error) {
@@ -237,7 +237,7 @@ const createNewCampaign = asyncHandler(async (req, res) => {
         if (!title || !clientId) {
             return res.status(400).json(new apiError(400, "Title and Client ID are required"));
         }
-        
+
         const campaignPicFinalPath = req.files?.campaignPhoto?.[0]?.path;
 
         if (!campaignPicFinalPath) {
@@ -421,6 +421,62 @@ const fetchFormsForCampaigns = asyncHandler(async (req, res) => {
 });
 
 
+const acceptRejectData = asyncHandler(async (req, res) => {
+    try {
+        const { itemId, formId, acceptData } = req.body;
+
+        if (!formId || acceptData === undefined || !itemId) {
+            return res.status(400).json({ message: 'Invalid input' });
+        }
+
+        const form = await FormFieldSchema.findById(formId);
+
+        if (!form) {
+            return res.status(404).json({ message: 'Form not found' });
+        }
+
+        console.log('Form details:', form);
+        
+        const collectionName = form.collectionName;
+
+        // Check if the collectionName is valid
+        if (!collectionName) {
+            return res.status(400).json({ message: 'Collection name not found' });
+        }
+
+        // Check if the model already exists
+        let DynamicModel = mongoose.models[collectionName];
+
+        if (!DynamicModel) {
+            // If the model does not exist, create it
+            const schema = new mongoose.Schema({}, { strict: false });
+            DynamicModel = mongoose.model(collectionName, schema, collectionName);
+        }
+
+        // Update the document in the dynamic collection
+        const result = await DynamicModel.findByIdAndUpdate(
+            itemId,
+            { acceptedData: acceptData },
+            { new: true, runValidators: true }
+        );
+
+        console.log('Update result:', result);
+
+        if (!result) {
+            return res.status(404).json({ message: 'Data not found' });
+        }
+
+        return res.status(200).json({ message: 'Data updated successfully', data: result });
+
+    } catch (error) {
+        console.error('Error in updating the data:', error);
+        return res.status(500).json({ message: 'Internal Server Error', error: error.message });
+    }
+});
+
+
+
+
 module.exports = {
     fetchFormsForCampaigns,
     fetchNumberOfClientsAndCampaigns,
@@ -428,6 +484,7 @@ module.exports = {
     fetchData,
     fetchUserRights,
     updateUserRights,
+    acceptRejectData,
     assignCreatedForm,
     createNestedForm,
     createNewForm,

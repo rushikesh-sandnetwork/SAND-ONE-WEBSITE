@@ -39,23 +39,67 @@ const AdminFormViewData = () => {
         }
     };
 
+    const updateAcceptedData = async (itemId, accepted) => {
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/admin/updateAcceptedData', {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    formId: formId,
+                    itemId: itemId,
+                    acceptData: accepted,
+                }),
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                fetchData();
+            } else {
+                setError(result.message);
+            }
+        } catch (err) {
+            setError('Error updating data');
+        }
+    };
+
+    const handleAccept = (itemId) => {
+        updateAcceptedData(itemId, true);
+    };
+
+    const handleReject = (itemId) => {
+        updateAcceptedData(itemId, false);
+    };
+
     const renderTableHeaders = () => {
         if (formData.length === 0) return null;
         const keys = Object.keys(formData[0]);
-        const filteredKeys = keys.filter(key => key !== '_id');
-        return filteredKeys.map((key) => <th key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</th>);
+        const filteredKeys = keys.filter(key => key !== '_id'); // Exclude '_id'
+        return (
+            <>
+                {filteredKeys.map((key) => (
+                    <th key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</th>
+                ))}
+                <th>Action</th> {/* Added Action column */}
+            </>
+        );
     };
 
     const renderTableRows = () => {
         return formData.map((item) => (
             <tr key={item._id}>
                 {Object.keys(item)
-                    .filter(key => key !== '_id')
+                    .filter(key => key !== '_id') // Exclude '_id'
                     .map((key) => (
                         <td key={key}>
-                            {renderCellContent(item[key])}
+                            {key === 'acceptedData' ? renderAcceptedDataCell(item[key]) : renderCellContent(item[key])}
                         </td>
                     ))}
+                <td>
+                    <button onClick={() => handleAccept(item._id)}>Accept</button>
+                    <button onClick={() => handleReject(item._id)}>Reject</button>
+                </td>
             </tr>
         ));
     };
@@ -73,6 +117,10 @@ const AdminFormViewData = () => {
         } else {
             return value;
         }
+    };
+
+    const renderAcceptedDataCell = (value) => {
+        return value ? 'Accepted' : 'Rejected';
     };
 
     const isURL = (value) => {
@@ -107,16 +155,19 @@ const AdminFormViewData = () => {
 
     const convertToCSV = (data) => {
         const keys = Object.keys(data[0]);
-        const header = keys.filter(key => key !== '_id').map(key => key.charAt(0).toUpperCase() + key.slice(1)).join(',');
+        const header = keys.filter(key => key !== '_id') // Exclude '_id'
+            .map(key => key.charAt(0).toUpperCase() + key.slice(1))
+            .join(',');
         const rows = data.map(row => {
-            return keys.filter(key => key !== '_id').map(key => {
-                let cell = row[key] === null || row[key] === undefined ? '' : row[key];
-                cell = cell.toString().replace(/"/g, '""');
-                if (cell.search(/("|,|\n)/g) >= 0) {
-                    cell = `"${cell}"`;
-                }
-                return cell;
-            }).join(',');
+            return keys.filter(key => key !== '_id') // Exclude '_id'
+                .map(key => {
+                    let cell = row[key] === null || row[key] === undefined ? '' : row[key];
+                    cell = cell.toString().replace(/"/g, '""');
+                    if (cell.search(/("|,|\n)/g) >= 0) {
+                        cell = `"${cell}"`;
+                    }
+                    return cell;
+                }).join(',');
         });
         return `${header}\n${rows.join('\n')}`;
     };
@@ -163,4 +214,3 @@ const AdminFormViewData = () => {
 };
 
 export default AdminFormViewData;
-    

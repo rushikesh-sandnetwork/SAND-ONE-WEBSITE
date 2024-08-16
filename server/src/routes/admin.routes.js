@@ -5,6 +5,7 @@ const adminController = require('../controllers/admins.controller');
 
     
 router.route("/createNestedForm").post(adminController.createNestedForm);
+router.route("/updateAcceptedData").patch(adminController.acceptRejectData);
 
 // create new client 
 router.route("/createNewClient").post(
