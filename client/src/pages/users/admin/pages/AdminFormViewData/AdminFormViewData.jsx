@@ -78,17 +78,19 @@ const AdminFormViewData = () => {
         const filteredKeys = keys.filter(key => key !== '_id'); // Exclude '_id'
         return (
             <>
+                <th>Serial No.</th> {/* Added Serial No. column */}
                 {filteredKeys.map((key) => (
                     <th key={key}>{key.charAt(0).toUpperCase() + key.slice(1)}</th>
                 ))}
-                <th>Action</th> {/* Added Action column */}
+                <th>Action</th> {/* Action column */}
             </>
         );
     };
-
+    
     const renderTableRows = () => {
-        return formData.map((item) => (
+        return formData.map((item, index) => (
             <tr key={item._id}>
+                <td>{index + 1}</td> {/* Added Serial Number */}
                 {Object.keys(item)
                     .filter(key => key !== '_id') // Exclude '_id'
                     .map((key) => (
@@ -103,6 +105,7 @@ const AdminFormViewData = () => {
             </tr>
         ));
     };
+    
 
     const renderCellContent = (value) => {
         if (isURL(value)) {
