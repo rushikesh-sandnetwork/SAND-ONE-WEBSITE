@@ -68,7 +68,7 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
           <div className="inputFields">
             <input
               type="text"
-              className="input-field"
+              className="campaigninput-field"
               placeholder="Campaign Title"
               value={title}
               onChange={handleInputChange(setTitle)}
