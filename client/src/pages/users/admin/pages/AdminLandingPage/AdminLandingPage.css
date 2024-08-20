@@ -1,7 +1,7 @@
 /* Base styles for the navbar */
 .navbar {
   height: 100%;
-  width: 275px;
+  width: 250px; /* Adjusted width to 200px */
   position: fixed;
   top: 0;
   left: 0;
@@ -10,12 +10,14 @@
   flex-direction: column;
   align-items: center;
   background-color: white;
+  z-index: 1000; /* Ensure navbar is on top */
+  margin-left: 20px;
 }
 
 .navbar img {
   align-self: center;
-  width: 150px;
-  height: auto; 
+  width: 140px;
+  height: auto;
   margin-bottom: 12px;
   margin-right: 10px;
 }
@@ -30,9 +32,9 @@
   color: black;
   display: block;
   background-color: #f8f8f8;
-  margin-bottom: 18px;
-  margin-left: 20px;
-  margin-right: 20px;
+  margin-bottom: 12px;
+  margin-left: 10px;
+  margin-right: 10px;
   border-radius: 12px;
   transition: background-color 0.3s ease-in-out;
   cursor: pointer;
@@ -71,78 +73,85 @@
 }
 
 .sidebar {
-  width: 275px; 
+  width: 200px; /* Adjusted width to 200px */
 }
 
 .content {
   flex: 1;
-  padding: 20px;
+  padding: 15px;
+  margin-left: 125px; /* Adjusted margin-left to match navbar width */
 }
 
 /* Responsive adjustments */
 @media (max-width: 1024px) {
   .navbar {
-      width: 220px;
+    width: 180px;
   }
 
   .navbar img {
-      width: 120px;
+    width: 120px;
   }
 
   .navbar a, .navbar input {
-      width: 70%;
-      font-size: 16px;
+    width: 75%;
+    font-size: 16px;
+  }
+
+  .content {
+    margin-left: 180px;
   }
 }
 
 @media (max-width: 768px) {
   .navbar {
-      width: 180px;
-      padding-top: 10px;
+    width: 160px;
+    padding-top: 10px;
   }
 
   .navbar img {
-      width: 100px;
+    width: 100px;
   }
 
   .navbar a, .navbar input {
-      padding: 12px 8px;
-      font-size: 14px;
-      width: 80%;
+    padding: 12px 8px;
+    font-size: 14px;
+    width: 80%;
   }
 
   .LandingPage-container {
-      flex-direction: column;
+    flex-direction: column;
   }
 
   .sidebar {
-      width: 100%;
-      height: auto;
-      position: static;
+    width: 100%;
+    height: auto;
+    position: static;
   }
 
   .content {
-      padding: 15px;
+    margin-left: 0;
+    padding: 15px;
   }
 }
 
 @media (max-width: 480px) {
   .navbar {
-      width: 150px;
-      padding-top: 10px;
+    width: 140px;
+    padding-top: 10px;
   }
 
   .navbar img {
-      width: 80px;
+    width: 80px;
   }
 
   .navbar a, .navbar input {
-      padding: 10px 8px;
-      font-size: 12px;
-      width: 90%;
+    padding: 10px 8px;
+    font-size: 12px;
+    width: 90%;
   }
 
   .content {
-      padding: 10px;
+    margin-left: 0;
+    padding: 10px;
   }
 }
