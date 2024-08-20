@@ -119,13 +119,19 @@ class _ViewAttendancePageState extends State<ViewAttendancePage> {
                         borderRadius: BorderRadius.circular(12),
                         gradient: LinearGradient(
                           colors: attendance.status == 'Present'
-                              ? [Colors.teal[700]!, Colors.teal[400]!]
-                              : [Colors.red[700]!, Colors.red[400]!],
+                              ? [
+                                  Colors.green.shade300,
+                                  Color.fromARGB(255, 49, 110, 51)
+                                ]
+                              : [
+                                  Color.fromARGB(255, 80, 80, 80),
+                                  Color.fromARGB(255, 47, 47, 47)
+                                ],
                           begin: Alignment.topLeft,
                           end: Alignment.bottomRight,
                         ),
-                        boxShadow: [
-                          const BoxShadow(
+                        boxShadow: const [
+                          BoxShadow(
                             color: Colors.black54,
                             blurRadius: 8,
                             offset: Offset(0, 4),
