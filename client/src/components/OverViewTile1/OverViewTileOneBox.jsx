@@ -1,5 +1,6 @@
-import React from 'react'
-import './OverViewTileOneBox.css'
+import React from 'react';
+import './OverViewTileOneBox.css';
+
 const OverViewTileOneBox = (props) => {
   return (
     <div className="OverViewTileOneBox-container">
@@ -9,4 +10,4 @@ const OverViewTileOneBox = (props) => {
   )
 }
 
-export default OverViewTileOneBox
+export default OverViewTileOneBox;

@@ -41,10 +41,10 @@ const OverViewTileOne = () => {
       {error && <p className="error-message">{error}</p>}
       {success && (
         <>
-          <OverViewTileOneBox title="TOTAL CLIENTS" number={data.numberOfClients}></OverViewTileOneBox>
-          <OverViewTileOneBox title="TOTAL CAMPAIGNS" number={data.numberOfCampaigns}></OverViewTileOneBox>
-          <OverViewTileOneBox title="GENERATED FORMS" number={data.numberOfForms}></OverViewTileOneBox>
-          <OverViewTileOneBox title="COMPLETED CAMPAIGNS" number="0"></OverViewTileOneBox>
+          <OverViewTileOneBox title="TOTAL CLIENTS" number={data.numberOfClients} />
+          <OverViewTileOneBox title="TOTAL CAMPAIGNS" number={data.numberOfCampaigns} />
+          <OverViewTileOneBox title="GENERATED FORMS" number={data.numberOfForms} />
+          <OverViewTileOneBox title="COMPLETED CAMPAIGNS" number="0" />
         </>
       )}
     </div>

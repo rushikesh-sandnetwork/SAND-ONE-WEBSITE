@@ -1,8 +1,8 @@
 .OverViewTileTwoBox-container {
     background-color: #31BDFC;
     border-radius: 16px;
-    height: 250px;
-    width: 250px;
+    width: 20vw; /* Responsive width */
+    aspect-ratio: 1 / 1; /* Maintains a 1:1 aspect ratio */
     color: white;
     display: flex;
     flex-direction: column;
@@ -10,13 +10,13 @@
     justify-content: center; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
     transition: transform 0.3s, box-shadow 0.3s; 
+    margin: 10px;
 }
 
 .OverViewTileTwoBox-container:hover {
     transform: translateY(-5px); 
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
 }
-
 
 .container-title {
     margin: 0;
@@ -36,6 +36,7 @@
     font-family: "Poppins", sans-serif;
     font-weight: 300;
     letter-spacing: 1px;
+    text-align: center; /* Ensures text is centered */
 }
 
 .moredetailsBtn {
@@ -55,4 +56,42 @@
 .moredetailsBtn:hover {
     background-color: #238bde; 
     transform: scale(1.05); 
+}
+
+@media (max-width: 768px) {
+    .OverViewTileTwoBox-container {
+        width: 30vw; /* Adjusted width for smaller screens */
+    }
+
+    .container-title {
+        font-size: 20px;
+    }
+
+    .container-content {
+        font-size: 14px;
+    }
+
+    .moredetailsBtn {
+        font-size: 12px;
+        padding: 10px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .OverViewTileTwoBox-container {
+        width: 40vw; /* Adjusted width for even smaller screens */
+    }
+
+    .container-title {
+        font-size: 18px;
+    }
+
+    .container-content {
+        font-size: 12px;
+    }
+
+    .moredetailsBtn {
+        font-size: 10px;
+        padding: 8px 16px;
+    }
 }
