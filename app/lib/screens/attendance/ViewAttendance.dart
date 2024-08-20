@@ -94,6 +94,7 @@ class _ViewAttendancePageState extends State<ViewAttendancePage> {
           "View Your Attendance",
           style: GoogleFonts.poppins(
               fontSize: 18, color: Colors.white, fontWeight: FontWeight.w600),
+          overflow: TextOverflow.ellipsis,
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
@@ -108,59 +109,69 @@ class _ViewAttendancePageState extends State<ViewAttendancePage> {
                           color: Colors.redAccent,
                           fontSize: 16,
                           fontWeight: FontWeight.w500)))
-              : ListView.builder(
-                  itemCount: _attendanceData.length,
-                  itemBuilder: (context, index) {
-                    final attendance = _attendanceData[index];
-                    return Container(
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 8, horizontal: 16),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(12),
-                        gradient: LinearGradient(
-                          colors: attendance.status == 'Present'
-                              ? [
-                                  Colors.green.shade300,
-                                  Color.fromARGB(255, 49, 110, 51)
-                                ]
-                              : [
-                                  Color.fromARGB(255, 80, 80, 80),
-                                  Color.fromARGB(255, 47, 47, 47)
-                                ],
-                          begin: Alignment.topLeft,
-                          end: Alignment.bottomRight,
-                        ),
-                        boxShadow: const [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius: 8,
-                            offset: Offset(0, 4),
+              : LayoutBuilder(
+                  builder: (context, constraints) {
+                    double width = constraints.maxWidth;
+                    double horizontalMargin = width > 600 ? 32 : 16;
+                    double verticalMargin = 8;
+                    double fontSize = width > 600 ? 18 : 16;
+
+                    return ListView.builder(
+                      itemCount: _attendanceData.length,
+                      itemBuilder: (context, index) {
+                        final attendance = _attendanceData[index];
+                        return Container(
+                          margin: EdgeInsets.symmetric(
+                              vertical: verticalMargin,
+                              horizontal: horizontalMargin),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(12),
+                            gradient: LinearGradient(
+                              colors: attendance.status == 'Present'
+                                  ? [
+                                      Colors.green.shade300,
+                                      Color.fromARGB(255, 49, 110, 51)
+                                    ]
+                                  : [
+                                      Color.fromARGB(255, 80, 80, 80),
+                                      Color.fromARGB(255, 47, 47, 47)
+                                    ],
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
+                            boxShadow: const [
+                              BoxShadow(
+                                color: Colors.black54,
+                                blurRadius: 8,
+                                offset: Offset(0, 4),
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      child: ListTile(
-                        contentPadding: const EdgeInsets.all(16),
-                        title: Text(
-                          'Date: ${attendance.date}',
-                          style: GoogleFonts.poppins(
-                              color: Colors.white, fontSize: 16),
-                        ),
-                        subtitle: Text(
-                          'Total Time: ${attendance.totalTime} hours\nStatus: ${attendance.status}',
-                          style: GoogleFonts.poppins(color: Colors.white70),
-                        ),
-                        leading: Icon(
-                          attendance.status == 'Present'
-                              ? Icons.check_circle_outline
-                              : Icons.cancel_outlined,
-                          color: Colors.white,
-                          size: 28,
-                        ),
-                        trailing: const Icon(
-                          Icons.more_vert,
-                          color: Colors.white54,
-                        ),
-                      ),
+                          child: ListTile(
+                            contentPadding: const EdgeInsets.all(16),
+                            title: Text(
+                              'Date: ${attendance.date}',
+                              style: GoogleFonts.poppins(
+                                  color: Colors.white, fontSize: fontSize),
+                            ),
+                            subtitle: Text(
+                              'Total Time: ${attendance.totalTime} hours\nStatus: ${attendance.status}',
+                              style: GoogleFonts.poppins(color: Colors.white70),
+                            ),
+                            leading: Icon(
+                              attendance.status == 'Present'
+                                  ? Icons.check_circle_outline
+                                  : Icons.cancel_outlined,
+                              color: Colors.white,
+                              size: 28,
+                            ),
+                            trailing: const Icon(
+                              Icons.more_vert,
+                              color: Colors.white54,
+                            ),
+                          ),
+                        );
+                      },
                     );
                   },
                 ),

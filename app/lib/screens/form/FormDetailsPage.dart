@@ -236,7 +236,6 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             _handleImageChange(fieldTitle, file);
           },
         );
-
       case 'Long Text':
         return LongText(
           longTextTitle: fieldTitle,
@@ -247,7 +246,6 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             });
           },
         );
-
       case 'Number':
         return Number(
           initialValue: _formData[fieldTitle],
@@ -287,85 +285,91 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        automaticallyImplyLeading: false, // This removes the leading icon
-        title: Text(
-          'Form Details',
-          style: GoogleFonts.poppins(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              letterSpacing: 1.5),
+        automaticallyImplyLeading: false,
+        title: Center(
+          child: Text(
+            'Form Details',
+            style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 1.5),
+          ),
         ),
         titleSpacing: 2,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
         elevation: 3,
         shadowColor: Colors.grey.shade50,
-        scrolledUnderElevation: 4,
-        surfaceTintColor: Colors.grey.shade50,
-        centerTitle: true,
-        backgroundColor: Color.fromRGBO(21, 25, 24, 1),
+        backgroundColor: Colors.black,
       ),
-      body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
-              spreadRadius: 5,
-              blurRadius: 7,
-              offset: Offset(0, 3),
-            ),
-          ],
-        ),
-        child: FutureBuilder<FormDetails>(
-          future: _formDetailsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (snapshot.hasData) {
-              FormDetails formDetails = snapshot.data!;
-              return SingleChildScrollView(
-                padding: EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ...formDetails.formFields
-                          .map((field) => _buildFormField(field))
-                          .toList(),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () async {
-                          String msg = await _submitForm();
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                msg,
-                                style: GoogleFonts.poppins(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w300,
-                                    fontSize: 16),
-                              ),
-                              backgroundColor: Colors.black,
-                            ),
-                          );
-                        },
-                        child: Text('Submit', style: GoogleFonts.poppins()),
+      body: FutureBuilder<FormDetails>(
+        future: _formDetailsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final formDetails = snapshot.data!;
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: formDetails.formFields
+                            .map((field) => Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: _buildFormField(field),
+                                ))
+                            .toList(),
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async {
+                        String result = await _submitForm();
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: Text(result),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Submit',
+                        style: GoogleFonts.poppins(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        minimumSize: Size(double.infinity, 48),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
                 ),
-              );
-            } else {
-              return Center(child: Text('No form details available.'));
-            }
-          },
-        ),
+              ),
+            );
+          } else {
+            return Center(child: Text('No data available.'));
+          }
+        },
       ),
     );
   }

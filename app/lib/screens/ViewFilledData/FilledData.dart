@@ -31,22 +31,24 @@ class FormDataScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.pop(context);
-          },
-          child: const Icon(
+        leading: IconButton(
+          icon: Icon(
             Icons.arrow_back_ios_new,
             color: Colors.grey,
             size: 18,
           ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
         ),
         title: Text(
           "View Data",
           style: GoogleFonts.poppins(
-              fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+            fontSize: 16,
+            color: Colors.white,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
       ),
       backgroundColor: Colors.black,
@@ -57,38 +59,44 @@ class FormDataScreen extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (snapshot.hasError) {
             return Center(
-                child: Text('Error: ${snapshot.error}',
-                    style: const TextStyle(color: Colors.white)));
+              child: Text('Error: ${snapshot.error}',
+                  style: const TextStyle(color: Colors.white)),
+            );
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
             return const Center(
-                child: Text('No data available',
-                    style: TextStyle(color: Colors.white)));
+              child: Text('No data available',
+                  style: TextStyle(color: Colors.white)),
+            );
           } else {
             final data = snapshot.data!;
             return ListView.builder(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               itemCount: data.length,
               itemBuilder: (context, index) {
                 final entry = data[index];
                 return Card(
-                  margin: const EdgeInsets.only(bottom: 16.0),
-                  color: Colors.grey[900], // Dark card background
+                  margin: EdgeInsets.only(
+                      bottom: 12.0), // Reduced space between cards
+                  color: Colors.grey[900],
                   elevation: 4.0,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10.0),
+                    borderRadius:
+                        BorderRadius.circular(8.0), // Reduced border radius
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(16.0),
+                    padding:
+                        EdgeInsets.all(12.0), // Reduced padding inside the card
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: entry.entries.where((e) {
-                        // Exclude _id and promoterId fields
                         return e.key != '_id' && e.key != 'promoterId';
                       }).map((e) {
-                        bool isImage = e.value.toString().startsWith(
-                            'http://res.cloudinary'); // Check if it's an image URL
+                        bool isImage = e.value
+                            .toString()
+                            .startsWith('http://res.cloudinary');
                         return Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 4.0),
+                          padding: EdgeInsets.symmetric(
+                              vertical: 6.0), // Reduced vertical padding
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
@@ -98,23 +106,37 @@ class FormDataScreen extends StatelessWidget {
                                   '${e.key}:',
                                   style: GoogleFonts.poppins(
                                     fontWeight: FontWeight.bold,
-                                    color: Colors
-                                        .teal[200], // Light teal for key text
+                                    color: Colors.teal[200],
+                                    fontSize:
+                                        MediaQuery.of(context).size.width < 600
+                                            ? 14
+                                            : 16,
                                   ),
                                 ),
                               ),
+                              SizedBox(width: 4.0),
                               Expanded(
                                 flex: 7,
                                 child: isImage
                                     ? Image.network(
                                         e.value.toString(),
-                                        height: 100,
+                                        height:
+                                            MediaQuery.of(context).size.width <
+                                                    600
+                                                ? 60
+                                                : 80, // Reduced image height
                                         fit: BoxFit.cover,
                                       )
                                     : Text(
                                         e.value.toString(),
                                         style: GoogleFonts.poppins(
                                           color: Colors.grey[300],
+                                          fontSize: MediaQuery.of(context)
+                                                      .size
+                                                      .width <
+                                                  600
+                                              ? 14
+                                              : 16,
                                         ),
                                       ),
                               ),

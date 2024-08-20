@@ -64,6 +64,10 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isLandscape = screenWidth > screenHeight;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -73,52 +77,55 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         children: [
           Positioned(
-            top: 20,
-            left: 10,
-            right: 10,
+            top: isLandscape ? screenHeight * 0.02 : screenHeight * 0.05,
+            left: screenWidth * 0.05,
+            right: screenWidth * 0.05,
             child: Image.asset(
               'assets/SAND 1 logo.png',
               fit: BoxFit.cover,
+              height: isLandscape ? screenHeight * 0.2 : screenHeight * 0.09,
             ),
           ),
           SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
               child: Column(
                 children: [
-                  SizedBox(height: 200),
+                  SizedBox(height: screenHeight * 0.25),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(21, 25, 24, 1),
+                      color: const Color.fromRGBO(21, 25, 24, 1),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 2,
                           blurRadius: 7,
-                          offset: Offset(0, 3),
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
-                    padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(screenWidth * 0.05),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           'LOGIN',
                           style: GoogleFonts.poppins(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                            fontSize: screenWidth * 0.07,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.02),
                         TextField(
                           controller: emailController,
                           decoration: InputDecoration(
                             labelText: 'Email',
                             labelStyle:
                                 GoogleFonts.poppins(color: Colors.white),
-                            prefixIcon: Icon(Icons.email, color: Colors.white),
+                            prefixIcon: Icon(Icons.email,
+                                color: Colors.white, size: screenWidth * 0.06),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
@@ -132,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           style: GoogleFonts.poppins(color: Colors.white),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.02),
                         TextField(
                           controller: passwordController,
                           obscureText: true,
@@ -140,7 +147,8 @@ class _LoginPageState extends State<LoginPage> {
                             labelText: 'Password',
                             labelStyle:
                                 GoogleFonts.poppins(color: Colors.white),
-                            prefixIcon: Icon(Icons.lock, color: Colors.white),
+                            prefixIcon: Icon(Icons.lock,
+                                color: Colors.white, size: screenWidth * 0.06),
                             enabledBorder: OutlineInputBorder(
                               borderSide: BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
@@ -154,7 +162,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           style: GoogleFonts.poppins(color: Colors.white),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.03),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
@@ -168,15 +176,17 @@ class _LoginPageState extends State<LoginPage> {
                             child: Text(
                               'LOGIN',
                               style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  letterSpacing: 2),
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: screenWidth * 0.06,
+                                letterSpacing: 2,
+                              ),
                             ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: screenHeight * 0.02),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
@@ -184,18 +194,18 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: screenHeight * 0.01),
                         Text(
                           errorText,
                           style: TextStyle(
                             color: Colors.red,
-                            fontSize: 14,
+                            fontSize: screenWidth * 0.035,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: screenHeight * 0.1),
                 ],
               ),
             ),

@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import '../models/PromoterDetailsModel.dart';
+import '../models/PromoterFormsModel.dart';
 import '../screens/form/FormAllFormsPage.dart';
 
 class PromoterService {
@@ -19,6 +21,28 @@ class PromoterService {
     if (response.statusCode == 200) {
       var jsonResponse = jsonDecode(response.body);
       return PromoterDetails.fromJson(jsonResponse['data']);
+    } else {
+      throw Exception('Failed to fetch promoter details');
+    }
+  }
+
+  static Future<List<PromoterForm>> fetchPromoterForms(
+      String promoterId) async {
+    final url =
+        Uri.parse("http://192.168.31.139:8080/api/v1/promoter/fetchAllForms");
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'promoterId': promoterId}),
+    );
+
+    print('API Response Status Code: ${response.statusCode}');
+    print('API Response Body: ${response.body}');
+
+    if (response.statusCode == 200) {
+      var jsonResponse = jsonDecode(response.body);
+      List<dynamic> formsJson = jsonResponse['data'];
+      return formsJson.map((form) => PromoterForm.fromJson(form)).toList();
     } else {
       throw Exception('Failed to fetch promoter details');
     }

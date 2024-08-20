@@ -25,12 +25,15 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "Hi, Promoter!",
-              style: GoogleFonts.poppins(
-                fontSize: 24,
-                color: Colors.white,
-                fontWeight: FontWeight.w600,
+            Flexible(
+              child: Text(
+                "Hi, Promoter!",
+                style: GoogleFonts.poppins(
+                  fontSize: 24,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                ),
+                overflow: TextOverflow.ellipsis,
               ),
             ),
             GestureDetector(
@@ -52,71 +55,80 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
       ),
-      body: Container(
-        margin: const EdgeInsets.all(20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Column(
-              children: [
-                const SizedBox(height: 15),
-                GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => MarkYourAttendancePage(
-                              promoterId: widget.promoterId),
-                        ),
-                      );
-                    },
-                    child: const AttendanceWidget()),
-                const SizedBox(height: 25),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double width = constraints.maxWidth;
+          double boxHeight = width > 600 ? 120 : 100;
+          double spacing = width > 600 ? 30 : 20;
+
+          return Container(
+            margin: const EdgeInsets.all(20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Column(
                   children: [
+                    const SizedBox(height: 15),
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                Formallformspage(promoterId: widget.promoterId),
+                            builder: (context) => MarkYourAttendancePage(
+                                promoterId: widget.promoterId),
                           ),
                         );
                       },
-                      child: const Mainpageboxone(
-                        title: "View Forms",
-                        icon: Icons.view_agenda_outlined,
-                      ),
+                      child: AttendanceWidget(),
                     ),
-                    GestureDetector(
-                      onTap: () => {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViewAttendancePage(
-                                      promoterId: widget.promoterId,
-                                    )))
-                      },
-                      child: Mainpageboxone(
-                        title: "Attendance",
-                        icon: Icons.calendar_month_outlined,
-                      ),
+                    SizedBox(height: spacing),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => Formallformspage(
+                                    promoterId: widget.promoterId),
+                              ),
+                            );
+                          },
+                          child: Mainpageboxone(
+                            title: "View Forms",
+                            icon: Icons.view_agenda_outlined,
+                          ),
+                        ),
+                        GestureDetector(
+                          onTap: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => ViewAttendancePage(
+                                          promoterId: widget.promoterId,
+                                        )))
+                          },
+                          child: Mainpageboxone(
+                            title: "Attendance",
+                            icon: Icons.calendar_month_outlined,
+                          ),
+                        ),
+                      ],
                     ),
+                    SizedBox(height: spacing),
                   ],
                 ),
-                const SizedBox(height: 20),
+                Image.asset(
+                  'assets/SAND 1 logo.png',
+                  height: width > 600 ? 35 : 25,
+                ),
               ],
             ),
-            Image.asset(
-              'assets/SAND 1 logo.png',
-              height: 25,
-            ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }
