@@ -1,5 +1,6 @@
 import 'package:app/screens/attendance/AttendanceWidget.dart';
 import 'package:app/screens/attendance/MarkYourAttendancePage.dart';
+import 'package:app/screens/attendance/ViewAttendance.dart';
 import 'package:app/screens/form/FormAllFormsPage.dart';
 import 'package:app/screens/profile/Profile.dart';
 import 'package:app/utils/MainPageBox/MainPageBoxOne.dart';
@@ -91,9 +92,19 @@ class _PromoterDetailsPageState extends State<PromoterDetailsPage> {
                         icon: Icons.view_agenda_outlined,
                       ),
                     ),
-                    const Mainpageboxone(
-                      title: "Attendance",
-                      icon: Icons.calendar_month_outlined,
+                    GestureDetector(
+                      onTap: () => {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ViewAttendancePage(
+                                      promoterId: widget.promoterId,
+                                    )))
+                      },
+                      child: Mainpageboxone(
+                        title: "Attendance",
+                        icon: Icons.calendar_month_outlined,
+                      ),
                     ),
                   ],
                 ),

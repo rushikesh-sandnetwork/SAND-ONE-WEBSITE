@@ -336,30 +336,68 @@ const fetchAttendance = asyncHandler(async (req, res) => {
             return res.status(400).json(new apiError(400, "Missing required data fields."));
         }
 
-        const completeAttendance = await AttendanceModel.find({ promoterId });
+        // Calculate the date range for the last 7 days, including today
+        const today = new Date();
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(today.getDate() - 6); // Start from 7 days ago
 
-        const attendanceWithTotalTime = completeAttendance.map(record => {
-            const punchInTime = new Date(record.punchInTime);
-            const punchOutTime = new Date(record.punchOutTime);
+        // Create an array for the last 7 days, including today
+        const days = [];
+        for (let i = 0; i < 7; i++) {
+            const day = new Date();
+            day.setDate(sevenDaysAgo.getDate() + i);
+            day.setHours(0, 0, 0, 0); // Start of the day
+            days.push(day);
+        }
+
+        // Fetch attendance records for the last 7 days
+        const attendanceRecords = await AttendanceModel.find({
+            promoterId,
+            punchInTime: { $gte: sevenDaysAgo },
+            punchInTime: { $lte: today }
+        });
+
+        // Aggregate total time for each day
+        const dailyAttendance = days.map(day => {
+            const startOfDay = new Date(day);
+            const endOfDay = new Date(day);
+            endOfDay.setHours(23, 59, 59, 999); // End of the day
+
+            // Filter records for the current day
+            const dailyRecords = attendanceRecords.filter(record => {
+                const punchIn = new Date(record.punchInTime);
+                return punchIn >= startOfDay && punchIn <= endOfDay;
+            });
 
             let totalTime = 0;
-            if (punchInTime && punchOutTime) {
-                totalTime = (punchOutTime - punchInTime) / (1000 * 60 * 60);
-            }
+            dailyRecords.forEach(record => {
+                const punchInTime = new Date(record.punchInTime);
+                const punchOutTime = new Date(record.punchOutTime);
+                
+                if (punchInTime && punchOutTime) {
+                    totalTime += (punchOutTime - punchInTime) / (1000 * 60 * 60); // Convert milliseconds to hours
+                }
+            });
 
             return {
-                ...record.toObject(),
-                totalTime: totalTime.toFixed(2)
+                date: startOfDay.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+                totalTime: totalTime.toFixed(2),
+                status: dailyRecords.length > 0 ? 'Present' : 'Absent'
             };
         });
 
-        res.status(200).json(new apiResponse(200, attendanceWithTotalTime, "Complete Attendance"));
+        // Reverse the list to show the current date first
+        const reversedAttendance = dailyAttendance.reverse();
+
+        res.status(200).json(new apiResponse(200, reversedAttendance, "Attendance for the Last 7 Days"));
 
     } catch (error) {
         console.error('Error in fetching the data.', error);
         res.status(400).json(new apiError(400, "Error in fetching Attendance"));
     }
 });
+
+
 
 
 module.exports = {

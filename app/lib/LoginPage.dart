@@ -1,10 +1,9 @@
 import 'dart:convert';
-
 import 'package:app/mainScreen.dart';
 import 'package:app/screens/form/PromoterDetailsPage.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http; // Import http package
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -21,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> loginUser(String email, String password) async {
     try {
       var response = await http.post(
-        Uri.parse('http://192.168.95.65:8080/api/v1/promoter/loginPromoter'),
+        Uri.parse('http://192.168.31.139:8080/api/v1/promoter/loginPromoter'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

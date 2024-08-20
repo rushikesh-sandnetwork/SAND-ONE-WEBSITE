@@ -1,29 +1,29 @@
 .LandingPage-container {
   display: flex;
-  height: 100vh; /* Ensure full viewport height */
+  height: 100vh; 
 }
 
 .sidebar {
-  width: 275px; /* Width of the sidebar */
-  position: fixed; /* Fix the sidebar in place */
+  width: 275px; 
+  position: fixed; 
   top: 0;
   left: 0;
-  height: 100vh; /* Ensure it takes full height */
-  overflow: auto; /* Add scroll if content overflows */
+  height: 100vh; 
+  overflow: auto; 
 }
 
 .content {
-  margin-left: 275px; /* Adjust margin to match sidebar width */
+  margin-left: 275px;
   padding: 20px;
-  width: calc(100% - 275px); /* Ensure full width minus sidebar */
-  overflow: auto; /* Add scroll if content overflows */
+  width: calc(100% - 275px);
+  overflow: auto; 
 }
 
 /* Navbar styling */
 .navbar {
   height: 90%;
   width: 275px;
-  position: absolute; 
+  position: absolute;
   top: 0;
   left: 0;
   width: 100%;
@@ -36,60 +36,54 @@
   background-color: white;
 }
 
-/* Other styling remains unchanged */
+.navbar img {
+  align-self: center;
+  width: 150px;
+  height: auto;
+  margin-bottom: 12px;
+  margin-right: 10px;
+}
 
-  .navbar img{
-    align-self: center;
-    width: 150px;
-    height: auto; 
-    margin-bottom: 12px;
-    margin-right: 10px;
-  }
-  
-  .navbar a {
-    padding: 15px 8px 15px 16px;
-    width: 80%;
-    text-decoration: none;
-    font-size: 18px;
-    text-align: center;
-    font-family: "Poppins", sans-serif;
-    color: black;
-    display: block;
-    background-color: #f8f8f8;
-    margin-bottom: 18px;
-    margin-left: 20px;
-    margin-right: 20px;
-    border-radius: 12px;
-    transition: background-color 00.3s ease-in-out;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-  }
-  
-  /* Change color on hover */
-  .navbar a:hover {
-    background-color: #979797;
-    color: white;
-  }
+.navbar a {
+  padding: 15px 8px 15px 16px;
+  width: 80%;
+  text-decoration: none;
+  font-size: 18px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  color: black;
+  display: block;
+  background-color: #f8f8f8;
+  margin-bottom: 18px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 12px;
+  transition: background-color 00.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
 
-  .navbar input{
-    padding: 15px 8px 15px 16px;
-    background-color: #2d9bff;
-    width: 90%;
-    border: none;
-    margin-right: 5px;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    font-family: "Poppins", sans-serif;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-    cursor: pointer ;
-    transition: background-color 00.3s ease-in-out;
+.navbar a:hover {
+  background-color: #979797;
+  color: white;
+}
 
-  }
+.navbar input {
+  padding: 15px 8px 15px 16px;
+  background-color: #2d9bff;
+  width: 90%;
+  border: none;
+  margin-right: 5px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  cursor: pointer;
+  transition: background-color 00.3s ease-in-out;
+}
 
-  .navbar input:hover{
-    background-color: #003e77;
-  }
-  
-
+.navbar input:hover {
+  background-color: #003e77;
+}
