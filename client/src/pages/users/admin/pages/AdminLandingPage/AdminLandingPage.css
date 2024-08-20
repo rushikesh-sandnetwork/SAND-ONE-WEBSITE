@@ -1,88 +1,148 @@
-/* Container holding the links */
+/* Base styles for the navbar */
 .navbar {
-    height: 100%;
-    width: 275px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    padding-top: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color:white;
-  }
-  
+  height: 100%;
+  width: 275px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: white;
+}
 
-  .navbar img{
-    align-self: center;
-    width: 150px;
-    height: auto; 
-    margin-bottom: 12px;
-    margin-right: 10px;
-  }
-  
-  .navbar a {
-    padding: 15px 8px 15px 16px;
-    width: 80%;
-    text-decoration: none;
-    font-size: 18px;
-    text-align: center;
-    font-family: "Poppins", sans-serif;
-    color: black;
-    display: block;
-    background-color: #f8f8f8;
-    margin-bottom: 18px;
-    margin-left: 20px;
-    margin-right: 20px;
-    border-radius: 12px;
-    transition: background-color 00.3s ease-in-out;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-  }
-  
-  /* Change color on hover */
-  .navbar a:hover {
-    background-color: #979797;
-    color: white;
-  }
+.navbar img {
+  align-self: center;
+  width: 150px;
+  height: auto; 
+  margin-bottom: 12px;
+  margin-right: 10px;
+}
 
-  .navbar input{
-    padding: 15px 8px 15px 16px;
-    background-color: #2d9bff;
-    width: 90%;
-    border: none;
-    margin-right: 5px;
-    border-radius: 10px;
-    font-size: 18px;
-    font-weight: bold;
-    font-family: "Poppins", sans-serif;
-    color: white;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
-    cursor: pointer ;
-    transition: background-color 00.3s ease-in-out;
+.navbar a {
+  padding: 15px 8px 15px 16px;
+  width: 80%;
+  text-decoration: none;
+  font-size: 18px;
+  text-align: center;
+  font-family: "Poppins", sans-serif;
+  color: black;
+  display: block;
+  background-color: #f8f8f8;
+  margin-bottom: 18px;
+  margin-left: 20px;
+  margin-right: 20px;
+  border-radius: 12px;
+  transition: background-color 0.3s ease-in-out;
+  cursor: pointer;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+}
 
-  }
+.navbar a:hover {
+  background-color: #979797;
+  color: white;
+}
 
-  .navbar input:hover{
-    background-color: #003e77;
-  }
-  
+.navbar input {
+  padding: 15px 8px 15px 16px;
+  background-color: #2d9bff;
+  width: 90%;
+  border: none;
+  margin-right: 5px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Poppins", sans-serif;
+  color: white;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
 
+.navbar input:hover {
+  background-color: #003e77;
+}
 
-
-
-/* vertical navbar over */
+/* Main container styles */
 .LandingPage-container {
-    display: flex;
-    height: 100vh; 
+  display: flex;
+  height: 100vh;
 }
 
 .sidebar {
-    width: 275px; 
+  width: 275px; 
 }
 
 .content {
-    flex: 1;
-    padding: 20px;
+  flex: 1;
+  padding: 20px;
 }
 
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .navbar {
+      width: 220px;
+  }
+
+  .navbar img {
+      width: 120px;
+  }
+
+  .navbar a, .navbar input {
+      width: 70%;
+      font-size: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .navbar {
+      width: 180px;
+      padding-top: 10px;
+  }
+
+  .navbar img {
+      width: 100px;
+  }
+
+  .navbar a, .navbar input {
+      padding: 12px 8px;
+      font-size: 14px;
+      width: 80%;
+  }
+
+  .LandingPage-container {
+      flex-direction: column;
+  }
+
+  .sidebar {
+      width: 100%;
+      height: auto;
+      position: static;
+  }
+
+  .content {
+      padding: 15px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+      width: 150px;
+      padding-top: 10px;
+  }
+
+  .navbar img {
+      width: 80px;
+  }
+
+  .navbar a, .navbar input {
+      padding: 10px 8px;
+      font-size: 12px;
+      width: 90%;
+  }
+
+  .content {
+      padding: 10px;
+  }
+}

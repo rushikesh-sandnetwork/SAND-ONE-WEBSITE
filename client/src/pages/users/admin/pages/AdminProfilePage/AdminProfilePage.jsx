@@ -8,7 +8,6 @@ const AdminProfilePage = () => {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        // Fetch user details when component mounts
         const fetchUserDetails = async () => {
             try {
                 const response = await fetch('http://localhost:8080/api/v1/user/userDetails', {
@@ -16,9 +15,9 @@ const AdminProfilePage = () => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ userId: '66b5f7b3eb2d23066330e693' }) // Replace with the actual user ID
+                    body: JSON.stringify({ userId: '66b5f7b3eb2d23066330e693' })
                 });
-                
+
                 const data = await response.json();
                 if (response.ok) {
                     setUserDetails(data.data);

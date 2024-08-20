@@ -10,6 +10,7 @@
     justify-content: center; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
     transition: transform 0.3s, box-shadow 0.3s; 
+    margin: 10px;
 }
 
 .OverViewTileOneBox-container:hover {
@@ -36,4 +37,34 @@
     text-align: center;
     font-family: "Poppins", sans-serif;   
     font-weight: 900;
+}
+
+@media (max-width: 768px) {
+    .OverViewTileOneBox-container {
+        height: 150px;
+        width: 150px;
+    }
+
+    .containerone-title {
+        font-size: 24px;
+    }
+
+    .container-number {
+        font-size: 48px;
+    }
+}
+
+@media (max-width: 480px) {
+    .OverViewTileOneBox-container {
+        height: 150px;
+        width: 150px;
+    }
+
+    .containerone-title {
+        font-size: 18px;
+    }
+
+    .container-number {
+        font-size: 36px;
+    }
 }
