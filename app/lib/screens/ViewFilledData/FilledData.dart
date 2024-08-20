@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 
 Future<List<Map<String, dynamic>>> fetchFormFilledData(String formId) async {
   final response = await http.post(
-    Uri.parse('http://192.168.31.139:8080/api/v1/promoter/fetchFormFilledData'),
+    Uri.parse('http://192.168.95.65:8080/api/v1/promoter/fetchFormFilledData'),
     headers: {'Content-Type': 'application/json'},
     body: json.encode({'formId': formId}),
   );
@@ -81,7 +81,12 @@ class FormDataScreen extends StatelessWidget {
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
-                      children: entry.entries.map((e) {
+                      children: entry.entries.where((e) {
+                        // Exclude _id and promoterId fields
+                        return e.key != '_id' && e.key != 'promoterId';
+                      }).map((e) {
+                        bool isImage = e.value.toString().startsWith(
+                            'http://res.cloudinary'); // Check if it's an image URL
                         return Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4.0),
                           child: Row(
@@ -100,12 +105,18 @@ class FormDataScreen extends StatelessWidget {
                               ),
                               Expanded(
                                 flex: 7,
-                                child: Text(
-                                  e.value.toString(),
-                                  style: GoogleFonts.poppins(
-                                    color: Colors.grey[300],
-                                  ),
-                                ),
+                                child: isImage
+                                    ? Image.network(
+                                        e.value.toString(),
+                                        height: 100,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Text(
+                                        e.value.toString(),
+                                        style: GoogleFonts.poppins(
+                                          color: Colors.grey[300],
+                                        ),
+                                      ),
                               ),
                             ],
                           ),

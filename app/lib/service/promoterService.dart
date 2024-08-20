@@ -4,7 +4,7 @@ import '../screens/form/FormAllFormsPage.dart';
 
 class PromoterService {
   static const String baseUrl =
-      'http://192.168.31.139:8080/api/v1/promoter/fetchPromoterDetails';
+      'http://192.168.95.65:8080/api/v1/promoter/fetchPromoterDetails';
   static Future<PromoterDetails> fetchPromoterDetails(String promoterId) async {
     final url = Uri.parse(baseUrl);
     final response = await http.post(
@@ -24,9 +24,9 @@ class PromoterService {
     }
   }
 
-
   static Future<PromoterDetails> fetchNestedForms(String formId) async {
-    final url = Uri.parse("http://192.168.31.139:8080/api/v1/promoter/fetchFormField");
+    final url =
+        Uri.parse("http://192.168.95.65:8080/api/v1/promoter/fetchFormField");
     final response = await http.post(
       url,
       headers: {'Content-Type': 'application/json'},

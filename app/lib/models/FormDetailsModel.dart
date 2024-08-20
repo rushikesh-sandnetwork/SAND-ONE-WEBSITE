@@ -4,9 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 
+import '../screens/form/FormAllFormsPage.dart';
+
 class FormService {
   static const String baseUrl =
-      'http://192.168.31.139:8080/api/v1/promoter/fetchFormField';
+      'http://192.168.95.65:8080/api/v1/promoter/fetchFormField';
 
   /// Fetch form details including campaignId, formFields, and collectionName
   static Future<FormDetails> fetchFormDetails(String formId) async {
@@ -52,11 +54,10 @@ class FormService {
     }
   }
 
-  /// Submit form data to the server
   static Future<String> submitFormData(
       String collectionName, Map<String, dynamic> data) async {
     final url = Uri.parse(
-        'http://192.168.31.139:8080/api/v1/promoter/fillFormData/$collectionName');
+        'http://192.168.95.65:8080/api/v1/promoter/fillFormData/$collectionName');
 
     var request = http.MultipartRequest('POST', url);
 
@@ -91,21 +92,19 @@ class FormService {
   }
 }
 
-/// Model class to represent form details
 class FormDetails {
   final String campaignId;
   final List<Map<String, dynamic>> formFields;
   final String collectionName;
-  final List<String> nestedFormIds; // Added nested form IDs
+  final List<String> nestedFormIds;
 
   FormDetails({
     required this.campaignId,
     required this.formFields,
     required this.collectionName,
-    required this.nestedFormIds, // Initialize nested form IDs
+    required this.nestedFormIds,
   });
 
-  /// Factory method to parse JSON data into FormDetails
   factory FormDetails.fromJson(Map<String, dynamic> json) {
     List<Map<String, dynamic>> fields =
         (json['formFields'] as List).map((field) {
@@ -116,8 +115,7 @@ class FormDetails {
       };
     }).toList();
 
-    List<String> nestedForms = 
-        List<String>.from(json['nestedForms'] as List);
+    List<String> nestedForms = List<String>.from(json['nestedForms'] as List);
 
     return FormDetails(
       campaignId: json['campaignId'],

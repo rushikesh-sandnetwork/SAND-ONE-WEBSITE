@@ -21,7 +21,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
   File? _checkInImage;
   File? _checkOutImage;
 
-  final ImagePicker _picker = ImagePicker(); 
+  final ImagePicker _picker = ImagePicker();
 
   Future<void> _pickImage(String choice) async {
     final pickedFile = await _picker.pickImage(source: ImageSource.camera);
@@ -40,7 +40,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
       String choice, File? imageFile, String promoterId) async {
     try {
       final url =
-          Uri.parse('http://192.168.31.139:8080/api/v1/promoter/$choice');
+          Uri.parse('http://192.168.95.65:8080/api/v1/promoter/$choice');
 
       var request = http.MultipartRequest('POST', url);
 
