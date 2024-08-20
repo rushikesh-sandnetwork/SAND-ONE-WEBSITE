@@ -41,7 +41,7 @@ const AdminLandingPage = () => {
         </div>
       </div>
       <div className='content'>
-        {activeTab === 'overview' && <AdminOverViewPage />}
+        {activeTab === 'overview' && <AdminOverViewPage setActiveTab={setActiveTab} />}
         {activeTab === 'newClient' && <AdminCreateNewClient />}
         {activeTab === 'viewClients' && (
           <AdminViewClientsPage setActiveTab={setActiveTab} setActiveClient={setActiveClient} />

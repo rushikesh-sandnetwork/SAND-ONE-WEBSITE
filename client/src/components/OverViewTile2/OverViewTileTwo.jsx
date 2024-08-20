@@ -3,7 +3,7 @@ import axios from 'axios';
 import './OverViewTileTwoBox.css';
 import OverViewTileTwoBox from './OverViewTileTwoBox';
 
-const OverViewTileTwo = () => {
+const OverViewTileTwo = ({setActiveTab}) => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -33,8 +33,11 @@ const OverViewTileTwo = () => {
 
   return (
     <div className="OverViewTileTwoContainer">
+ 
       {campaigns.map(campaign => (
-        <OverViewTileTwoBox key={campaign._id} title={campaign.title} details={campaign.details} />
+        <OverViewTileTwoBox 
+        id={campaign.id}
+        key={campaign._id} title={campaign.title} details={campaign.details} setActiveTab= {setActiveTab}/>
       ))}
     </div>
   );

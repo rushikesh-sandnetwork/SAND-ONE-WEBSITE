@@ -67,6 +67,48 @@ const fetchPromoterDetails = asyncHandler(async (req, res) => {
 });
 
 
+const fetchPromoterForms = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Promoter ID is required."));
+        }
+
+        const promoterDetails = await Promoter.findById(promoterId);
+
+        if (!promoterDetails) {
+            return res.status(404).json(new apiError(404, "Promoter not found."));
+        }
+
+        const promoterForms = promoterDetails.forms;
+        const formsWithCollectionNames = [];
+
+        for (let formId of promoterForms) {
+            const formDetails = await formsFieldsModel.findById(formId); // Fetch the form details
+            if (formDetails) {
+                formsWithCollectionNames.push({
+                    formId: formId,
+                    collectionName: formDetails.collectionName, // Assuming collectionName exists in Form schema
+                });
+            } else {
+                formsWithCollectionNames.push({
+                    formId: formId,
+                    collectionName: 'Unknown', // Handle missing form case
+                });
+            }
+        }
+
+        return res.status(200).json(new apiResponse(200,  formsWithCollectionNames , "Promoter details fetched successfully."));
+
+    } catch (error) {
+        console.error('Error in fetching Promoter details', error);
+        res.status(500).json(new apiError(500, "Error in fetching promoter details."));
+    }
+});
+
+
+
 const fetchFormField = asyncHandler(async (req, res) => {
     try {
         const { formId } = req.body;
@@ -108,8 +150,8 @@ const fillFormData = asyncHandler(async (req, res) => {
         if (req.files && req.files.length > 0) {
             for (const file of req.files) {
                 console.log(file.path);
-                
-                const finalFileName = await uploadOnCloudinary(file.path); 
+
+                const finalFileName = await uploadOnCloudinary(file.path);
                 console.log(finalFileName.url);
 
                 fileUrls[file.fieldname] = finalFileName.url;
@@ -150,7 +192,7 @@ const fetchFormFilledData = asyncHandler(async (req, res) => {
 
         const collection = mongoose.connection.collection(collectionName);
 
-        const result = await collection.find({}).toArray(); 
+        const result = await collection.find({}).toArray();
         res.status(200).json(new apiResponse(200, result, "Data fetched successfully."));
     } catch (error) {
         console.error('Error in fetching the data.', error);
@@ -212,7 +254,7 @@ const fillAttendancePunchIn = asyncHandler(async (req, res) => {
         if (checkAttendance) {
             return res.status(400).json(new apiError(400, "Already punched in"));
         }
-        
+
         const logInImagePath = req.files?.loginPhoto?.[0]?.path;
 
         if (!logInImagePath) {
@@ -223,12 +265,12 @@ const fillAttendancePunchIn = asyncHandler(async (req, res) => {
         if (!logInFinalImage) {
             throw new apiError(400, "Failed to upload client Photo");
         }
-        
+
         const newAttendance = await AttendanceModel.create({
             promoterId: promoterId,
             date: currentDate,
             punchInTime: punchInTime,
-            punchInImage: logInFinalImage.url, 
+            punchInImage: logInFinalImage.url,
             punchOutImage: ''
         });
 
@@ -260,7 +302,7 @@ const fillAttendancePunchOut = asyncHandler(async (req, res) => {
         console.log(checkAttendance);
 
         if (!checkAttendance) {
-            return res.status(400).json(new apiError(400, "No punch in found." ));
+            return res.status(400).json(new apiError(400, "No punch in found."));
         }
 
         const logOutImagePath = req.files?.logOutPhoto?.[0]?.path;
@@ -302,12 +344,12 @@ const fetchAttendance = asyncHandler(async (req, res) => {
 
             let totalTime = 0;
             if (punchInTime && punchOutTime) {
-                totalTime = (punchOutTime - punchInTime) / (1000 * 60 * 60); 
+                totalTime = (punchOutTime - punchInTime) / (1000 * 60 * 60);
             }
 
             return {
-                ...record.toObject(), 
-                totalTime: totalTime.toFixed(2) 
+                ...record.toObject(),
+                totalTime: totalTime.toFixed(2)
             };
         });
 
@@ -320,5 +362,7 @@ const fetchAttendance = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { 
-    promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails , fillAttendancePunchIn, fillAttendancePunchOut, fetchAttendance};
+module.exports = {
+    fetchPromoterForms,
+    promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails, fillAttendancePunchIn, fillAttendancePunchOut, fetchAttendance
+};
