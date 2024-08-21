@@ -115,18 +115,24 @@ const AdminAssignCreatedForm = () => {
                                 <tr key={promoter._id}>
                                     <td>{promoter.promoterName}</td>
                                     <td>{promoter.promoterEmailId}</td>
-                                    <td>
+                                    
                                         {promoter.hasFormAssigned ? (
-                                            <span>Assigned</span>
+                                            <td className='assignedFormCell'>
+                                            <span> <b>Form Assigned</b>
+                                                
+                                                </span>
+                                                </td>
                                         ) : (
+                                            <td >
                                             <button
                                                 className="assignFormBtn"
                                                 onClick={() => assignFormToPromoter(promoter._id)}
                                             >
                                                 Assign Form
                                             </button>
+                                            </td>
                                         )}
-                                    </td>
+                                   
                                 </tr>
                             ))}
                         </tbody>

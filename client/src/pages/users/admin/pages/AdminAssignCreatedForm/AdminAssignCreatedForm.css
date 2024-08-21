@@ -1,3 +1,4 @@
+
 .assignFormContainer {
   width: 100%;
   box-sizing: border-box;
@@ -13,39 +14,41 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
+  padding: 0 20px; /* Add horizontal padding */
 }
 
-.create-promoter-btn{
-padding: 15px 20px;
-margin-top: 25px;
-border: none;
-border-radius: 18px;
-background-color: #2d9bff;
-font-family: "Poppins", sans-serif;
-font-weight: bold;
-font-size: 18px;
-color: white;
-cursor: pointer;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-transition: transform 0.3s, box-shadow 0.3s;
+.create-promoter-btn {
+  padding: 15px 20px;
+  margin-top: 25px;
+  border: none;
+  border-radius: 18px;
+  background-color: #2d9bff;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .create-promoter-btn:hover {
-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.30);
-transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.30);
+  transform: translateY(-2px);
 }
 
 .create-promoter-btn:active {
-transform: translateY(0);
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
-
 
 .promoterTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
+  margin-left: auto; /* Center horizontally */
+  margin-right: auto; /* Center horizontally */
   font-size: 14px;
   border-radius: 10px;
   overflow: hidden;
@@ -58,7 +61,7 @@ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .promoterTable th {
-  background-color: #f2f2f2;
+  background-color: #3751b6;
   font-weight: bold;
 }
 
@@ -94,4 +97,8 @@ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 
 .assignFormBtn:hover {
   background-color: #2d4699;
+}
+
+.assignedFormCell {
+  background: radial-gradient(788px at 0.7% 3.4%, rgb(164, 231, 192) 0%, rgb(255, 255, 255) 90%);
 }
