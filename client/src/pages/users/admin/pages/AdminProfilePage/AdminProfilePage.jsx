@@ -15,7 +15,7 @@ const AdminProfilePage = () => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ userId: '66b5f7b3eb2d23066330e693' })
+                    body: JSON.stringify({ userId: '66b44fd7325e66688421c950' })
                 });
 
                 const data = await response.json();

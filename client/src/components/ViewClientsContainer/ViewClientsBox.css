@@ -1,6 +1,7 @@
 .viewClientsBox-container {
-    height: 220px;
-    width: 220px;
+    height: auto; /* Changed from fixed height to auto */
+    width: 100%; /* Make width 100% to fill the grid cell */
+    max-width: 220px; /* Set a max-width to ensure boxes don't grow too large */
     background-color: white;
     border-radius: 12px;
     display: flex;
@@ -27,9 +28,10 @@
     transition: transform 0.3s ease; 
 }
 
-.viewClientsBox-container img{
+.viewClientsBox-container img {
     border-radius: 20px;
 }
+
 .viewClientsBox-container:hover .clientImage {
     transform: scale(1.05); 
 }
