@@ -9,7 +9,7 @@ const CreatePromoterModal = ({ onClose, onCreate }) => {
     const [error, setError] = useState('');
 
     const handleCreatePromoter = async (e) => {
-        e.preventDefault(); // Prevent default form submission
+        e.preventDefault(); 
 
         try {
             const response = await axios.post('http://localhost:8080/api/v1/promoter/registerNewPromoter', {
@@ -20,8 +20,8 @@ const CreatePromoterModal = ({ onClose, onCreate }) => {
 
             if (response.status === 200) {
                 alert('Promoter created successfully!');
-                onCreate(response.data); // Pass created promoter data back to parent component
-                onClose();
+                onCreate(response.data);
+                onClose(); 
             } else {
                 setError('Failed to create promoter.');
             }
@@ -73,7 +73,7 @@ const CreatePromoterModal = ({ onClose, onCreate }) => {
                         <button type="button" className="modal-close-btn" onClick={onClose}>
                             Cancel
                         </button>
-                        <button type="submit" className="modal-close-btn">
+                        <button type="submit" className="modal-create-btn">
                             Create Promoter
                         </button>
                     </div>
