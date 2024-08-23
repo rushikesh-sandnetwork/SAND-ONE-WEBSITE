@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react';
 import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import axios from 'axios';
 import './AdminAssignCreatedForm.css';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import CreatePromoterModal from './CreatePromoterModal';
+
 
 const AdminAssignCreatedForm = () => {
     const [promoters, setPromoters] = useState([]);
@@ -12,6 +13,8 @@ const AdminAssignCreatedForm = () => {
     const [showModal, setShowModal] = useState(false);
 
     const { formId } = useParams(); // Fetch the formId from URL
+    const navigate = useNavigate(); // Initialize useNavigate
+
 
     useEffect(() => {
         const fetchPromoters = async () => {
@@ -97,6 +100,9 @@ const AdminAssignCreatedForm = () => {
                 <PageTitle title="Assign Promoters" />
             </div>
             <div className="formDetails">
+            <button className="back-btn" onClick={() => navigate('/admin')}>
+                    Back
+                </button>
                 {loading ? (
                     <p>Loading...</p>
                 ) : error ? (
