@@ -33,6 +33,12 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
     setError('');
     setSuccess('');
 
+    if (!campaignPhoto) {
+      setError('Please upload Campaign Photo');
+      setLoading(false);
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append('title', title);
@@ -80,7 +86,7 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
                 id="campaign-photo-upload"
                 className="file-upload-input"
                 onChange={handleFileChange}
-                required
+                
               />
               <label htmlFor="campaign-photo-upload" className="file-upload-label">
                 {campaignPhoto ? campaignPhoto.name : 'Upload Campaign Photo'}

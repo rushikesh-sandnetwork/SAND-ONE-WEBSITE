@@ -27,6 +27,12 @@ const AdminCreateNewClient = () => {
     setError('');
     setSuccess('');
 
+    if (!clientPhoto) {
+      setError('Please upload Client Photo');
+      setLoading(false);
+      return;
+    }
+
     const formData = new FormData();
     formData.append('clientName', clientName);
     formData.append('clientLocation', clientLocation);
@@ -83,6 +89,7 @@ const AdminCreateNewClient = () => {
               placeholder="Client Website"
               value={clientWebsite}
               onChange={handleInputChange(setClientWebsite)}
+              required
             />
           </div>
           <div className="file-upload">
@@ -91,7 +98,7 @@ const AdminCreateNewClient = () => {
               id="file-upload"
               className="file-upload-input"
               onChange={handleFileChange}
-              required
+              
             />
             <label htmlFor="file-upload" className="file-upload-label">
               {clientPhoto ? clientPhoto.name : 'Upload Client Logo'}
