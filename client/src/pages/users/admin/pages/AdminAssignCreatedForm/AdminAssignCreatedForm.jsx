@@ -39,6 +39,22 @@ const AdminAssignCreatedForm = () => {
         fetchPromoters();
     }, [formId]);
 
+    const unassignFormFromPromoter = (promoterId) => {
+        // Directly update the state to reflect the unassignment
+        setPromoters(prevPromoters => (
+            prevPromoters.map(promoter => {
+                if (promoter._id === promoterId) {
+                    return {
+                        ...promoter,
+                        hasFormAssigned: false
+                    };
+                }
+                return promoter;
+            })
+        ));
+    };
+    
+
     const assignFormToPromoter = async (promoterId) => {
         try {
             const response = await axios.post('http://localhost:8080/api/v1/admin/assignCreatedForms', {
@@ -123,8 +139,9 @@ const AdminAssignCreatedForm = () => {
                                     <td>{promoter.promoterEmailId}</td>
                                     
                                         {promoter.hasFormAssigned ? (
-                                            <td className='assignedFormCell'>
-                                            <span> <b>Form Assigned</b>
+                                            <td className='assignedFormCell' >
+                                            <span> <b>Form Assigned </b>
+                                            <button  className="UnassignFormBtn" onClick={() => unassignFormFromPromoter(promoter._id)}>Unassign</button>
                                                 
                                                 </span>
                                                 </td>

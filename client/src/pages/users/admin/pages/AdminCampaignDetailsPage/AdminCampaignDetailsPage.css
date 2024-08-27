@@ -53,3 +53,27 @@
     font-weight: bold;
     letter-spacing: 1px;
   }
+
+  .delete-campaign-button {
+    background-color: #dc3545; /* Bootstrap danger color for a delete button */
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    letter-spacing: 1px;
+    border: none;
+    border-radius: 4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+  }
+  
+  .delete-campaign-button:hover {
+    background-color: #c82333; /* Darker red for hover effect */
+    transform: scale(1.05); /* Slightly enlarge the button on hover */
+  }
+  
+  .delete-campaign-button:active {
+    background-color: #a71d2a; /* Even darker red for active state */
+    transform: scale(0.95); /* Slightly shrink the button on click */
+  }
