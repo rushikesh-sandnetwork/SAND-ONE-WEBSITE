@@ -38,22 +38,6 @@ const AdminAssignCreatedForm = () => {
         fetchPromoters();
     }, [formId]);
 
-    const unassignFormFromPromoter = (promoterId) => {
-        // Directly update the state to reflect the unassignment
-        setPromoters(prevPromoters => (
-            prevPromoters.map(promoter => {
-                if (promoter._id === promoterId) {
-                    return {
-                        ...promoter,
-                        hasFormAssigned: false
-                    };
-                }
-                return promoter;
-            })
-        ));
-    };
-    
-
     const assignFormToPromoter = async (promoterId) => {
         try {
             const response = await axios.post('http://localhost:8080/api/v1/admin/assignCreatedForms', {
@@ -111,9 +95,6 @@ const AdminAssignCreatedForm = () => {
                 <PageTitle title="Assign Promoters" />
             </div>
             <div className="formDetails">
-            <button className="back-btn" onClick={() => navigate('/admin')}>
-                    Back
-                </button>
                 {loading ? (
                     <div className="loading">
                         <p>Loading...</p>
@@ -134,7 +115,7 @@ const AdminAssignCreatedForm = () => {
                                 <tr key={promoter._id}>
                                     <td>{promoter.promoterName}</td>
                                     <td>{promoter.promoterEmailId}</td>
-                                    
+                                    <td>
                                         {promoter.hasFormAssigned ? (
                                             <span className="assigned">Assigned</span>
                                         ) : (
@@ -144,9 +125,8 @@ const AdminAssignCreatedForm = () => {
                                             >
                                                 Assign Form
                                             </button>
-                                            </td>
                                         )}
-                                   
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
