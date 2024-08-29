@@ -1,15 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import axios from 'axios';
 import './CreatePromoterModal.css';
 
-const CreatePromoterModal = ({ onClose, onCreate }) => {
+const CreatePromoterModal = memo(({ onClose, onCreate }) => {
     const [promoterName, setPromoterName] = useState('');
     const [promoterEmailId, setPromoterEmailId] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [fadeClass, setFadeClass] = useState('');
+
+    useEffect(() => {
+        setFadeClass('modal-visible');
+    }, []);
 
     const handleCreatePromoter = async (e) => {
-        e.preventDefault(); 
+        e.preventDefault();
 
         try {
             const response = await axios.post('http://localhost:8080/api/v1/promoter/registerNewPromoter', {
@@ -21,7 +26,8 @@ const CreatePromoterModal = ({ onClose, onCreate }) => {
             if (response.status === 200) {
                 alert('Promoter created successfully!');
                 onCreate(response.data);
-                onClose(); 
+                setFadeClass('');
+                onClose();
             } else {
                 setError('Failed to create promoter.');
             }
@@ -31,7 +37,7 @@ const CreatePromoterModal = ({ onClose, onCreate }) => {
     };
 
     return (
-        <div className="modal-overlay">
+        <div className={`modal-overlay ${fadeClass}`}>
             <div className="modal-content">
                 <h2>Create New Promoter</h2>
                 {error && <p className="error-message">{error}</p>}
@@ -81,6 +87,6 @@ const CreatePromoterModal = ({ onClose, onCreate }) => {
             </div>
         </div>
     );
-};
+});
 
 export default CreatePromoterModal;

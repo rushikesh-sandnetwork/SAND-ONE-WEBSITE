@@ -44,7 +44,7 @@ class _ViewAttendancePageState extends State<ViewAttendancePage> {
       _isLoading = true;
     });
 
-    final url = 'http://192.168.31.139:8080/api/v1/promoter/fetchAttendance';
+    final url = 'http://192.168.31.140:8080/api/v1/promoter/fetchAttendance';
     try {
       final response = await http.post(
         Uri.parse(url),

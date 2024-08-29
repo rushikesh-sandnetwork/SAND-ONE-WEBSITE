@@ -3,36 +3,38 @@ import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import axios from 'axios';
 import './AdminAssignCreatedForm.css';
 import { useParams } from 'react-router-dom';
-import CreatePromoterModal from './CreatePromoterModal';
 
 const AdminAssignCreatedForm = () => {
     const [promoters, setPromoters] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
-    const [showModal, setShowModal] = useState(false);
+    const [showForm, setShowForm] = useState(false);
+    const [promoterName, setPromoterName] = useState('');
+    const [promoterEmailId, setPromoterEmailId] = useState('');
+    const [password, setPassword] = useState('');
 
-    const { formId } = useParams(); // Fetch the formId from URL
+    const { formId } = useParams();
+
+    const fetchPromoters = async () => {
+        try {
+            const response = await axios.get('http://localhost:8080/api/v1/promoter/fetchPromoters');
+            if (response.status === 200) {
+                const promotersWithAssignment = response.data.data.map(promoter => ({
+                    ...promoter,
+                    hasFormAssigned: promoter.forms.includes(formId)
+                }));
+                setPromoters(promotersWithAssignment);
+            } else {
+                setError('Failed to fetch promoters.');
+            }
+        } catch (error) {
+            setError('An error occurred while fetching promoters.');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     useEffect(() => {
-        const fetchPromoters = async () => {
-            try {
-                const response = await axios.get('http://localhost:8080/api/v1/promoter/fetchPromoters');
-                if (response.status === 200) {
-                    const promotersWithAssignment = response.data.data.map(promoter => ({
-                        ...promoter,
-                        hasFormAssigned: promoter.forms.includes(formId)
-                    }));
-                    setPromoters(promotersWithAssignment);
-                } else {
-                    setError('Failed to fetch promoters.');
-                }
-            } catch (error) {
-                setError('An error occurred while fetching promoters.');
-            } finally {
-                setLoading(false);
-            }
-        };
-        
         fetchPromoters();
     }, [formId]);
 
@@ -42,10 +44,9 @@ const AdminAssignCreatedForm = () => {
                 formId,
                 promoterId,
             });
-    
+
             if (response.status === 200) {
                 alert('Form assigned successfully!');
-                // Update local state to reflect the assignment
                 setPromoters(prevPromoters => (
                     prevPromoters.map(promoter => {
                         if (promoter._id === promoterId) {
@@ -58,36 +59,33 @@ const AdminAssignCreatedForm = () => {
                     })
                 ));
             } else {
-                alert('Failed to assign form. Status code: ' + response.status);
+                alert('Failed to assign form.');
             }
         } catch (error) {
-            console.error('Error assigning form:', error);
             alert('An error occurred while assigning the form.');
         }
     };
-    
 
-    const handleOpenModal = () => {
-        setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
-
-    const handleCreatePromoter = async (newPromoter) => {
+    const handleCreatePromoter = async (e) => {
+        e.preventDefault();
         try {
-            // Assuming the backend returns the newly created promoter object with _id
-            const response = await axios.post('http://localhost:8080/api/v1/promoter/create', newPromoter);
+            const response = await axios.post('http://localhost:8080/api/v1/promoter/registerNewPromoter', {
+                promoterName,
+                promoterEmailId,
+                password,
+            });
             if (response.status === 200) {
                 alert('Promoter created successfully!');
-                // Fetch updated list of promoters
                 fetchPromoters();
+                setPromoterName('');
+                setPromoterEmailId('');
+                setPassword('');
+                setShowForm(false);
             } else {
-                alert('Failed to create promoter.');
+                setError('Failed to create promoter.');
             }
         } catch (error) {
-            alert('An error occurred while creating the promoter.');
+            setError('An error occurred while creating the promoter.');
         }
     };
 
@@ -98,9 +96,11 @@ const AdminAssignCreatedForm = () => {
             </div>
             <div className="formDetails">
                 {loading ? (
-                    <p>Loading...</p>
+                    <div className="loading">
+                        <p>Loading...</p>
+                    </div>
                 ) : error ? (
-                    <p>{error}</p>
+                    <p className="error-message">{error}</p>
                 ) : (
                     <table className="promoterTable">
                         <thead>
@@ -117,7 +117,7 @@ const AdminAssignCreatedForm = () => {
                                     <td>{promoter.promoterEmailId}</td>
                                     <td>
                                         {promoter.hasFormAssigned ? (
-                                            <span>Assigned</span>
+                                            <span className="assigned">Assigned</span>
                                         ) : (
                                             <button
                                                 className="assignFormBtn"
@@ -133,17 +133,54 @@ const AdminAssignCreatedForm = () => {
                     </table>
                 )}
 
-                <button className="create-promoter-btn" onClick={handleOpenModal}>
-                    Create New Promoter
+                <button className="create-promoter-btn" onClick={() => setShowForm(!showForm)}>
+                    {showForm ? 'Cancel' : 'Create New Promoter'}
                 </button>
 
-                {showModal && (
-                    <CreatePromoterModal
-                        onClose={handleCloseModal}
-                        onCreate={handleCreatePromoter}
-                    />
+                {showForm && (
+                    <div className="promoter-form">
+                        <form onSubmit={handleCreatePromoter}>
+                            <div className="form-group">
+                                <input
+                                    type="text"
+                                    id="promoterName"
+                                    className='inputField'
+                                    placeholder='Promoter Name'
+                                    value={promoterName}
+                                    onChange={(e) => setPromoterName(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <input
+                                    type="email"
+                                    id="promoterEmailId"
+                                    className='inputField'
+                                    placeholder='Promoter Email'
+                                    value={promoterEmailId}
+                                    onChange={(e) => setPromoterEmailId(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-group">
+                                <input
+                                    type="password"
+                                    id="password"
+                                    className='inputField'
+                                    placeholder='Password'
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
+                                />
+                            </div>
+                            <div className="form-actions">
+                                <button type="submit" className="createPromotersubmit-btn">
+                                    Create Promoter
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 )}
-
             </div>
         </div>
     );

@@ -2,6 +2,8 @@
   width: 100%;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+  /* padding: 20px; */
+  background-color: #f4f4f9;
 }
 
 .title {
@@ -13,34 +15,34 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-around;
+  justify-content: center;
 }
 
-.create-promoter-btn{
-padding: 15px 20px;
-margin-top: 25px;
-border: none;
-border-radius: 18px;
-background-color: #2d9bff;
-font-family: "Poppins", sans-serif;
-font-weight: bold;
-font-size: 18px;
-color: white;
-cursor: pointer;
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-transition: transform 0.3s, box-shadow 0.3s;
+.create-promoter-btn {
+  padding: 15px 20px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border: none;
+  border-radius: 18px;
+  background-color: #2d9bff;
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
 }
 
 .create-promoter-btn:hover {
-box-shadow: 0 6px 8px rgba(0, 0, 0, 0.30);
-transform: translateY(-2px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
 }
 
 .create-promoter-btn:active {
-transform: translateY(0);
-box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
-
 
 .promoterTable {
   width: 100%;
@@ -49,13 +51,23 @@ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   font-size: 14px;
   border-radius: 10px;
   overflow: hidden;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.promoterTable th {
+  background-color: #f2f2f2; /* Light grey background */
+  color: #333; /* Dark text color for better contrast */
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ddd; /* Add border to ensure headers are visible */
 }
 
-.promoterTable th, .promoterTable td {
-  border: 1px solid #ddd;
+.promoterTable td {
   padding: 10px;
-  text-align: left;
+  border: 1px solid #ddd; /* Ensure borders are consistent */
 }
+
 
 .promoterTable th {
   background-color: #f2f2f2;
@@ -90,8 +102,85 @@ box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   font-size: 14px;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .assignFormBtn:hover {
   background-color: #2d4699;
+  transform: scale(1.05);
+}
+
+.assignFormBtn:active {
+  transform: scale(1);
+}
+
+.loading {
+  padding: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+/* .promoter-form{
+  margin-top: 10px;
+} */
+
+
+.promoter-form .inputField {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.promoter-form .inputField:focus {
+  border-color: #2d9bff;
+  outline: none;
+}
+
+.loading {
+  padding: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.createPromotersubmit-btn{
+  background-color: #3751b6;
+  color: #fff;
+  border: none;
+  padding: 8px 16px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+@media (max-width: 768px) {
+  .assignFormContainer {
+    padding: 15px;
+  }
+
+  .promoterTable {
+    font-size: 12px;
+  }
+
+  .create-promoter-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
 }

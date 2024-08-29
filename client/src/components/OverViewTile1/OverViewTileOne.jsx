@@ -43,7 +43,7 @@ const OverViewTileOne = () => {
         <>
           <OverViewTileOneBox title="TOTAL CLIENTS" number={data.numberOfClients}></OverViewTileOneBox>
           <OverViewTileOneBox title="TOTAL CAMPAIGNS" number={data.numberOfCampaigns}></OverViewTileOneBox>
-          <OverViewTileOneBox title="GENERATED    FORMS" number={data.numberOfForms}></OverViewTileOneBox>
+          <OverViewTileOneBox title="GENERATED FORMS" number={data.numberOfForms}></OverViewTileOneBox>
           <OverViewTileOneBox title="TOTAL PROMOTERS" number={data.numberOfPromoters}></OverViewTileOneBox>
         </>
       )}

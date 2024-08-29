@@ -1,16 +1,16 @@
+/* Adjust the overlay to avoid re-render issues */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5); /* semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: center;
     align-items: center;
     font-family: "Poppins", sans-serif;
-    opacity: 0; /* Start hidden */
-    animation: fadeIn 0.3s forwards; /* Fade-in effect for smooth appearance */
+    z-index: 1000; /* Ensure it's on top */
 }
 
 .modal-content {
@@ -19,80 +19,35 @@
     border-radius: 8px;
     width: 500px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    transform: scale(0.9); /* Start with a smaller scale */
-    animation: grow 0.3s forwards; /* Smooth grow effect */
-}
-
-.modal-content h2 {
-    margin-top: 0;
-}
-
-.error-message {
-    color: red;
-    margin-bottom: 10px;
-}
-
-.form-group {
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.inputField {
-    outline: none;
-    padding: 10px;
-}
-
-.form-group input {
-    width: 90%;
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    outline: none;
-    font-family: "Poppins", sans-serif;
-}
-
-.modal-actions {
-    text-align: right;
-    margin-top: 10px;
-}
-
-.modal-close-btn,
-.modal-create-btn {
-    padding: 8px 16px;
-    margin-left: 10px;
-    cursor: pointer;
-    border: none;
-    border-radius: 4px;
-}
-
-.modal-close-btn {
-    background-color: #ccc;
-}
-
-.modal-create-btn {
-    background-color: #007bff;
-    color: #fff;
-    margin-left: 10px;
-}
-
-.modal-create-btn:hover {
-    background-color: #0056b3;
-}
-
-/* Animations */
-@keyframes fadeIn {
-    to {
-        opacity: 1;
-    }
+    transform: scale(0.9);
+    animation: grow 0.3s forwards;
 }
 
 @keyframes grow {
-    to {
+    0% {
+        transform: scale(0.9);
+    }
+    100% {
         transform: scale(1);
     }
+}
+
+.modal-create-btn:hover {
+    background-color: #007bff;
+    transition: none;
+}
+
+
+.inputField:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+/* Ensure the modal is not flickering due to focus states */
+.modal-content input,
+.modal-content button {
+    -webkit-backface-visibility: hidden;
+    -webkit-transform: translate3d(0, 0, 0);
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
 }

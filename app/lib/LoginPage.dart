@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> loginUser(String email, String password) async {
     try {
       var response = await http.post(
-        Uri.parse('http://192.168.31.139:8080/api/v1/promoter/loginPromoter'),
+        Uri.parse('http://192.168.31.140:8080/api/v1/promoter/loginPromoter'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -30,8 +30,8 @@ class _LoginPageState extends State<LoginPage> {
         }),
       );
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      // print('Response status: ${response.statusCode}');
+      // print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
@@ -58,7 +58,7 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         errorText = 'An error occurred. Please try again later.';
       });
-      print('Error: $e');
+      // print('Error: $e');
     }
   }
 
@@ -127,11 +127,11 @@ class _LoginPageState extends State<LoginPage> {
                             prefixIcon: Icon(Icons.email,
                                 color: Colors.white, size: screenWidth * 0.06),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             filled: true,
@@ -150,11 +150,11 @@ class _LoginPageState extends State<LoginPage> {
                             prefixIcon: Icon(Icons.lock,
                                 color: Colors.white, size: screenWidth * 0.06),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             filled: true,
@@ -167,21 +167,11 @@ class _LoginPageState extends State<LoginPage> {
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              print("hello");
                               String email = emailController.text;
                               String password = passwordController.text;
                               // Call loginUser function to send login request
                               loginUser(email, password);
                             },
-                            child: Text(
-                              'LOGIN',
-                              style: GoogleFonts.poppins(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: screenWidth * 0.06,
-                                letterSpacing: 2,
-                              ),
-                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.white,
@@ -191,6 +181,15 @@ class _LoginPageState extends State<LoginPage> {
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               elevation: 5,
+                            ),
+                            child: Text(
+                              'LOGIN',
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: screenWidth * 0.06,
+                                letterSpacing: 2,
+                              ),
                             ),
                           ),
                         ),
