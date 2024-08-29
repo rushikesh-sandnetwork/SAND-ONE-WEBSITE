@@ -81,18 +81,43 @@ const fetchAllClients = asyncHandler(async (req, res) => {
 const deleteClient = asyncHandler(async (req, res) => {
     try {
         const { clientId } = req.body;
-
+        console.log(clientId);
+        
         if (!clientId) {
             return res.status(400).json(new apiError(400, "Details are required to delete the client."));
         };
 
-        const clientDoc = await client.findByIdAndDelete({ clientId });
+        const clientDoc = await client.findByIdAndDelete( clientId );
 
         if (!clientDoc) {
             return res.status(400).json(new apiError(400, "No client found with the given id."));
         };
 
         return res.status(200).json(new apiResponse(200, clientDoc, "Client deleted successfully."));
+
+    } catch (error) {
+        console.error('Error deleting clients:', error);
+        res.status(500).json(new apiError(500, "An error occurred while deleting the client."));
+    }
+});
+
+
+const deleteCampaign = asyncHandler(async (req, res) => {
+    try {
+        const { campaignId } = req.body;
+        console.log(campaignId);
+        
+        if (!campaignId) {
+            return res.status(400).json(new apiError(400, "Details are required to delete the campaign."));
+        };
+
+        const campaignDoc = await campaign.findByIdAndDelete( campaignId );
+
+        if (!campaignDoc) {
+            return res.status(400).json(new apiError(400, "No campaign found with the given id."));
+        };
+
+        return res.status(200).json(new apiResponse(200, campaignDoc, "Campaign deleted successfully."));
 
     } catch (error) {
         console.error('Error deleting clients:', error);
@@ -479,6 +504,7 @@ const acceptRejectData = asyncHandler(async (req, res) => {
 
 
 
+
 module.exports = {
     fetchFormsForCampaigns,
     fetchNumberOfClientsAndCampaigns,
@@ -494,8 +520,9 @@ module.exports = {
     fetchCampaignDetails,
     fetchAllCampaigns,
     fetchAllClientSpecificCampaigns,
+    deleteCampaign,
     deleteClient,
     fetchAllClients,
     fetchClient,
     createNewClient
-};
+};``

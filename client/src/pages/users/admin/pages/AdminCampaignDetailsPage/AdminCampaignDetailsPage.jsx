@@ -2,9 +2,10 @@ import React from 'react';
 import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import CampaignDetailsBox from '../../../../../components/CampaignDetailsBoxes/CampaignDetailsBox';
 import './AdminCampaignDetailsPage.css';
+import CampaignDeleteBox from '../../../../../components/CampaignDetailsBoxes/CampaignDeleteBox';
 
-const AdminCampaignDetailsPage = ({campaignId ,setActiveTab}) => {
-  const handleDelete = async () => {
+const AdminCampaignDetailsPage = ({ campaignId, setActiveTab }) => {
+  const handleDeleteCampaign = async () => {
     try {
       const response = await fetch(`/api/campaigns/${campaignId}`, {
         method: 'DELETE',
@@ -15,9 +16,7 @@ const AdminCampaignDetailsPage = ({campaignId ,setActiveTab}) => {
       if (!response.ok) {
         throw new Error('Failed to delete the campaign');
       }
-      // Optionally, handle successful deletion (e.g., redirect or show a message)
       alert('Campaign deleted successfully');
-      // You might want to redirect or refresh the page
     } catch (error) {
       console.error('Error deleting campaign:', error);
       alert('An error occurred while deleting the campaign');
@@ -26,9 +25,8 @@ const AdminCampaignDetailsPage = ({campaignId ,setActiveTab}) => {
   return (
     <div className="campaign-details-container">
       <PageTitle title="Campaign Details" />
-            
+
       <div className="campaign-details-boxes">
-      <div><button onClick={handleDelete} className="delete-campaign-button">Delete Campaign</button></div>
         <div className="row">
           <CampaignDetailsBox
             imgSrc="https://cdn-icons-png.flaticon.com/512/4074/4074958.png"
@@ -44,10 +42,17 @@ const AdminCampaignDetailsPage = ({campaignId ,setActiveTab}) => {
             setActiveTab={setActiveTab}
             campaignId={campaignId}
           />
+
+          <CampaignDeleteBox
+           imgSrc="https://cdn-icons-png.flaticon.com/512/2723/2723639.png"
+            title="DELETE CAMPAIGN"
+            campaignId={campaignId}
+            setActiveTab={setActiveTab}
+           />
         </div>
       </div>
     </div>
-    
+
   );
 };
 

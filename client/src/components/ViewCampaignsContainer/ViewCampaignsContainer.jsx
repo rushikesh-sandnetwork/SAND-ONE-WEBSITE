@@ -8,12 +8,12 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
         const response = await axios.post('http://localhost:8080/api/v1/admin/fetchAllCampaigns', { clientId });
-        // Reverse the order of campaigns array
         setCampaigns(response.data.data.reverse());
         setLoading(false);
       } catch (error) {
@@ -25,6 +25,22 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
 
     fetchCampaigns();
   }, [clientId]);
+
+  const handleDeleteClient = async () => {
+    try {
+      const response = await axios.delete('http://localhost:8080/api/v1/admin/deleteClient', {
+        data: { clientId }
+      });
+      
+      if (response.status === 200) {
+        alert('Client deleted successfully.');
+        setActiveTab("viewClients") 
+      }
+    } catch (error) {
+      console.error('Error deleting client:', error);
+      alert('Failed to delete client');
+    }
+  };
 
   if (loading) {
     return <div>Loading...</div>;
@@ -39,13 +55,19 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
       <input
         className='newCampaignBtn'
         type="button"
-        value="Create New Campaign +"
+        value="Create New Campaign"
         onClick={() => setActiveTab(`createNewCampaign/${clientId}`)}
+      />
+      <input
+        className='deleteClientBtn'
+        type="button"
+        value="Delete Client"
+        onClick={handleDeleteClient}
       />
 
       <div className="allCampaignsContainer">
         {campaigns.map(campaign => (
-          <ViewCampaignsBox key={campaign._id} url={campaign.campaignLogo} campaign={campaign} campaignId={campaign._id} setActiveTab= {setActiveTab}/>
+          <ViewCampaignsBox key={campaign._id} url={campaign.campaignLogo} campaign={campaign} campaignId={campaign._id} setActiveTab={setActiveTab} />
         ))}
       </div>
     </div>
