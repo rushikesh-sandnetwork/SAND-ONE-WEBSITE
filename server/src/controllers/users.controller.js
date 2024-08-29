@@ -151,7 +151,16 @@ const userDetails = asyncHandler(async (req, res) => {
   } catch (error) {
     return res.status(400).json(new apiError(400, "Error in fetching user."));
   }
-})
+});
+
+const createNewUser = asyncHandler(async (req,res)=>{
+  try {
+    
+  } catch (error) {
+    return res.status(400).json(new apiError(400, "Error in creating user."));
+
+  }
+});
 
 
-module.exports = { loginUser, registerUser, refreshAccessToken, logoutUser , userDetails};
+module.exports = { createNewUser,loginUser, registerUser, refreshAccessToken, logoutUser , userDetails};

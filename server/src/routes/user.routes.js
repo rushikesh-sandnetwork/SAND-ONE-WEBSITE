@@ -22,4 +22,8 @@ router.post('/logout', verifyJWT, userController.logoutUser);
 // fetching user details
 router.route('/userDetails').post(userController.userDetails);
 
+
+// creating new user
+router.route('/createUser').post(userController.createNewUser);
+
 module.exports = router;
