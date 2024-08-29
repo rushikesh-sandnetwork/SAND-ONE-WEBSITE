@@ -50,12 +50,11 @@
 }
 
 input[type="password"], select.input-field {
-  /* Ensure consistency in appearance for both inputs and selects */
 }
 
 .dropdown-right {
-  margin-left: 20px; /* Adjust as needed to move the dropdown to the right */
-  
+  margin-left: 20px; 
+  padding: 10px 10px;
 }
 
 .submit-button {

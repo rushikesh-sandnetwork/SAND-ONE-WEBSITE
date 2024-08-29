@@ -26,6 +26,7 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
     fetchCampaigns();
   }, [clientId]);
 
+  
   const handleDeleteClient = async () => {
     try {
       const response = await axios.delete('http://localhost:8080/api/v1/admin/deleteClient', {
