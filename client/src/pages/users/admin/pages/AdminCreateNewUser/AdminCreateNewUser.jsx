@@ -1,13 +1,13 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import PageTitle from '../../../../../components/PageTitles/PageTitle';
-import './AdminCreateNewUser.css';
+  import React, { useState } from 'react';
+  import axios from 'axios';
+  import PageTitle from '../../../../../components/PageTitles/PageTitle';
+  import './AdminCreateNewUser.css';
 
 const AdminCreateNewUser = () => {
   const [name, setname] = useState('');
   const [surname, setsurname] = useState('');
   const [email, setemail] = useState('');
-  const [password, setpassword] = useState(''); // New state for client photo
+  const [password, setpassword] = useState('');
   const [role, setrole] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -22,12 +22,6 @@ const AdminCreateNewUser = () => {
     setLoading(true);
     setError('');
     setSuccess('');
-
-    // if (!clientPhoto) {
-    //   setError('Please upload Client Photo');
-    //   setLoading(false);
-    //   return;
-    // }
 
     const formData = new FormData();
     formData.append('name', name);
@@ -45,7 +39,6 @@ const AdminCreateNewUser = () => {
       if (response.status === 201) {
         const newUser = response.data.data;
         setSuccess(`User created successfully with the role ${newUser.role}`);
-        // setSuccess(`Client created successfully: ${newClient.clientName} (ID: ${newClient._id})`);
         setname('');
         setsurname('');
         setemail('');

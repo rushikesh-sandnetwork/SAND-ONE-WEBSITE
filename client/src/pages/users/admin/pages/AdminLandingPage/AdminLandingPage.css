@@ -37,7 +37,8 @@
 }
 
 .navbar img {
-  width: 150px;
+  margin-left: 10px;
+  width: 200px;
   height: auto;
   margin-bottom: 12px;
   align-items: center;
