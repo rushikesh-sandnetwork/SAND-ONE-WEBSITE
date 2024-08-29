@@ -2,8 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import './AdminProfilePage.css';
 
-
-const AdminProfilePage = (id) => {
+const AdminProfilePage = ({ userId }) => {  // Updated to accept userId as a prop
     const [userDetails, setUserDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -16,7 +15,7 @@ const AdminProfilePage = (id) => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({id })
+                    body: JSON.stringify({ userId })  // Send userId in the request body
                 });
 
                 const data = await response.json();
@@ -33,7 +32,7 @@ const AdminProfilePage = (id) => {
         };
 
         fetchUserDetails();
-    }, []);
+    }, [userId]);  // Ensure userId is a dependency for useEffect
 
     if (loading) return <div>Loading...</div>;
     if (error) return <div>Error: {error}</div>;
@@ -55,7 +54,7 @@ const AdminProfilePage = (id) => {
                 )}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default AdminProfilePage;

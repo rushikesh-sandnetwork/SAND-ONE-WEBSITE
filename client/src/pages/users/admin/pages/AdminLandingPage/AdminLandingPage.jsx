@@ -15,7 +15,7 @@ import AdminCreateNewUser from '../AdminCreateNewUser/AdminCreateNewUser';
 const AdminLandingPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [activeClient, setActiveClient] = useState('');
-  const id = useParams();
+  const {id} = useParams();
   const navigate = useNavigate(); // Initialize useNavigate
 
   const tabName = activeTab.startsWith('client-detail') ? activeTab.substring('client-detail'.length + 1) : activeTab;
@@ -48,7 +48,7 @@ const AdminLandingPage = () => {
         {activeTab === 'viewClients' && (
           <AdminViewClientsPage setActiveTab={setActiveTab} setActiveClient={setActiveClient} />
         )}
-        {activeTab === 'profile' && <AdminProfilePage id={id} />}
+        {activeTab === 'profile' && <AdminProfilePage userId={id} />}
         {activeTab === 'newUser' && <AdminCreateNewUser />}
         {activeTab.startsWith('client-detail') && (
           <AdminViewCampaignsPage clientId={tabName} setActiveTab={setActiveTab} />
