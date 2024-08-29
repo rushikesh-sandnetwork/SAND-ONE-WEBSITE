@@ -81,12 +81,13 @@ const fetchAllClients = asyncHandler(async (req, res) => {
 const deleteClient = asyncHandler(async (req, res) => {
     try {
         const { clientId } = req.body;
-
+        console.log(clientId);
+        
         if (!clientId) {
             return res.status(400).json(new apiError(400, "Details are required to delete the client."));
         };
 
-        const clientDoc = await client.findByIdAndDelete({ clientId });
+        const clientDoc = await client.findByIdAndDelete( clientId );
 
         if (!clientDoc) {
             return res.status(400).json(new apiError(400, "No client found with the given id."));
@@ -475,6 +476,7 @@ const acceptRejectData = asyncHandler(async (req, res) => {
         return res.status(500).json({ message: 'Internal Server Error', error: error.message });
     }
 });
+
 
 
 

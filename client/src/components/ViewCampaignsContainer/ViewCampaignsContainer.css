@@ -25,6 +25,21 @@
     cursor: pointer;
     transition: background-color 0.3s, box-shadow 0.3s;
 }
+.deleteClientBtn {
+    background-color: #ff4343;
+    height: 50px;
+    width: 100%;
+    margin-top: 10px;
+    border: none;
+    border-radius: 12px;
+    font-size: 18px;
+    font-family: "Poppins", sans-serif;
+    font-weight: bold;
+    color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: background-color 0.3s, box-shadow 0.3s;
+}
 
 .newCampaignBtn:hover {
     background-color: #2d9bff;

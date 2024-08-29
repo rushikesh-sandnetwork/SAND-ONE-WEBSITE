@@ -17,6 +17,10 @@ router.route("/createNewClient").post(
     ])
     ,adminController.createNewClient);
 
+
+// delete new client
+router.route("/deleteClient").delete(adminController.deleteClient);
+
 // fetchClient
 router.route("/fetchClient").post(adminController.fetchClient);
 

@@ -28,7 +28,6 @@ const AdminCampaignDetailsPage = ({campaignId ,setActiveTab}) => {
       <PageTitle title="Campaign Details" />
             
       <div className="campaign-details-boxes">
-      <div><button onClick={handleDelete} className="delete-campaign-button">Delete Campaign</button></div>
         <div className="row">
           <CampaignDetailsBox
             imgSrc="https://cdn-icons-png.flaticon.com/512/4074/4074958.png"
