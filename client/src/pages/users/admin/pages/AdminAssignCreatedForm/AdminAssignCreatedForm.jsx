@@ -66,6 +66,34 @@ const AdminAssignCreatedForm = () => {
         }
     };
 
+    const unassignFormFromPromoter = async (promoterId) => {
+        try {
+            const response = await axios.post('http://localhost:8080/api/v1/admin/unassignCreatedForms', {
+                formId,
+                promoterId,
+            });
+
+            if (response.status === 200) {
+                alert('Form unassigned successfully!');
+                setPromoters(prevPromoters => (
+                    prevPromoters.map(promoter => {
+                        if (promoter._id === promoterId) {
+                            return {
+                                ...promoter,
+                                hasFormAssigned: false
+                            };
+                        }
+                        return promoter;
+                    })
+                ));
+            } else {
+                alert('Failed to unassign form.');
+            }
+        } catch (error) {
+            alert('An error occurred while unassigning the form.');
+        }
+    };
+
     const handleCreatePromoter = async (e) => {
         e.preventDefault();
         try {
@@ -117,7 +145,12 @@ const AdminAssignCreatedForm = () => {
                                     <td>{promoter.promoterEmailId}</td>
                                     <td>
                                         {promoter.hasFormAssigned ? (
-                                            <span className="assigned">Assigned</span>
+                                            <button
+                                                className="unassignFormBtn"
+                                                onClick={() => unassignFormFromPromoter(promoter._id)}
+                                            >
+                                                Revoke Form
+                                            </button>
                                         ) : (
                                             <button
                                                 className="assignFormBtn"

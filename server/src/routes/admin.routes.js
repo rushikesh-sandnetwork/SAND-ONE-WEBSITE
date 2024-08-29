@@ -60,6 +60,10 @@ router.route("/createNewForm").post(adminController.createNewForm)
 router.route("/assignCreatedForms").post(adminController.assignCreatedForm);
 
 
+// unassignCreatedForm
+router.route("/unassignCreatedForms").post(adminController.unassignCreatedForm);
+
+
 // update user rights
 router.route("/updateUserRights").post(adminController.updateUserRights);
 

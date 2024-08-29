@@ -310,6 +310,32 @@ const assignCreatedForm = asyncHandler(async (req, res) => {
     }
 });
 
+const unassignCreatedForm = asyncHandler(async (req, res) => {
+    try {
+        const { formId, promoterId } = req.body;
+
+        if (!formId || !promoterId) {
+            return res.status(400).json(new apiError(400, "Form ID and Promoter ID are required"));
+        }
+
+        const promoter = await Promoter.findById(promoterId);
+
+        if (!promoter) {
+            return res.status(404).json(new apiError(404, "Promoter not found"));
+        }
+
+        promoter.forms = promoter.forms || [];
+        promoter.forms.pop(formId);
+
+        await promoter.save();
+
+        res.status(200).json(new apiResponse(200, promoter, "Promoter details updated"));
+    } catch (error) {
+        console.error('Error assigning form to promoter:', error);
+        res.status(500).json(new apiError(500, "An error occurred while assigning the form"));
+    }
+});
+
 
 const updateUserRights = asyncHandler(async (req, res) => {
     try {
@@ -506,6 +532,7 @@ const acceptRejectData = asyncHandler(async (req, res) => {
 
 
 module.exports = {
+    unassignCreatedForm,
     fetchFormsForCampaigns,
     fetchNumberOfClientsAndCampaigns,
     fillFormData,
