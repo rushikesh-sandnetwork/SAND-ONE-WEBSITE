@@ -102,6 +102,30 @@ const deleteClient = asyncHandler(async (req, res) => {
 });
 
 
+const deleteCampaign = asyncHandler(async (req, res) => {
+    try {
+        const { campaignId } = req.body;
+        console.log(campaignId);
+        
+        if (!campaignId) {
+            return res.status(400).json(new apiError(400, "Details are required to delete the campaign."));
+        };
+
+        const campaignDoc = await campaign.findByIdAndDelete( campaignId );
+
+        if (!campaignDoc) {
+            return res.status(400).json(new apiError(400, "No campaign found with the given id."));
+        };
+
+        return res.status(200).json(new apiResponse(200, campaignDoc, "Campaign deleted successfully."));
+
+    } catch (error) {
+        console.error('Error deleting clients:', error);
+        res.status(500).json(new apiError(500, "An error occurred while deleting the client."));
+    }
+});
+
+
 const fetchAllCampaigns = asyncHandler(async (req, res) => {
     try {
         const campaigns = await campaign.find({}).sort({ createdAt: -1 }).limit(4);
@@ -496,8 +520,9 @@ module.exports = {
     fetchCampaignDetails,
     fetchAllCampaigns,
     fetchAllClientSpecificCampaigns,
+    deleteCampaign,
     deleteClient,
     fetchAllClients,
     fetchClient,
     createNewClient
-};
+};``
