@@ -133,6 +133,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 const userDetails = asyncHandler(async (req, res) => {
   try {
     const { userId } = req.body;
+    console.log(userId);
     if (!userId) {
       return res.status(400).json(new apiError(400, "User Id not provided."));
     }

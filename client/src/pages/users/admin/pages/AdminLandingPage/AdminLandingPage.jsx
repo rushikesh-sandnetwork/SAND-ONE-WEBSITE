@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate ,useParams} from 'react-router-dom';
 import AdminOverViewPage from '../AdminOverViewPage/AdminOverViewPage';
 import AdminViewClientsPage from '../AdminViewClientsPage/AdminViewClientsPage';
 import AdminProfilePage from '../AdminProfilePage/AdminProfilePage';
@@ -11,11 +11,11 @@ import './AdminLandingPage.css';
 import AdminCreateNewCampaign from '../AdminCreateNewCampaign/AdminCreateNewCampaign';
 import AdminFormItems from '../AdminFormItems/AdminFormItems';
 import AdminCreateNewUser from '../AdminCreateNewUser/AdminCreateNewUser';
-
+ 
 const AdminLandingPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [activeClient, setActiveClient] = useState('');
-
+  const id = useParams();
   const navigate = useNavigate(); // Initialize useNavigate
 
   const tabName = activeTab.startsWith('client-detail') ? activeTab.substring('client-detail'.length + 1) : activeTab;
@@ -48,7 +48,7 @@ const AdminLandingPage = () => {
         {activeTab === 'viewClients' && (
           <AdminViewClientsPage setActiveTab={setActiveTab} setActiveClient={setActiveClient} />
         )}
-        {activeTab === 'profile' && <AdminProfilePage />}
+        {activeTab === 'profile' && <AdminProfilePage id={id} />}
         {activeTab === 'newUser' && <AdminCreateNewUser />}
         {activeTab.startsWith('client-detail') && (
           <AdminViewCampaignsPage clientId={tabName} setActiveTab={setActiveTab} />

@@ -30,8 +30,9 @@ const LoginPage = () => {
 
             if (response.status === 200) {
                 const role = response.data.data.user.role;
+                const id = response.data.data.user._id;
                 if (role === 'admin') {
-                    navigate('/admin');
+                    navigate(`/admin/${id}`);
                 } else if (role === 'mis') {
                     navigate('/mis');
                 }

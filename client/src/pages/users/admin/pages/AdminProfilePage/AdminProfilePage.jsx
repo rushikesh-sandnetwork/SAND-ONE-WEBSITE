@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import './AdminProfilePage.css';
 
-const AdminProfilePage = () => {
+
+const AdminProfilePage = (id) => {
     const [userDetails, setUserDetails] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
@@ -15,7 +16,7 @@ const AdminProfilePage = () => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ userId: '66b44fd7325e66688421c950' })
+                    body: JSON.stringify({id })
                 });
 
                 const data = await response.json();
