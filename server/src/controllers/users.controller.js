@@ -153,12 +153,35 @@ const userDetails = asyncHandler(async (req, res) => {
   }
 });
 
-const createNewUser = asyncHandler(async (req,res)=>{
+const createNewUser = asyncHandler(async (req, res) => {
   try {
-    
-  } catch (error) {
-    return res.status(400).json(new apiError(400, "Error in creating user."));
+      const { name, surname, email, password, role } = req.body;
 
+      // Validation: Ensure all required fields are provided
+      if (!name || !surname || !email || !password || !role) {
+          return res.status(400).json(new apiError(400, "All fields (name, surname, email, password, role) are required"));
+      }
+
+      // Check if the provided role is valid
+      const validRoles = ['admin', 'manager', 'mis', 'subadmin'];
+      if (!validRoles.includes(role)) {
+          return res.status(400).json(new apiError(400, "Invalid role provided"));
+      }
+
+      // Check if the user with the same email already exists
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+          return res.status(409).json(new apiError(409, "User with this email already exists"));
+      }
+
+      // Create the new user
+      const newUser = await User.create({ name, surname, email, password, role });
+
+      // Respond with the newly created user details
+      res.status(201).json(new apiResponse(201, newUser, "New user created successfully"));
+  } catch (error) {
+      console.error('Error creating new user:', error);
+      res.status(500).json(new apiError(500, "An error occurred while creating the new user"));
   }
 });
 
