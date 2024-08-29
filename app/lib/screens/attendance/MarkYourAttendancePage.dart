@@ -40,7 +40,7 @@ class _MarkYourAttendancePageState extends State<MarkYourAttendancePage> {
       String choice, File? imageFile, String promoterId) async {
     try {
       final url =
-          Uri.parse('http://192.168.31.139:8080/api/v1/promoter/$choice');
+          Uri.parse('http://192.168.31.140:8080/api/v1/promoter/$choice');
 
       var request = http.MultipartRequest('POST', url);
 

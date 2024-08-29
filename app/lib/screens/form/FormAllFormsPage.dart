@@ -1,36 +1,13 @@
-import 'dart:convert';
 import 'package:app/screens/form/SelectedFormsPage.dart';
-import 'package:app/utils/FormButtons/FormTabs.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:http/http.dart' as http;
+import '../../models/PromoterFormsModel.dart';
 import '../../service/promoterService.dart';
-class PromoterDetails {
-  final String id;
-  final String name;
-  final String email;
-  final List<String> formIds;
-
-  PromoterDetails({
-    required this.id,
-    required this.name,
-    required this.email,
-    required this.formIds,
-  });
-
-  factory PromoterDetails.fromJson(Map<String, dynamic> json) {
-    return PromoterDetails(
-      id: json['_id'] ?? '',
-      name: json['promoterName'] ?? '',
-      email: json['promoterEmailId'] ?? '',
-      formIds: List<String>.from(json['forms'] ?? []),
-    );
-  }
-}
-
+import '../../utils/FormButtons/FormTabs.dart';
 
 class Formallformspage extends StatefulWidget {
   final String promoterId;
+
   const Formallformspage({required this.promoterId});
 
   @override
@@ -38,12 +15,12 @@ class Formallformspage extends StatefulWidget {
 }
 
 class _FormallformspageState extends State<Formallformspage> {
-  Future<PromoterDetails>? _promoterDetails;
+  late Future<List<PromoterForm>> _promoterDetails;
 
   @override
   void initState() {
     super.initState();
-    _promoterDetails = PromoterService.fetchPromoterDetails(widget.promoterId);
+    _promoterDetails = PromoterService.fetchPromoterForms(widget.promoterId);
   }
 
   @override
@@ -65,58 +42,70 @@ class _FormallformspageState extends State<Formallformspage> {
           "Check your Forms",
           style: GoogleFonts.poppins(
               fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+          overflow: TextOverflow.ellipsis,
         ),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.black,
       ),
-      body: Container(
-        margin: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            FutureBuilder<PromoterDetails>(
-              future: _promoterDetails,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Center(child: Text('Error: ${snapshot.error}'));
-                } else if (snapshot.hasData) {
-                  if (snapshot.data!.formIds.isEmpty) {
-                    return const Center(child: Text('No form IDs found'));
-                  }
-                  return Expanded(
-                    child: ListView.builder(
-                      itemCount: snapshot.data!.formIds.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          double width = constraints.maxWidth;
+          double padding = width > 600 ? 20 : 10;
+
+          return Container(
+            margin: EdgeInsets.fromLTRB(padding, 0, padding, 0),
+            child: Column(
+              children: [
+                FutureBuilder<List<PromoterForm>>(
+                  future: _promoterDetails,
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const Center(child: CircularProgressIndicator());
+                    } else if (snapshot.hasError) {
+                      return Center(child: Text('Error: ${snapshot.error}'));
+                    } else if (snapshot.hasData) {
+                      if (snapshot.data!.isEmpty) {
+                        return const Center(child: Text('No forms found'));
+                      }
+                      return Expanded(
+                        child: ListView.builder(
+                          itemCount: snapshot.data!.length,
+                          itemBuilder: (context, index) {
+                            final form = snapshot.data![index];
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
                                     builder: (context) => SelectedFormsPage(
                                       promoterId: widget.promoterId,
-                                        formTitle:
-                                            "Form " + (index + 1).toString(),
-                                        formId:
-                                            snapshot.data!.formIds[index])));
+                                      formTitle: form.collectionName,
+                                      formId: form.formId,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 8.0),
+                                child: FormTabs(
+                                  id: form.formId,
+                                  title: form.collectionName,
+                                ),
+                              ),
+                            );
                           },
-                          child: FormTabs(
-                            id: snapshot.data!.formIds[index],
-                            title: "Form " + (index + 1).toString(),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-                } else {
-                  return const Center(child: Text('No data found'));
-                }
-              },
+                        ),
+                      );
+                    } else {
+                      return const Center(child: Text('No data found'));
+                    }
+                  },
+                ),
+              ],
             ),
-          ],
-        ),
+          );
+        },
       ),
     );
   }

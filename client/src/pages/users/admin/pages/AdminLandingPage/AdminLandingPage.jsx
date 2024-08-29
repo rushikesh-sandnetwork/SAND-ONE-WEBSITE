@@ -39,7 +39,6 @@ const AdminLandingPage = () => {
           <a onClick={() => setActiveTab('viewClients')}>View Clients</a>
           <a onClick={() => setActiveTab('profile')}>Profile</a>
           <a onClick={() => setActiveTab('newUser')}>New User</a>
-
           <input type="button" value="Logout" onClick={handleLogout} /> {/* Updated Logout Button */}
         </div>
       </div>

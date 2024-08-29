@@ -385,11 +385,13 @@ const fetchNumberOfClientsAndCampaigns = asyncHandler(async (req, res) => {
         const numberOfClients = await client.countDocuments();
         const numberOfCampaigns = await campaign.countDocuments();
         const numberOfForms = await formsFieldsModel.countDocuments();
+        const numberOfPromoters = await Promoter.countDocuments();
 
         const data = {
             "numberOfClients": numberOfClients,
             "numberOfCampaigns": numberOfCampaigns,
-            "numberOfForms": numberOfForms
+            "numberOfForms": numberOfForms,
+            "numberOfPromoters": numberOfPromoters,
         }
 
         res.status(200).json(new apiResponse(200, data, "Number of Documents fetched."));

@@ -3,6 +3,8 @@
   width: 100%;
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
+  /* padding: 20px; */
+  background-color: #f4f4f9;
 }
 
 .title {
@@ -15,12 +17,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 0 20px; /* Add horizontal padding */
 }
 
 .create-promoter-btn {
   padding: 15px 20px;
   margin-top: 25px;
+  margin-bottom: 25px;
   border: none;
   border-radius: 18px;
   background-color: #2d9bff;
@@ -34,7 +36,7 @@
 }
 
 .create-promoter-btn:hover {
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.30);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
   transform: translateY(-2px);
 }
 
@@ -52,13 +54,23 @@
   font-size: 14px;
   border-radius: 10px;
   overflow: hidden;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+.promoterTable th {
+  background-color: #f2f2f2; /* Light grey background */
+  color: #333; /* Dark text color for better contrast */
+  font-weight: bold;
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ddd; /* Add border to ensure headers are visible */
 }
 
-.promoterTable th, .promoterTable td {
-  border: 1px solid #ddd;
+.promoterTable td {
   padding: 10px;
-  text-align: left;
+  border: 1px solid #ddd; /* Ensure borders are consistent */
 }
+
 
 .promoterTable th {
   background-color: #3751b6;
@@ -93,47 +105,58 @@
   font-size: 14px;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
 .assignFormBtn:hover {
   background-color: #2d4699;
+  transform: scale(1.05);
 }
 
-.assignedFormCell {
-  background: radial-gradient(788px at 0.7% 3.4%, rgb(164, 231, 192) 0%, rgb(255, 255, 255) 90%);
+.assignFormBtn:active {
+  transform: scale(1);
 }
 
-
-
-.back-btn {
-  padding: 10px 20px;
-  margin-top: px;
-  /* float: left; */
-  margin-left: -1180px;
-  border: none;
-  border-radius: 18px;
-  background-color: #2d9bff;
-  font-family: "Poppins", sans-serif;
-  font-weight: bold;
+.loading {
+  padding: 20px;
   font-size: 18px;
-  color: rgb(247, 247, 247);
-  cursor: pointer;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s, box-shadow 0.3s;
+  font-weight: bold;
 }
 
-.create-promoter-btn:hover {
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.30);
-  transform: translateY(-2px);
+.error-message {
+  color: red;
+  font-weight: bold;
 }
 
-.create-promoter-btn:active {
-  transform: translateY(0);
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+
+.promoter-form .inputField {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+  transition: border-color 0.3s ease;
 }
 
-.UnassignFormBtn {
-  background-color: #ED4E69;
+.promoter-form .inputField:focus {
+  border-color: #2d9bff;
+  outline: none;
+}
+
+.loading {
+  padding: 20px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.error-message {
+  color: red;
+  font-weight: bold;
+}
+
+.createPromotersubmit-btn{
+  background-color: #3751b6;
   color: #fff;
   border: none;
   padding: 8px 16px;
@@ -142,8 +165,21 @@
   font-size: 14px;
   cursor: pointer;
   border-radius: 5px;
+  transition: background-color 0.3s, transform 0.3s;
 }
 
-.UnassignFormBtn:hover {
-  background-color: #9B0002;
+@media (max-width: 768px) {
+  .assignFormContainer {
+    padding: 15px;
+  }
+
+  .promoterTable {
+    font-size: 12px;
+  }
+
+  .create-promoter-btn {
+    width: 100%;
+    padding: 12px;
+    font-size: 16px;
+  }
 }

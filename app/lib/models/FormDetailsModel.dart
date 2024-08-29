@@ -4,11 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:path/path.dart';
 import 'package:async/async.dart';
 
-import '../screens/form/FormAllFormsPage.dart';
-
 class FormService {
   static const String baseUrl =
-      'http://192.168.31.139:8080/api/v1/promoter/fetchFormField';
+      'http://192.168.31.140:8080/api/v1/promoter/fetchFormField';
 
   /// Fetch form details including campaignId, formFields, and collectionName
   static Future<FormDetails> fetchFormDetails(String formId) async {
@@ -57,7 +55,7 @@ class FormService {
   static Future<String> submitFormData(
       String collectionName, Map<String, dynamic> data) async {
     final url = Uri.parse(
-        'http://192.168.31.139:8080/api/v1/promoter/fillFormData/$collectionName');
+        'http://192.168.31.140:8080/api/v1/promoter/fillFormData/$collectionName');
 
     var request = http.MultipartRequest('POST', url);
 

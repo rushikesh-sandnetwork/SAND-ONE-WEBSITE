@@ -20,7 +20,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<void> loginUser(String email, String password) async {
     try {
       var response = await http.post(
-        Uri.parse('http://192.168.31.139:8080/api/v1/promoter/loginPromoter'),
+        Uri.parse('http://192.168.31.140:8080/api/v1/promoter/loginPromoter'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -30,8 +30,8 @@ class _LoginPageState extends State<LoginPage> {
         }),
       );
 
-      print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
+      // print('Response status: ${response.statusCode}');
+      // print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         var jsonResponse = jsonDecode(response.body);
@@ -58,12 +58,16 @@ class _LoginPageState extends State<LoginPage> {
       setState(() {
         errorText = 'An error occurred. Please try again later.';
       });
-      print('Error: $e');
+      // print('Error: $e');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final isLandscape = screenWidth > screenHeight;
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
@@ -73,58 +77,61 @@ class _LoginPageState extends State<LoginPage> {
       body: Stack(
         children: [
           Positioned(
-            top: 20,
-            left: 10,
-            right: 10,
+            top: isLandscape ? screenHeight * 0.02 : screenHeight * 0.05,
+            left: screenWidth * 0.05,
+            right: screenWidth * 0.05,
             child: Image.asset(
               'assets/SAND 1 logo.png',
               fit: BoxFit.cover,
+              height: isLandscape ? screenHeight * 0.2 : screenHeight * 0.09,
             ),
           ),
           SingleChildScrollView(
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05),
               child: Column(
                 children: [
-                  SizedBox(height: 200),
+                  SizedBox(height: screenHeight * 0.25),
                   Container(
                     decoration: BoxDecoration(
-                      color: Color.fromRGBO(21, 25, 24, 1),
+                      color: const Color.fromRGBO(21, 25, 24, 1),
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withOpacity(0.2),
                           spreadRadius: 2,
                           blurRadius: 7,
-                          offset: Offset(0, 3),
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
-                    padding: const EdgeInsets.all(20.0),
+                    padding: EdgeInsets.all(screenWidth * 0.05),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Text(
                           'LOGIN',
                           style: GoogleFonts.poppins(
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white),
+                            fontSize: screenWidth * 0.07,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.02),
                         TextField(
                           controller: emailController,
                           decoration: InputDecoration(
                             labelText: 'Email',
                             labelStyle:
                                 GoogleFonts.poppins(color: Colors.white),
-                            prefixIcon: Icon(Icons.email, color: Colors.white),
+                            prefixIcon: Icon(Icons.email,
+                                color: Colors.white, size: screenWidth * 0.06),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             filled: true,
@@ -132,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           style: GoogleFonts.poppins(color: Colors.white),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.02),
                         TextField(
                           controller: passwordController,
                           obscureText: true,
@@ -140,13 +147,14 @@ class _LoginPageState extends State<LoginPage> {
                             labelText: 'Password',
                             labelStyle:
                                 GoogleFonts.poppins(color: Colors.white),
-                            prefixIcon: Icon(Icons.lock, color: Colors.white),
+                            prefixIcon: Icon(Icons.lock,
+                                color: Colors.white, size: screenWidth * 0.06),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             focusedBorder: OutlineInputBorder(
-                              borderSide: BorderSide(color: Colors.white),
+                              borderSide: const BorderSide(color: Colors.white),
                               borderRadius: BorderRadius.circular(10),
                             ),
                             filled: true,
@@ -154,48 +162,49 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           style: GoogleFonts.poppins(color: Colors.white),
                         ),
-                        SizedBox(height: 20),
+                        SizedBox(height: screenHeight * 0.03),
                         SizedBox(
                           width: double.infinity,
                           child: ElevatedButton(
                             onPressed: () {
-                              print("hello");
                               String email = emailController.text;
                               String password = passwordController.text;
                               // Call loginUser function to send login request
                               loginUser(email, password);
                             },
-                            child: Text(
-                              'LOGIN',
-                              style: GoogleFonts.poppins(
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontSize: 20,
-                                  letterSpacing: 2),
-                            ),
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.white,
                               foregroundColor: Colors.white,
-                              padding: EdgeInsets.symmetric(vertical: 15),
+                              padding: EdgeInsets.symmetric(
+                                  vertical: screenHeight * 0.02),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               elevation: 5,
                             ),
+                            child: Text(
+                              'LOGIN',
+                              style: GoogleFonts.poppins(
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: screenWidth * 0.06,
+                                letterSpacing: 2,
+                              ),
+                            ),
                           ),
                         ),
-                        SizedBox(height: 10),
+                        SizedBox(height: screenHeight * 0.01),
                         Text(
                           errorText,
                           style: TextStyle(
                             color: Colors.red,
-                            fontSize: 14,
+                            fontSize: screenWidth * 0.035,
                           ),
                         ),
                       ],
                     ),
                   ),
-                  SizedBox(height: 100),
+                  SizedBox(height: screenHeight * 0.1),
                 ],
               ),
             ),
