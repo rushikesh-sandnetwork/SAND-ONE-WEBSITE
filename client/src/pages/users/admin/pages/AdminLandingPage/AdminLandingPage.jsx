@@ -10,6 +10,7 @@ import AdminFormDetails from '../AdminFormDetails/AdminFormDetails';
 import './AdminLandingPage.css';
 import AdminCreateNewCampaign from '../AdminCreateNewCampaign/AdminCreateNewCampaign';
 import AdminFormItems from '../AdminFormItems/AdminFormItems';
+import AdminCreateNewUser from '../AdminCreateNewUser/AdminCreateNewUser';
 
 const AdminLandingPage = () => {
   const [activeTab, setActiveTab] = useState('overview');
@@ -37,6 +38,8 @@ const AdminLandingPage = () => {
           <a onClick={() => setActiveTab('newClient')}>New Client</a>
           <a onClick={() => setActiveTab('viewClients')}>View Clients</a>
           <a onClick={() => setActiveTab('profile')}>Profile</a>
+          <a onClick={() => setActiveTab('newUser')}>New User</a>
+
           <input type="button" value="Logout" onClick={handleLogout} /> {/* Updated Logout Button */}
         </div>
       </div>
@@ -47,6 +50,7 @@ const AdminLandingPage = () => {
           <AdminViewClientsPage setActiveTab={setActiveTab} setActiveClient={setActiveClient} />
         )}
         {activeTab === 'profile' && <AdminProfilePage />}
+        {activeTab === 'newUser' && <AdminCreateNewUser />}
         {activeTab.startsWith('client-detail') && (
           <AdminViewCampaignsPage clientId={tabName} setActiveTab={setActiveTab} />
         )}
