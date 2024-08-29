@@ -1,7 +1,7 @@
-  import React, { useState } from 'react';
-  import axios from 'axios';
-  import PageTitle from '../../../../../components/PageTitles/PageTitle';
-  import './AdminCreateNewUser.css';
+import React, { useState } from 'react';
+import axios from 'axios';
+import PageTitle from '../../../../../components/PageTitles/PageTitle';
+import './AdminCreateNewUser.css';
 
 const AdminCreateNewUser = () => {
   const [name, setname] = useState('');
@@ -23,15 +23,17 @@ const AdminCreateNewUser = () => {
     setError('');
     setSuccess('');
 
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('surname', surname);
-    formData.append('email', email);
-    formData.append('password', password);
-    formData.append('role',role);
+    // Prepare the data as JSON
+    const userData = {
+      name,
+      surname,
+      email,
+      password,
+      role,
+    };
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/user/createUser', formData, {
+      const response = await axios.post('http://localhost:8080/api/v1/user/createUser', userData, {
         headers: {
           'Content-Type': 'application/json',
         },
@@ -44,8 +46,6 @@ const AdminCreateNewUser = () => {
         setemail('');
         setpassword('');
         setrole('');
-        
-      
       }
     } catch (error) {
       setError('An error occurred while creating new user. Try again later.');
@@ -85,25 +85,30 @@ const AdminCreateNewUser = () => {
               onChange={handleInputChange(setemail)}
               required
             />
-            
           </div>
           <div className="inputFields">
-            <input
-              type="text"
-              className="input-field"
-              placeholder="Password of User"
-              value={password}
-              onChange={handleInputChange(setpassword)}
-              required
-            />
-             <input
-              type="text"
-              className="input-field"
-              placeholder="Role of User"
-              value={role}
-              onChange={handleInputChange(setrole)}
-              required
-            />
+            <div className="inputFields-row">
+              <input
+                type="password"
+                className="input-field"
+                placeholder="Password of User"
+                value={password}
+                onChange={handleInputChange(setpassword)}
+                required
+              />
+              <select
+                className="input-field dropdown-right"
+                value={role}
+                onChange={handleInputChange(setrole)}
+                required
+              >
+                <option value="">Select Role</option>
+                <option value="admin">Admin</option>
+                <option value="subadmin">Subadmin</option>
+                <option value="mis">Mis</option>
+                <option value="manager">Manager</option>
+              </select>
+            </div>
           </div>
        
           <button type="submit" className="submit-button" disabled={loading}>
