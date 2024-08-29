@@ -111,7 +111,7 @@ const DropArea = ({ onDrop , setFullNameData }) => {
   const closeModal = () => {
     setShowModal(false);
     setSuccessMessage('');
-    navigate(`/admin/assignForm/${formId}`); // Ensure navigate is used correctly
+    navigate(`/admin/assignForm/${formId}`);
   };
 
   return (
