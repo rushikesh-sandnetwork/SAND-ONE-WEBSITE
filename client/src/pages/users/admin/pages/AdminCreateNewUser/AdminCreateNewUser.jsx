@@ -65,7 +65,7 @@ const AdminCreateNewUser = () => {
     <div className="create-new-client">
       <PageTitle title="Create New User" />
       <div className="create-new-client-container">
-        <h3 className="container-heading">Enter Client Details</h3>
+        <h3 className="container-heading">Enter User Details</h3>
         <form className='client-Form' onSubmit={handleSubmit}>
           <div className="inputFields">
             <input

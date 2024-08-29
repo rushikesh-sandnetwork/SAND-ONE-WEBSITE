@@ -37,11 +37,10 @@
 }
 
 .navbar img {
-  align-self: center;
   width: 150px;
   height: auto;
   margin-bottom: 12px;
-  margin-right: 10px;
+  align-items: center;
 }
 
 .navbar a {

@@ -1,5 +1,5 @@
 .OverViewTileTwoBox-container {
-    background-color: #31BDFC;
+    background-color: linear-gradient(135deg, #31BDFC 0%, #00aeff 100%);
     border-radius: 16px;
     width: 20vw; /* Responsive width */
     aspect-ratio: 1 / 1; /* Maintains a 1:1 aspect ratio */
@@ -40,7 +40,7 @@
 }
 
 .moredetailsBtn {
-    padding: 12px 24px; 
+    padding: 10px 10px; 
     border: none;
     border-radius: 20px; 
     color: white;
