@@ -47,11 +47,11 @@ const FormFieldSchema = new Schema({
         type: [FormFieldItemSchema],
         required: true,
     },
-    nestedForms:{
-        type:[Schema.Types.ObjectId],
-        ref:'FormField', 
-        default:[]
+
+    tableFields:{
+        type:[FormFieldTableSchema]
     },
+
     collectionName: {
         type: String,
         required: true,

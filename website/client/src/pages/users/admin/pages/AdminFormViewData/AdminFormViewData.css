@@ -48,10 +48,11 @@ table {
     font-size: 18px;
     width: 100%;
     border-collapse: collapse;
-    border-radius: 12px; 
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    border-radius: 12px; /* Add border-radius to the table */
+    overflow: hidden; /* Ensure border-radius is applied properly */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better appearance */
+    background-color: #fff; /* Add a background color to the table */
+    table-layout: auto; /* Allow columns to adjust width based on content */
 }
 thead {
     background-color: #2d9bff;
