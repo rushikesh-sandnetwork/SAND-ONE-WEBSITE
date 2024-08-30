@@ -1,14 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';  // Import useNavigate from react-router-dom
 import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import CampaignDetailsBox from '../../../../../components/CampaignDetailsBoxes/CampaignDetailsBox';
 import './AdminCampaignDetailsPage.css';
+import CampaignDeleteBox from '../../../../../components/CampaignDetailsBoxes/CampaignDeleteBox';
 
-const AdminCampaignDetailsPage = ({campaignId ,setActiveTab}) => {
+const AdminCampaignDetailsPage = ({ campaignId, setActiveTab }) => {
+  const navigate = useNavigate();  // Initialize the useNavigate hook
+
+  useEffect(() => {
+    // This effect will navigate back to the previous page when the component mounts
+    const handlePopState = () => {
+      // Use navigate(-1) to go back in the browser history
+      navigate(-1);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+
+    // Cleanup the event listener on component unmount
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [navigate]);
+
   return (
     <div className="campaign-details-container">
       <PageTitle title="Campaign Details" />
       <div className="campaign-details-boxes">
-
         <div className="row">
           <CampaignDetailsBox
             imgSrc="https://cdn-icons-png.flaticon.com/512/4074/4074958.png"
@@ -20,30 +38,17 @@ const AdminCampaignDetailsPage = ({campaignId ,setActiveTab}) => {
           <CampaignDetailsBox
             imgSrc="https://cdn-icons-png.flaticon.com/512/9316/9316720.png"
             title="VIEW FORMS"
-            url="view-form-details"
+            url="view-all-forms"
             setActiveTab={setActiveTab}
             campaignId={campaignId}
           />
-          {/* <CampaignDetailsBox
-            imgSrc="https://cdn-icons-png.flaticon.com/512/694/694642.png"
-            title="VIEW PROMOTERS"
-          /> */}
+          <CampaignDeleteBox
+            imgSrc="https://cdn-icons-png.flaticon.com/512/2723/2723639.png"
+            title="DELETE CAMPAIGN"
+            campaignId={campaignId}
+            setActiveTab={setActiveTab}
+          />
         </div>
-        {/* <div className="row">
-          <CampaignDetailsBox
-            imgSrc="https://cdn-icons-png.flaticon.com/512/3144/3144438.png"
-            title="VIEW DATA"
-            url="view-data"
-          />
-          <CampaignDetailsBox
-            imgSrc="https://cdn-icons-png.flaticon.com/512/3388/3388538.png"
-            title="ACCEPTED DATA"
-          />
-          <CampaignDetailsBox
-            imgSrc="https://cdn-icons-png.flaticon.com/512/8867/8867452.png"
-            title="REJECTED DATA"
-          />
-        </div> */}
       </div>
     </div>
   );

@@ -4,48 +4,47 @@ import PageTitle from '../../../../../components/PageTitles/PageTitle';
 import './AdminFormDetails.css';
 import FormBox from '../../../../../components/FormBox/FormBox';
 
-const AdminFormDetails = ({ campaignId  , setActiveTab}) => {
-    const [formDetails, setFormDetails] = useState([]);
+const AdminFormDetails = ({ campaignId, setActiveTab }) => {
+    const [forms, setForms] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     useEffect(() => {
-        const fetchFormDetails = async () => {
+        const fetchForms = async () => {
             try {
-                const response = await axios.post(
-                    'http://localhost:8080/api/v1/admin/fetchFormsForGivenClient',
-                    { campaignId }
-                );
-                setFormDetails(response.data.data);
+                const response = await axios.post('http://localhost:8080/api/v1/admin/fetchFormsForGivenClient', { campaignId });
+                setForms(response.data.data.reverse());
+                setLoading(false);
             } catch (err) {
-                setError(err.message);
-            } finally {
+                setError('Error fetching forms.');
                 setLoading(false);
             }
         };
 
-        fetchFormDetails();
+        if (campaignId) {
+            fetchForms();
+        }
     }, [campaignId]);
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
 
     return (
         <div className="form-details">
-            <PageTitle title="Forms" />
+            <PageTitle title="All Forms Details" />
             <div className="form-details-container">
-                {formDetails.length > 0 ? (
-                    formDetails.map((formDetail) => (
-                        <FormBox formId={formDetail._id } formTitle={formDetail.collectionName} setActiveTab={setActiveTab} ></FormBox>                     
-
+                {loading ? (
+                    <p>Loading forms...</p>
+                ) : error ? (
+                    <p>{error}</p>
+                ) : forms.length > 0 ? (
+                    forms.map((form) => (
+                        <FormBox 
+                            key={form._id} 
+                            formId = {form._id}
+                            form={form} 
+                            setActiveTab={setActiveTab} 
+                        />
                     ))
                 ) : (
-                    <div className="no-forms">NO FORMS</div>
+                    <p>No forms available for this campaign.</p>
                 )}
             </div>
         </div>

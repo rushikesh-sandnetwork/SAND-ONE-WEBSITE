@@ -1,4 +1,4 @@
-.drop-area-container{
+.drop-area-container {
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
@@ -31,36 +31,33 @@
 }
 
 .drop-area {
-height:  80vh;
-width: 700px;
-background-color: white;
-display: flex;
-flex-direction: column;
-border-radius: 10px;
-padding-left: 20px;
-padding-right: 20px;
-overflow-y: scroll;
--ms-overflow-style: none;
-scrollbar-width: none; 
+  height: 80vh;
+  width: 700px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }
-
 
 .drop-area::-webkit-scrollbar {
-  display: none;  
+  display: none;
 }
 
-
-.drop-area-title{
+.drop-area-title {
   margin-left: 10px;
   margin-right: 20px;
   width: 100%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  
 }
 
-p{
+p {
   font-family: "Poppins", sans-serif;
   font-weight: 700;
   font-size: 30px;
@@ -69,7 +66,7 @@ p{
   color: grey;
 }
 
-.submitFormBtn{
+.submitFormBtn {
   border: none;
   padding: 10px 25px;
   background-color: #3751b6;
@@ -79,7 +76,19 @@ p{
   font-size: 30px;
   text-align: center;
   letter-spacing: 1px;
+  margin-top: 20px;
   margin-bottom: 10px;
   width: 300px;
 }
 
+.formTitle {
+  margin-bottom: 10px;
+  margin-top: 20px;
+  border: none;
+  outline: none;
+  font-size: 20px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 30px;
+  letter-spacing: 1px;
+}

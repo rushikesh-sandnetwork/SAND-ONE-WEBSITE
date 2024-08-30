@@ -5,6 +5,7 @@ const apiError = require('../utils/apiError');
 const formsFieldsModel = require('../models/forms.fields.model');
 const Promoter = require("../models/promoter.model");
 const uploadOnCloudinary = require('../utils/cloudinary');
+const AttendanceModel = require("../models/attendance.model")
 const fetchAllPromoters = asyncHandler(async (req, res) => {
     try {
         const promoters = await Promoter.find();
@@ -20,14 +21,14 @@ const fetchAllPromoters = asyncHandler(async (req, res) => {
 
 const createNewPromoter = asyncHandler(async (req, res) => {
     try {
-        const { promoterName, promoterEmailId , password } = req.body;
+        const { promoterName, promoterEmailId, password } = req.body;
 
-        if (!promoterName || !promoterEmailId ||!password) {
+        if (!promoterName || !promoterEmailId || !password) {
             return res.status(400).json(new apiError(400, "Missing required fields"));
         };
 
 
-        const newPromoter = await Promoter.create({ promoterName,promoterEmailId , password });
+        const newPromoter = await Promoter.create({ promoterName, promoterEmailId, password });
 
         if (!newPromoter) {
             return res.status(400).json(new apiError(400, "Promoter not created"));
@@ -64,6 +65,48 @@ const fetchPromoterDetails = asyncHandler(async (req, res) => {
         res.status(500).json(new apiError(500, "Error in fetching promoter details."));
     }
 });
+
+
+const fetchPromoterForms = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Promoter ID is required."));
+        }
+
+        const promoterDetails = await Promoter.findById(promoterId);
+
+        if (!promoterDetails) {
+            return res.status(404).json(new apiError(404, "Promoter not found."));
+        }
+
+        const promoterForms = promoterDetails.forms;
+        const formsWithCollectionNames = [];
+
+        for (let formId of promoterForms) {
+            const formDetails = await formsFieldsModel.findById(formId); // Fetch the form details
+            if (formDetails) {
+                formsWithCollectionNames.push({
+                    formId: formId,
+                    collectionName: formDetails.collectionName, // Assuming collectionName exists in Form schema
+                });
+            } else {
+                formsWithCollectionNames.push({
+                    formId: formId,
+                    collectionName: 'Unknown', // Handle missing form case
+                });
+            }
+        }
+
+        return res.status(200).json(new apiResponse(200,  formsWithCollectionNames , "Promoter details fetched successfully."));
+
+    } catch (error) {
+        console.error('Error in fetching Promoter details', error);
+        res.status(500).json(new apiError(500, "Error in fetching promoter details."));
+    }
+});
+
 
 
 const fetchFormField = asyncHandler(async (req, res) => {
@@ -104,16 +147,22 @@ const fillFormData = asyncHandler(async (req, res) => {
 
         const fileUrls = {};
 
-        if (req.files) {
+        if (req.files && req.files.length > 0) {
             for (const file of req.files) {
-                const finalFileName = await uploadOnCloudinary(file.path); 
+                console.log(file.path);
+
+                const finalFileName = await uploadOnCloudinary(file.path);
+                console.log(finalFileName.url);
+
                 fileUrls[file.fieldname] = finalFileName.url;
             }
         }
 
-        Object.keys(fileUrls).forEach((key) => {
-            reqData[key] = fileUrls[key];
-        });
+
+        console.log('Files:', req.files);
+
+        // Merge the file URLs into reqData
+        Object.assign(reqData, fileUrls);
 
         const collection = mongoose.connection.collection(collectionName);
         const result = await collection.insertOne(reqData);
@@ -143,14 +192,17 @@ const fetchFormFilledData = asyncHandler(async (req, res) => {
 
         const collection = mongoose.connection.collection(collectionName);
 
-        const result = await collection.find({}).toArray(); // Fetch all documents
-
+        const result = await collection.find({}).toArray();
         res.status(200).json(new apiResponse(200, result, "Data fetched successfully."));
     } catch (error) {
         console.error('Error in fetching the data.', error);
         res.status(400).json(new apiError(400, "Error in fetching the data"));
     }
 });
+
+
+
+
 
 
 const promoterLogin = asyncHandler(async (req, res) => {
@@ -161,7 +213,7 @@ const promoterLogin = asyncHandler(async (req, res) => {
         };
 
 
-        const promoterDetails = await Promoter.findOne({ promoterEmailId:email });
+        const promoterDetails = await Promoter.findOne({ promoterEmailId: email });
 
         if (!promoterDetails) {
             return res.status(400).json(new apiError(400, "There doesnt exist such a promoter with the given id."));
@@ -181,4 +233,174 @@ const promoterLogin = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails };
+const fillAttendancePunchIn = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Missing required data fields."));
+        }
+
+        console.log(`Promoter ID: ${promoterId}`);
+
+        const currentDate = new Date().toISOString().split('T')[0];
+        const punchInTime = new Date();
+
+        console.log(currentDate, punchInTime);
+
+        const checkAttendance = await AttendanceModel.findOne({ promoterId, date: currentDate });
+        console.log(checkAttendance);
+
+        if (checkAttendance) {
+            return res.status(400).json(new apiError(400, "Already punched in"));
+        }
+
+        const logInImagePath = req.files?.loginPhoto?.[0]?.path;
+
+        if (!logInImagePath) {
+            throw new apiError(400, "Login Image Required");
+        }
+
+        const logInFinalImage = await uploadOnCloudinary(logInImagePath);
+        if (!logInFinalImage) {
+            throw new apiError(400, "Failed to upload client Photo");
+        }
+
+        const newAttendance = await AttendanceModel.create({
+            promoterId: promoterId,
+            date: currentDate,
+            punchInTime: punchInTime,
+            punchInImage: logInFinalImage.url,
+            punchOutImage: ''
+        });
+
+        res.status(201).json(new apiResponse(201, newAttendance, "Attendance Created"));
+    } catch (error) {
+        console.error('Error in fetching the data.', error);
+        res.status(400).json(new apiError(400, "Error in filling Attendance"));
+    }
+});
+
+
+// punchOut
+const fillAttendancePunchOut = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Missing required data fields."));
+        }
+
+        console.log(`Promoter ID: ${promoterId}`);
+
+        const currentDate = new Date().toISOString().split('T')[0];
+        const punchOutTime = new Date();
+
+        console.log(currentDate, punchOutTime);
+
+        const checkAttendance = await AttendanceModel.findOne({ promoterId, date: currentDate });
+        console.log(checkAttendance);
+
+        if (!checkAttendance) {
+            return res.status(400).json(new apiError(400, "No punch in found."));
+        }
+
+        const logOutImagePath = req.files?.logOutPhoto?.[0]?.path;
+
+        if (!logOutImagePath) {
+            throw new apiError(400, "LogOut Image Required");
+        }
+
+        const logOutFinalImage = await uploadOnCloudinary(logOutImagePath);
+        if (!logOutFinalImage) {
+            throw new apiError(400, "Failed to upload client Photo");
+        }
+
+        // Update the existing attendance with punch out time and image
+        checkAttendance.punchOutTime = punchOutTime;
+        checkAttendance.punchOutImage = logOutFinalImage.url;
+
+        await checkAttendance.save();
+
+        res.status(201).json(new apiResponse(200, checkAttendance, "Attendance Updated"));
+    } catch (error) {
+        console.error('Error in fetching the data.', error);
+        res.status(400).json(new apiError(400, "Error in filling Attendance"));
+    }
+});
+
+const fetchAttendance = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Missing required data fields."));
+        }
+
+        // Calculate the date range for the last 7 days, including today
+        const today = new Date();
+        const sevenDaysAgo = new Date();
+        sevenDaysAgo.setDate(today.getDate() - 6); // Start from 7 days ago
+
+        // Create an array for the last 7 days, including today
+        const days = [];
+        for (let i = 0; i < 7; i++) {
+            const day = new Date();
+            day.setDate(sevenDaysAgo.getDate() + i);
+            day.setHours(0, 0, 0, 0); // Start of the day
+            days.push(day);
+        }
+
+        // Fetch attendance records for the last 7 days
+        const attendanceRecords = await AttendanceModel.find({
+            promoterId,
+            punchInTime: { $gte: sevenDaysAgo },
+            punchInTime: { $lte: today }
+        });
+
+        // Aggregate total time for each day
+        const dailyAttendance = days.map(day => {
+            const startOfDay = new Date(day);
+            const endOfDay = new Date(day);
+            endOfDay.setHours(23, 59, 59, 999); // End of the day
+
+            // Filter records for the current day
+            const dailyRecords = attendanceRecords.filter(record => {
+                const punchIn = new Date(record.punchInTime);
+                return punchIn >= startOfDay && punchIn <= endOfDay;
+            });
+
+            let totalTime = 0;
+            dailyRecords.forEach(record => {
+                const punchInTime = new Date(record.punchInTime);
+                const punchOutTime = new Date(record.punchOutTime);
+                
+                if (punchInTime && punchOutTime) {
+                    totalTime += (punchOutTime - punchInTime) / (1000 * 60 * 60); // Convert milliseconds to hours
+                }
+            });
+
+            return {
+                date: startOfDay.toISOString().split('T')[0], // Format date as YYYY-MM-DD
+                totalTime: totalTime.toFixed(2),
+                status: dailyRecords.length > 0 ? 'Present' : 'Absent'
+            };
+        });
+
+        // Reverse the list to show the current date first
+        const reversedAttendance = dailyAttendance.reverse();
+
+        res.status(200).json(new apiResponse(200, reversedAttendance, "Attendance for the Last 7 Days"));
+
+    } catch (error) {
+        console.error('Error in fetching the data.', error);
+        res.status(400).json(new apiError(400, "Error in fetching Attendance"));
+    }
+});
+
+
+
+
+module.exports = {
+    fetchPromoterForms,
+    promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails, fillAttendancePunchIn, fillAttendancePunchOut, fetchAttendance
+};

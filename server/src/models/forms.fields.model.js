@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
-// Define a schema for the form field
 const FormFieldItemSchema = new Schema({
     uniqueId: {
         type: String,
@@ -48,11 +47,11 @@ const FormFieldSchema = new Schema({
         type: [FormFieldItemSchema],
         required: true,
     },
-
-    tableFields:{
-        type:[FormFieldTableSchema]
+    nestedForms:{
+        type:[Schema.Types.ObjectId],
+        ref:'FormField', 
+        default:[]
     },
-
     collectionName: {
         type: String,
         required: true,

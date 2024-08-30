@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { useDrop } from 'react-dnd';
+import { connect } from 'react-redux';
 import { useSelector } from 'react-redux';
 import DraggableItem from './DraggableItem';
 import './DropArea.css';
 import axios from 'axios';
+import { setFullNameData } from './FormFields/actions/fullNameActions';
+import { v4 as uuidv4 } from 'uuid';
 import { useParams, useNavigate } from 'react-router-dom';
 import Modal from './Modal';
 
-const DropArea = ({ onDrop }) => {
+const DropArea = ({ onDrop , setFullNameData }) => {
   const [droppedItems, setDroppedItems] = useState([]);
   const [droppedItemNames, setDroppedItemNames] = useState([]);
   const [successMessage, setSuccessMessage] = useState('');
   const [showModal, setShowModal] = useState(false);
   const [formId, setFormId] = useState('');
+  const [nested, setNested] = useState(false);
+
 
   const { campaignId } = useParams();
   const navigate = useNavigate();
@@ -31,6 +36,30 @@ const DropArea = ({ onDrop }) => {
     }),
   }));
 
+
+  useEffect(() => {
+    const uri = window.location.pathname;
+    if (uri.includes('createNestedForm')) {
+      setNested(true);
+    }
+  }, []);
+
+
+
+  
+  const handleKeyPress = (event) => {
+    if (event.key === 'Enter') {
+      const id = uuidv4(); // Generate a unique ID
+      setFullNameData(id, event.target.value, 'Form Title');
+    }
+  };
+
+  useEffect(() => {
+    console.log('Full Name Data List:', fullNameDataList);
+  }, [fullNameDataList]);
+
+
+
   const handleDelete = (id) => {
     setDroppedItems((prevItems) => prevItems.filter((item) => item.id !== id));
     setDroppedItemNames((prevNames) =>
@@ -45,15 +74,29 @@ const DropArea = ({ onDrop }) => {
   const handleSubmitForm = async () => {
     try {
       const formFieldsArray = arrayToFormFields(droppedItemNames);
-      const formData = {
-        campaignId,
-        formFields: fullNameDataList,
-      };
+      let response;
+      if(!nested){
+        const formData = {
+          campaignId,
+          formFields: fullNameDataList,
+        };
+  
+        console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
+  
+        response = await axios.post('http://localhost:8080/api/v1/admin/createNewForm', formData);
+      }else{
+        const formData = {
+          mainFormId: campaignId,
+          formFields: fullNameDataList,
+        };
+  
+        console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
+  
+        response = await axios.post('http://localhost:8080/api/v1/admin/createNestedForm', formData);
+      }
 
-      console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
-
-      const response = await axios.post('http://localhost:8080/api/v1/admin/createNewForm', formData);
-      if (response.status === 201) {
+     
+      if (response.status === 200) {
         setSuccessMessage('Form submitted successfully!');
         setShowModal(true);
         setFormId(response.data.data._id); // Ensure you access the correct path in response
@@ -68,14 +111,20 @@ const DropArea = ({ onDrop }) => {
   const closeModal = () => {
     setShowModal(false);
     setSuccessMessage('');
-    navigate(`/admin/assignForm/${formId}`); // Ensure navigate is used correctly
+    navigate(`/admin/assignForm/${formId}`);
   };
 
   return (
     <div className='drop-area-container'>
       <div className='drop-area' ref={dropRef}>
         <div className="drop-area-title">
-          <p>Create Form Here</p>
+        <input 
+        type="text" 
+        name="formTitle"
+        className="formTitle" placeholder='Create Form Here'
+        onKeyDown={handleKeyPress}
+
+        />
           <input
             type="button"
             className="create-form-btn"
@@ -98,7 +147,8 @@ const DropArea = ({ onDrop }) => {
       </div>
       {showModal && (
         <Modal
-          message={successMessage}
+        formId={formId}
+          message={`Form Created Successfully.`}
           onClose={closeModal}
         />
       )}
@@ -106,4 +156,11 @@ const DropArea = ({ onDrop }) => {
   );
 };
 
-export default DropArea;
+const mapStateToProps = (state) => ({
+  fullNameDataList: state.fullName.fullNameDataList,
+});
+
+const mapDispatchToProps = {
+  setFullNameData,
+};
+export default connect(mapStateToProps, mapDispatchToProps)(DropArea);

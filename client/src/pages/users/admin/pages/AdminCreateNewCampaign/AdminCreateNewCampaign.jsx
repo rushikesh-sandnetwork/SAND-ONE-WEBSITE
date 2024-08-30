@@ -10,11 +10,17 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
   const [campaignId, setId] = useState('');
+  const [campaignPhoto, setCampaignPhoto] = useState(null);
 
   const navigate = useNavigate();
 
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
+  };
+
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    setCampaignPhoto(file);
   };
 
   const handleNextClick = () => {
@@ -27,11 +33,17 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
     setError('');
     setSuccess('');
 
+    if (!campaignPhoto) {
+      setError('Please upload Campaign Photo');
+      setLoading(false);
+      return;
+    }
+
     try {
       const formData = new FormData();
       formData.append('title', title);
       formData.append('clientId', clientId);
-      formData.append('campaignPhoto', event.target.campaignPhoto.files[0]);
+      formData.append('campaignPhoto', campaignPhoto);
 
       const response = await axios.post('http://localhost:8080/api/v1/admin/createNewCampaign', formData, {
         headers: {
@@ -44,6 +56,7 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
         setSuccess(`Campaign created successfully: ${newCampaign.title} (ID: ${newCampaign._id})`);
         setTitle('');
         setId(newCampaign._id);
+        setCampaignPhoto(null);  // Clear photo after successful upload
       }
     } catch (error) {
       setError('An error occurred while creating new campaign. Try again later.');
@@ -61,19 +74,24 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
           <div className="inputFields">
             <input
               type="text"
-              className="input-field"
+              className="campaigninput-field"
               placeholder="Campaign Title"
               value={title}
               onChange={handleInputChange(setTitle)}
               required
             />
-            <input
-              type="file"
-              name="campaignPhoto"
-              accept="image/*"
-              className="input-field"
-              required
-            />
+            <div className="file-upload">
+              <input
+                type="file"
+                id="campaign-photo-upload"
+                className="file-upload-input"
+                onChange={handleFileChange}
+                
+              />
+              <label htmlFor="campaign-photo-upload" className="file-upload-label">
+                {campaignPhoto ? campaignPhoto.name : 'Upload Campaign Photo'}
+              </label>
+            </div>
           </div>
 
           <button type="submit" className="submit-campaign-button" disabled={loading}>

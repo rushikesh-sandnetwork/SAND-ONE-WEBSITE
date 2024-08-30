@@ -17,7 +17,8 @@ const AdminCreateNewClient = () => {
   };
 
   const handleFileChange = (event) => {
-    setClientPhoto(event.target.files[0]);
+    const file = event.target.files[0];
+    setClientPhoto(file);
   };
 
   const handleSubmit = async (event) => {
@@ -25,6 +26,12 @@ const AdminCreateNewClient = () => {
     setLoading(true);
     setError('');
     setSuccess('');
+
+    if (!clientPhoto) {
+      setError('Please upload Client Photo');
+      setLoading(false);
+      return;
+    }
 
     const formData = new FormData();
     formData.append('clientName', clientName);
@@ -82,15 +89,21 @@ const AdminCreateNewClient = () => {
               placeholder="Client Website"
               value={clientWebsite}
               onChange={handleInputChange(setClientWebsite)}
-            />
-          
-          </div>
-          <input
-              type="file"
-              className="input-field"
-              onChange={handleFileChange}
               required
             />
+          </div>
+          <div className="file-upload">
+            <input
+              type="file"
+              id="file-upload"
+              className="file-upload-input"
+              onChange={handleFileChange}
+              
+            />
+            <label htmlFor="file-upload" className="file-upload-label">
+              {clientPhoto ? clientPhoto.name : 'Upload Client Logo'}
+            </label>
+          </div>
           <button type="submit" className="submit-button" disabled={loading}>
             {loading ? 'Creating...' : 'Create Client'}
           </button>

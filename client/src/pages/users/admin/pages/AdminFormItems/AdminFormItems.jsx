@@ -1,17 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import PageTitle from '../../../../../components/PageTitles/PageTitle';
-import './AdminFormItems.css';
-import FormDetailsBox from '../../../../../components/FormDetailsBox/FormDetailsBox';
-
-const AdminFormItems = ({ formId  , setActiveTab}) => {
+import './AdminFormItems.css'
+import FormDetailsBox from '../../../../../components/FormDetailsBox/FormDetailsBox';;
+const AdminFormItems = ({ formId, setActiveTab }) => {
     return (
         <div className="form-items">
-            <PageTitle title="View Form Details"></PageTitle>
+            <PageTitle title="Form Items"></PageTitle>
             <div className="form-items-container">
                 <div className="row">
                     <FormDetailsBox
+                        imgSrc="https://cdn-icons-png.flaticon.com/512/3329/3329465.png"
+                        title="Nested Form"
+                        formId={formId}
+                        url="createNestedForm"
+                        setActiveTab={setActiveTab}
+                    />
+                    <FormDetailsBox
                         imgSrc="https://cdn-icons-png.flaticon.com/512/993/993762.png"
-                        title="VIEW DATA"
+                        title="VIEW DATA"   
                         formId={formId}
                         url="viewFormData"
                         setActiveTab={setActiveTab}
@@ -34,7 +41,7 @@ const AdminFormItems = ({ formId  , setActiveTab}) => {
                         setActiveTab={setActiveTab}
 
                     />
-                    
+
                     <FormDetailsBox
                         imgSrc="https://cdn-icons-png.flaticon.com/512/9942/9942497.png"
                         title="VIEW PROMOTERS"
@@ -48,5 +55,6 @@ const AdminFormItems = ({ formId  , setActiveTab}) => {
         </div>
     );
 }
+
 
 export default AdminFormItems;

@@ -1,8 +1,8 @@
 .OverViewTileOneBox-container {
-    background-color: #00DA82;
+    background-color: linear-gradient(135deg, #00DA82 0%, #00C96B 100%);
     border-radius: 16px;
-    height: 250px;
-    width: 250px;
+    width: 20vw;
+    aspect-ratio: 1 / 1; 
     color: white;
     display: flex;
     flex-direction: column;
@@ -10,6 +10,8 @@
     justify-content: center; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); 
     transition: transform 0.3s, box-shadow 0.3s; 
+    margin: 10px;
+    padding: 10px 10px;
 }
 
 .OverViewTileOneBox-container:hover {
@@ -20,7 +22,7 @@
 .containerone-title {
     margin: 0;
     color: white;
-    font-size: 32px; 
+    font-size: 26px; 
     text-align: center;
     font-family: "Poppins", sans-serif;
     font-weight: bold; 
@@ -32,8 +34,38 @@
 .container-number { 
     margin: 0;
     color: white;
-    font-size: 72px;
+    font-size: 36px; 
     text-align: center;
     font-family: "Poppins", sans-serif;   
     font-weight: 900;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+
+@media (max-width: 768px) {
+    .OverViewTileOneBox-container {
+        width: 30vw;
+    }
+
+    .containerone-title {
+        font-size: 20px; 
+    }
+
+    .container-number {
+        font-size: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .OverViewTileOneBox-container {
+        width: 40vw; /* Adjust width for even smaller screens */
+    }
+
+    .containerone-title {
+        font-size: 18px; /* Updated for consistency */
+    }
+
+    .container-number {
+        font-size: 20px; /* Updated for consistency */
+    }
 }

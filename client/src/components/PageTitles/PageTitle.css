@@ -13,3 +13,20 @@
     display: flex;
     align-items: center; 
 }
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .PageTitle {
+        height: 60px;
+        padding: 0px 15px;
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 480px) {
+    .PageTitle {
+        height: 50px;
+        padding: 0px 10px;
+        font-size: 24px;
+    }
+}

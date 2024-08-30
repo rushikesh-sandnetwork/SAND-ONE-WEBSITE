@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:app/utils/FormFields/DropDown.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -15,7 +16,7 @@ import '../../utils/FormFields/Number.dart';
 
 class FormService {
   static const String baseUrl =
-      'http://192.168.31.139:8080/api/v1/promoter/fetchFormField';
+      'http://192.168.31.140:8080/api/v1/promoter/fetchFormField';
 
   static Future<FormDetails> fetchFormDetails(String formId) async {
     try {
@@ -62,7 +63,7 @@ class FormService {
   static Future<void> submitFormData(
       String collectionName, Map<String, dynamic> data) async {
     final url = Uri.parse(
-        'http://192.168.31.139:8080/api/v1/promoter/fillFormData/$collectionName');
+        'http://192.168.31.140:8080/api/v1/promoter/fillFormData/$collectionName');
 
     var request = http.MultipartRequest('POST', url);
 
@@ -129,7 +130,7 @@ class FormDetails {
 
 class FormDetailsPage extends StatefulWidget {
   final String formId;
-  const FormDetailsPage({required this.formId});
+  const FormDetailsPage({required this.formId, required String promoterId});
 
   @override
   State<FormDetailsPage> createState() => _FormDetailsPageState();
@@ -236,7 +237,6 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             _handleImageChange(fieldTitle, file);
           },
         );
-
       case 'Long Text':
         return LongText(
           longTextTitle: fieldTitle,
@@ -247,7 +247,6 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             });
           },
         );
-
       case 'Number':
         return Number(
           initialValue: _formData[fieldTitle],
@@ -257,12 +256,22 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             });
           },
         );
+      case 'Drop Down':
+        return DropDownField(
+          initialValue: _formData[fieldTitle],
+          onChanged: (value) {
+            setState(() {
+              _formData[fieldTitle] = value;
+            });
+          },
+          dropDownFieldTile: fieldTitle,
+        );
       default:
         return SizedBox.shrink();
     }
   }
 
-  void _submitForm() async {
+  Future<String> _submitForm() async {
     if (_formKey.currentState!.validate()) {
       _formKey.currentState!.save();
       print(_formData);
@@ -271,11 +280,15 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
             await FormService.fetchCollectionName(widget.formId);
         await FormService.submitFormData(collectionName, _formData);
         print('Form submitted successfully!');
+        setState(() {
+          _formData.clear(); // This clears the data
+        });
+        return "Form Submitted Successfully!";
       } catch (e) {
-        print('Error submitting form: $e');
-        // Handle error as needed
+        return "Error in submitting form";
       }
     }
+    return "";
   }
 
   @override
@@ -283,71 +296,91 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        automaticallyImplyLeading: false, // This removes the leading icon
-        title: Text(
-          'Form Details',
-          style: GoogleFonts.poppins(
-              fontWeight: FontWeight.bold,
-              color: Colors.white,
-              letterSpacing: 1.5),
+        automaticallyImplyLeading: false,
+        title: Center(
+          child: Text(
+            'Form Details',
+            style: GoogleFonts.poppins(
+                fontWeight: FontWeight.bold,
+                color: Colors.white,
+                letterSpacing: 1.5),
+          ),
         ),
         titleSpacing: 2,
         shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.vertical(bottom: Radius.circular(20))),
         elevation: 3,
         shadowColor: Colors.grey.shade50,
-        scrolledUnderElevation: 4,
-        surfaceTintColor: Colors.grey.shade50,
-        centerTitle: true,
-        backgroundColor: Color.fromRGBO(21, 25, 24, 1),
+        backgroundColor: Colors.black,
       ),
-      body: Container(
-        margin: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(20),
-          color: Colors.white,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.grey.withOpacity(0.1), // Shadow color
-              spreadRadius: 5, // Spread radius
-              blurRadius: 7, // Blur radius
-              offset: Offset(0, 3), // Offset in x and y directions
-            ),
-          ],
-        ),
-        child: FutureBuilder<FormDetails>(
-          future: _formDetailsFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
-            } else if (snapshot.hasError) {
-              return Center(child: Text('Error: ${snapshot.error}'));
-            } else if (snapshot.hasData) {
-              FormDetails formDetails = snapshot.data!;
-              return SingleChildScrollView(
-                padding: EdgeInsets.all(16.0),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ...formDetails.formFields
-                          .map((field) => _buildFormField(field))
-                          .toList(),
-                      SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: _submitForm,
-                        child: Text('Submit', style: GoogleFonts.poppins()),
+      body: FutureBuilder<FormDetails>(
+        future: _formDetailsFuture,
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return Center(child: CircularProgressIndicator());
+          } else if (snapshot.hasError) {
+            return Center(child: Text('Error: ${snapshot.error}'));
+          } else if (snapshot.hasData) {
+            final formDetails = snapshot.data!;
+            return Container(
+              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Form(
+                      key: _formKey,
+                      child: Column(
+                        children: formDetails.formFields
+                            .map((field) => Padding(
+                                  padding: EdgeInsets.symmetric(vertical: 8.0),
+                                  child: _buildFormField(field),
+                                ))
+                            .toList(),
                       ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 20),
+                    ElevatedButton(
+                      onPressed: () async {
+                        String result = await _submitForm();
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            content: Text(result),
+                            actions: [
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pop(context);
+                                },
+                                child: Text('OK'),
+                              ),
+                            ],
+                          ),
+                        );
+                      },
+                      child: Text(
+                        'Submit',
+                        style: GoogleFonts.poppins(color: Colors.white),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        minimumSize: Size(double.infinity, 48),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                    ),
+                    SizedBox(
+                      height: 10,
+                    ),
+                  ],
                 ),
-              );
-            } else {
-              return Center(child: Text('No form details available.'));
-            }
-          },
-        ),
+              ),
+            );
+          } else {
+            return Center(child: Text('No data available.'));
+          }
+        },
       ),
     );
   }

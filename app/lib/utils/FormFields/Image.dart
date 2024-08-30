@@ -23,6 +23,7 @@ class _ImagePickerWidgetState extends State<ImagePickerWidget> {
       setState(() {
         _imagePath = pickedFile.path;
       });
+      print(_imagePath);
       widget.onChanged?.call(widget.imageTitle, File(pickedFile.path));
       print('Selected image path: ${pickedFile.path}');
     }

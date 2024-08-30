@@ -4,6 +4,9 @@ const upload = require("../middlewares/multer.middleware");
 const adminController = require('../controllers/admins.controller');
 
     
+router.route("/createNestedForm").post(adminController.createNestedForm);
+router.route("/updateAcceptedData").patch(adminController.acceptRejectData);
+
 // create new client 
 router.route("/createNewClient").post(
     upload.fields([
@@ -13,6 +16,13 @@ router.route("/createNewClient").post(
         }
     ])
     ,adminController.createNewClient);
+
+
+// delete new client
+router.route("/deleteClient").delete(adminController.deleteClient);
+
+// delete campaign
+router.route("/deleteCampaign").delete(adminController.deleteCampaign);
 
 // fetchClient
 router.route("/fetchClient").post(adminController.fetchClient);
@@ -48,6 +58,10 @@ router.route("/createNewForm").post(adminController.createNewForm)
 
 // assignCreatedForm
 router.route("/assignCreatedForms").post(adminController.assignCreatedForm);
+
+
+// unassignCreatedForm
+router.route("/unassignCreatedForms").post(adminController.unassignCreatedForm);
 
 
 // update user rights

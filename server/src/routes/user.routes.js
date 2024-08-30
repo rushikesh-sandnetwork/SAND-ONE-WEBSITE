@@ -20,6 +20,10 @@ router.route("/registerUser").post(
 router.post('/logout', verifyJWT, userController.logoutUser);
 
 // fetching user details
-router.route('/userDetails').get(userController.userDetails);
+router.route('/userDetails').post(userController.userDetails);
+
+
+// creating new user
+router.route('/createUser').post(userController.createNewUser);
 
 module.exports = router;
