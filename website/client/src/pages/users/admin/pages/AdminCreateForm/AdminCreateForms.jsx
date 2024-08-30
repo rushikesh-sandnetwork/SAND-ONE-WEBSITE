@@ -23,6 +23,7 @@ import Image from './FormUtils/elements/FormFields/Image/Image';
 import FIleUpload from './FormUtils/elements/FormFields/FileUpload/FIleUpload';
 import StarRating from './FormUtils/elements/FormFields/StarRating/StarRating';
 import ScaleRating from './FormUtils/elements/FormFields/ScaleRating/ScaleRating';
+import Table from './FormUtils/elements/FormFields/Table/Table';
 
 
 const dragItems = [
@@ -43,6 +44,7 @@ const dragItems = [
   { id: "15", text: "File Upload",  component: FIleUpload  , title:""},
   { id: "16", text: "Star Rating",component: StarRating  , title:""},
   { id: "17", text: "Scale Rating", component: ScaleRating  , title:""},
+  { id: "18", text: "Table", component: Table  , title:""},
 ];
 
 const AdminCreateForms = () => {
