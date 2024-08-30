@@ -16,6 +16,26 @@ const FormFieldItemSchema = new Schema({
     },
 });
 
+
+const FormFieldTableSchema = new Schema({
+    uniqueId: {
+        type: String,
+        required: true,
+    },
+    rows: {
+        type: Number,
+        required: true,
+    },
+    cols: {
+        type: Number,
+        required: true,
+    },
+    columnHeaders :{
+        type:[String],
+        required: true,
+    },
+});
+
 // Define the main schema
 const FormFieldSchema = new Schema({
     campaignId: {
@@ -27,11 +47,11 @@ const FormFieldSchema = new Schema({
         type: [FormFieldItemSchema],
         required: true,
     },
-    nestedForms:{
-        type:[Schema.Types.ObjectId],
-        ref:'FormField', 
-        default:[]
+
+    tableFields:{
+        type:[FormFieldTableSchema]
     },
+
     collectionName: {
         type: String,
         required: true,

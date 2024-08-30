@@ -2,9 +2,7 @@
 
 .form-view-data {
     max-height: 100vh;
-    padding-left: 20px;
-    padding-right: 20px;
-    padding-top: 15px;
+    padding: 20px;
     background-color: #f9f9f9;
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -47,13 +45,14 @@
 
 table {
     font-family: "Poppins", sans-serif;
-    font-size: 18px; 
+    font-size: 18px;
     width: 100%;
     border-collapse: collapse;
-    border-radius: 12px; 
-    overflow: hidden;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
+    border-radius: 12px; /* Add border-radius to the table */
+    overflow: hidden; /* Ensure border-radius is applied properly */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for better appearance */
+    background-color: #fff; /* Add a background color to the table */
+    table-layout: auto; /* Allow columns to adjust width based on content */
 }
 thead {
     background-color: #2d9bff;
@@ -61,14 +60,20 @@ thead {
 }
 
 th {
-    padding: 16px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 10px;
+    padding-bottom: 10px;
     border: 1px solid #dee2e6;
     text-align: left;
-    font-size: 16px;
-    font-weight: 600;
+    font-size: 17px;
+    font-weight: 400;
     letter-spacing: 1px;
     font-family: "Poppins", sans-serif;
-    transition: background-color 0.3s;    
+    transition: background-color 0.3s;
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 
 th:hover {
@@ -76,10 +81,11 @@ th:hover {
 }
 
 td {
-    padding: 14px;
+    padding: 6px;
     border: 1px solid #dee2e6;
     text-align: left;
-    font-size: 16px;
+    font-size: 15px;
+    letter-spacing: 1px;
     font-family: "Poppins", sans-serif;
 }
 
