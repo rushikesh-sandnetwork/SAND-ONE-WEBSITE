@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'package:app/utils/FormFields/DropDown.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -254,6 +255,16 @@ class _FormDetailsPageState extends State<FormDetailsPage> {
               _formData[fieldTitle] = value;
             });
           },
+        );
+      case 'Drop Down':
+        return DropDownField(
+          initialValue: _formData[fieldTitle],
+          onChanged: (value) {
+            setState(() {
+              _formData[fieldTitle] = value;
+            });
+          },
+          dropDownFieldTile: fieldTitle,
         );
       default:
         return SizedBox.shrink();

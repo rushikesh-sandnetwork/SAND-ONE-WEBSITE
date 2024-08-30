@@ -9,7 +9,7 @@ const Address = ({ fullNameDataList, setFullNameData }) => {
 
   const handleKeyPress = (event) => {
     if (event.key === 'Enter') {
-      const id = uuidv4(); // Generate a unique ID
+      const id = uuidv4(); 
       setFullNameData(id, event.target.value, 'Address');
     }
   };
@@ -35,7 +35,6 @@ const Address = ({ fullNameDataList, setFullNameData }) => {
         name="addressTitle"
         className="address-container-title" placeholder='Address'
         onKeyDown={handleKeyPress}
-
         />
       </div>
 

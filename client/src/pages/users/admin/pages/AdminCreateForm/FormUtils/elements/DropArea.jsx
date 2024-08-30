@@ -38,7 +38,7 @@ const DropArea = ({ onDrop , setFullNameData }) => {
 
 
   useEffect(() => {
-    const uri = window.location.pathname; // Fetch the current URI
+    const uri = window.location.pathname;
     if (uri.includes('createNestedForm')) {
       setNested(true);
     }

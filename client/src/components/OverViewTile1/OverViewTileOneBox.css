@@ -1,8 +1,8 @@
 .OverViewTileOneBox-container {
     background-color: linear-gradient(135deg, #00DA82 0%, #00C96B 100%);
     border-radius: 16px;
-    width: 20vw; /* Responsive width */
-    aspect-ratio: 1 / 1; /* Maintains a 1:1 aspect ratio */
+    width: 20vw;
+    aspect-ratio: 1 / 1; 
     color: white;
     display: flex;
     flex-direction: column;
@@ -22,7 +22,7 @@
 .containerone-title {
     margin: 0;
     color: white;
-    font-size: 26px; /* Updated to match tile 2 */
+    font-size: 26px; 
     text-align: center;
     font-family: "Poppins", sans-serif;
     font-weight: bold; 
@@ -34,7 +34,7 @@
 .container-number { 
     margin: 0;
     color: white;
-    font-size: 36px; /* Updated to match tile 2 */
+    font-size: 36px; 
     text-align: center;
     font-family: "Poppins", sans-serif;   
     font-weight: 900;
@@ -44,15 +44,15 @@
 
 @media (max-width: 768px) {
     .OverViewTileOneBox-container {
-        width: 30vw; /* Adjust width for smaller screens */
+        width: 30vw;
     }
 
     .containerone-title {
-        font-size: 20px; /* Updated for consistency */
+        font-size: 20px; 
     }
 
     .container-number {
-        font-size: 24px; /* Updated for consistency */
+        font-size: 24px;
     }
 }
 
