@@ -4,6 +4,9 @@ require('dotenv').config();
 
 (async () => {
     try {
+        console.log("Attempting to connect to MongoDB...");
+        console.log("Database URL:", process.env.DATABASE_URL);
+
         await mongoose.connect(process.env.DATABASE_URL, { useNewUrlParser: true, useUnifiedTopology: true });
 
         console.log("MongoDB connection established");
@@ -13,8 +16,7 @@ require('dotenv').config();
             console.log(`Express app is connected to SAND ONE & listening on port ${port}`);
         });
     } catch (error) {
-        console.error("Error connecting to MongoDB:", error);
+        console.error("Error connecting to MongoDB:", error.message);
         process.exit(1); 
-        
     }
 })();
