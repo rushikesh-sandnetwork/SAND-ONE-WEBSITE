@@ -15,7 +15,7 @@ const OverViewTileOne = () => {
     setSuccess('');
 
     try {
-      const response = await axios.get('https://sand-one-live.vercel.app/api/v1/admin/fetchNumberOfClientsAndCampaigns');
+      const response = await axios.get('https://sand-one-live.vercel.app /api/v1/admin/fetchNumberOfClientsAndCampaigns');
 
       if (response.status === 200) {
         const fetchedData = response.data.data;

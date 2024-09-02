@@ -83,7 +83,7 @@ const DropArea = ({ onDrop , setFullNameData }) => {
   
         console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
   
-        response = await axios.post('https://sand-one-live.vercel.app/api/v1/admin/createNewForm', formData);
+        response = await axios.post('https://sand-one-live.vercel.app /api/v1/admin/createNewForm', formData);
       }else{
         const formData = {
           mainFormId: campaignId,
@@ -92,7 +92,7 @@ const DropArea = ({ onDrop , setFullNameData }) => {
   
         console.log('Full Name JSON from store:', JSON.stringify(fullNameDataList, null, 2));
   
-        response = await axios.post('https://sand-one-live.vercel.app/api/v1/admin/createNestedForm', formData);
+        response = await axios.post('https://sand-one-live.vercel.app /api/v1/admin/createNestedForm', formData);
       }
 
      

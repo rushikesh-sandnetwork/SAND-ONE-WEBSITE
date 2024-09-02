@@ -33,7 +33,7 @@ const AdminCreateNewUser = () => {
     };
 
     try {
-      const response = await axios.post('https://sand-one-live.vercel.app/api/v1/user/createUser', userData, {
+      const response = await axios.post('https://sand-one-live.vercel.app /api/v1/user/createUser', userData, {
         headers: {
           'Content-Type': 'application/json',
         },

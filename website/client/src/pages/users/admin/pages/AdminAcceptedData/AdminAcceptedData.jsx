@@ -18,7 +18,7 @@ const AdminAcceptedData = () => {
         setLoading(true);
         setError(null);
         try {
-            const response = await fetch('https://sand-one-live.vercel.app/api/v1/promoter/fetchFormFilledData', {
+            const response = await fetch('https://sand-one-live.vercel.app /api/v1/promoter/fetchFormFilledData', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
