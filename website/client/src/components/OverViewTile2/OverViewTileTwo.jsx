@@ -11,7 +11,7 @@ const OverViewTileTwo = ({setActiveTab}) => {
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const response = await axios.get('http://localhost:8080 /api/v1/admin/fetchLastCampaigns');
+        const response = await axios.get('http://localhost:8080/api/v1/admin/fetchLastCampaigns');
         setCampaigns(response.data.data); // Assuming the response structure is { data: { data: campaigns } }
         setLoading(false);
       } catch (error) {
