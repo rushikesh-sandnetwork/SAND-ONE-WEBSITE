@@ -5,7 +5,7 @@ import axios from 'axios';
 const CampaignDeleteBox = ({ campaignId, title, imgSrc , setActiveTab }) => {
     const handleDeleteClient = async () => {
         try {
-          const response = await axios.delete('https://sand-one-live.vercel.app/api/v1/admin/deleteCampaign', {
+          const response = await axios.delete('http://localhost:8080 /api/v1/admin/deleteCampaign', {
             data: { campaignId }
           });
           

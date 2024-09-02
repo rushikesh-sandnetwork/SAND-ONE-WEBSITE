@@ -18,7 +18,7 @@ const AdminRejectedData = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('https://sand-one-live.vercel.app/api/v1/promoter/fetchFormFilledData', {
+      const response = await fetch('http://localhost:8080 /api/v1/promoter/fetchFormFilledData', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,7 +41,7 @@ const AdminRejectedData = () => {
 
   const updateAcceptedData = async (itemId, accepted) => {
     try {
-      const response = await fetch('https://sand-one-live.vercel.app/api/v1/admin/updateAcceptedData', {
+      const response = await fetch('http://localhost:8080 /api/v1/admin/updateAcceptedData', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
