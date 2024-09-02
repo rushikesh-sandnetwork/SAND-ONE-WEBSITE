@@ -23,7 +23,7 @@ const LoginPage = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:8080/api/v1/user/loginUser', {
+            const response = await axios.post('https://sand-one-live.vercel.app/api/v1/user/loginUser', {
                 email,
                 password
             });

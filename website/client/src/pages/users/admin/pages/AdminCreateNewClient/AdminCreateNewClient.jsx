@@ -40,7 +40,7 @@ const AdminCreateNewClient = () => {
     formData.append('clientPhoto', clientPhoto); // Append file to form data
 
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/admin/createNewClient', formData, {
+      const response = await axios.post('https://sand-one-live.vercel.app/api/v1/admin/createNewClient', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

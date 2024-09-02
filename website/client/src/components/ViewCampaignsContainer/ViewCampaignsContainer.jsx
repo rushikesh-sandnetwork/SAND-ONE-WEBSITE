@@ -13,7 +13,7 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const response = await axios.post('http://localhost:8080/api/v1/admin/fetchAllCampaigns', { clientId });
+        const response = await axios.post('https://sand-one-live.vercel.app/api/v1/admin/fetchAllCampaigns', { clientId });
         setCampaigns(response.data.data.reverse());
         setLoading(false);
       } catch (error) {
@@ -29,7 +29,7 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
   
   const handleDeleteClient = async () => {
     try {
-      const response = await axios.delete('http://localhost:8080/api/v1/admin/deleteClient', {
+      const response = await axios.delete('https://sand-one-live.vercel.app/api/v1/admin/deleteClient', {
         data: { clientId }
       });
       
