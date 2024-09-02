@@ -45,7 +45,7 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
       formData.append('clientId', clientId);
       formData.append('campaignPhoto', campaignPhoto);
 
-      const response = await axios.post('https://sand-one-live.vercel.app /api/v1/admin/createNewCampaign', formData, {
+      const response = await axios.post('http://localhost:8080 /api/v1/admin/createNewCampaign', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },

@@ -10,7 +10,7 @@ const AdminProfilePage = ({ userId }) => {  // Updated to accept userId as a pro
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {
-                const response = await fetch('https://sand-one-live.vercel.app /api/v1/user/userDetails', {
+                const response = await fetch('http://localhost:8080 /api/v1/user/userDetails', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'

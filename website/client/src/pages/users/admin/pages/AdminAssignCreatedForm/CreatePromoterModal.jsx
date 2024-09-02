@@ -17,7 +17,7 @@ const CreatePromoterModal = memo(({ onClose, onCreate }) => {
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://sand-one-live.vercel.app /api/v1/promoter/registerNewPromoter', {
+            const response = await axios.post('http://localhost:8080 /api/v1/promoter/registerNewPromoter', {
                 promoterName,
                 promoterEmailId,
                 password,

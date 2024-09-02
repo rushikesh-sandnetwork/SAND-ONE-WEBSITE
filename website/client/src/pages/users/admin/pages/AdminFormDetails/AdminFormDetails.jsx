@@ -12,7 +12,7 @@ const AdminFormDetails = ({ campaignId, setActiveTab }) => {
     useEffect(() => {
         const fetchForms = async () => {
             try {
-                const response = await axios.post('https://sand-one-live.vercel.app /api/v1/admin/fetchFormsForGivenClient', { campaignId });
+                const response = await axios.post('http://localhost:8080 /api/v1/admin/fetchFormsForGivenClient', { campaignId });
                 setForms(response.data.data.reverse());
                 setLoading(false);
             } catch (err) {
