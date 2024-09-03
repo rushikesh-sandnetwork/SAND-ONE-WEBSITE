@@ -5,7 +5,8 @@ import 'package:http/http.dart' as http;
 
 Future<List<Map<String, dynamic>>> fetchFormFilledData(String formId) async {
   final response = await http.post(
-    Uri.parse('http://192.168.31.140:8080/api/v1/promoter/fetchFormFilledData'),
+    Uri.parse(
+        'https://sand-one-website.onrender.com/api/v1/promoter/fetchFormFilledData'),
     headers: {'Content-Type': 'application/json'},
     body: json.encode({'formId': formId}),
   );
