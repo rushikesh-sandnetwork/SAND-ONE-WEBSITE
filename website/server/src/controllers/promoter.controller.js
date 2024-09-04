@@ -401,9 +401,78 @@ const fetchAttendance = asyncHandler(async (req, res) => {
 });
 
 
+const fetchPromoterAttendanceDetails = asyncHandler(async (req, res) => {
+    try {
+        const { email } = req.body; // Extract email from the request body
+
+        // Step 1: Fetch the promoter ID using the provided email
+        const promoter = await Promoter.findOne({ promoterEmailId: email }).select('_id promoterEmailId');
+        if (!promoter) {
+            return res.status(404).json(new apiError(404, "Promoter not found."));
+        }
+
+        // Step 2: Calculate the date 30 days ago from today
+        const today = new Date();
+        const thirtyDaysAgo = new Date(today);
+        thirtyDaysAgo.setDate(today.getDate() - 30);
+
+        // Step 3: Fetch the attendance details for the past 30 days using the promoter ID
+        const attendanceData = await AttendanceModel.find({
+            promoterId: promoter._id,
+            date: { $gte: thirtyDaysAgo }
+        }).lean();
+
+        // Step 4: Create a map of attendance records
+        const attendanceMap = new Map();
+        attendanceData.forEach(att => {
+            const dateKey = att.date.toISOString().split('T')[0]; // Format date as 'YYYY-MM-DD'
+            attendanceMap.set(dateKey, att);
+        });
+
+        // Step 5: Create the response for the past 30 days
+        const response = {
+            promoterEmail: promoter.promoterEmailId,
+            attendanceDetails: []
+        };
+
+        for (let i = 0; i < 30; i++) {
+            const currentDate = new Date(today);
+            currentDate.setDate(today.getDate() - i);
+            const dateKey = currentDate.toISOString().split('T')[0]; // Format date as 'YYYY-MM-DD'
+            
+            // Ensure the date is at midnight UTC
+            const formattedDate = new Date(`${dateKey}T00:00:00.000Z`);
+
+            if (attendanceMap.has(dateKey)) {
+                const att = attendanceMap.get(dateKey);
+                response.attendanceDetails.push({
+                    date: att.date,
+                    punchInTime: att.punchInTime,
+                    punchOutTime: att.punchOutTime,
+                    punchInImage: att.punchInImage,
+                    punchOutImage: att.punchOutImage,
+                    status: 'Present'
+                });
+            } else {
+                response.attendanceDetails.push({
+                    date: formattedDate,
+                    status: 'Absent'
+                });
+            }
+        }
+
+        // Step 6: Send the response
+        return res.status(200).json(new apiResponse(200, response, "Fetched promoter attendance details successfully."));
+    } catch (error) {
+        console.error('Error in fetching promoter attendance details.', error);
+        return res.status(400).json(new apiError(400, "Error in fetching promoter attendance details."));
+    }
+});
+
 
 
 module.exports = {
+    fetchPromoterAttendanceDetails,
     fetchPromoterForms,
     promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails, fillAttendancePunchIn, fillAttendancePunchOut, fetchAttendance
 };

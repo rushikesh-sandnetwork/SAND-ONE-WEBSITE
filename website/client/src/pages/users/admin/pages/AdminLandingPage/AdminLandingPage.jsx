@@ -11,7 +11,9 @@ import AdminCreateNewCampaign from '../AdminCreateNewCampaign/AdminCreateNewCamp
 import AdminFormItems from '../AdminFormItems/AdminFormItems';
 import AdminCreateNewUser from '../AdminCreateNewUser/AdminCreateNewUser';
 import './AdminLandingPage.css';
+import './AdminLandingPage.css';
 import Logo from './SAND 1 logo.png'; // Corrected import statement
+import AdminViewAttendance from '../AdminViewAttendance/AdminViewAttendance';
 
 
 const AdminLandingPage = () => {
@@ -34,6 +36,7 @@ const AdminLandingPage = () => {
           <a onClick={() => setActiveTab('viewClients')}>View Clients</a>
           <a onClick={() => setActiveTab('profile')}>Profile</a>
           <a onClick={() => setActiveTab('newUser')}>New User</a>
+          <a onClick={() => setActiveTab('promoterAttendance')}>Promoter Attendance</a>
           <input type="button" value="Logout" onClick={handleLogout} />
         </div>
       </div>
@@ -45,6 +48,7 @@ const AdminLandingPage = () => {
         )}
         {activeTab === 'profile' && <AdminProfilePage userId={id} />}  {/* Pass `id` to AdminProfilePage */}
         {activeTab === 'newUser' && <AdminCreateNewUser />}
+        {activeTab === 'promoterAttendance' && <AdminViewAttendance />}
         {activeTab.startsWith('client-detail') && (
           <AdminViewCampaignsPage clientId={activeTab.substring('client-detail'.length + 1)} setActiveTab={setActiveTab} />
         )}

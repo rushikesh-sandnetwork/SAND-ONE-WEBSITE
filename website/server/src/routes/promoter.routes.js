@@ -4,7 +4,7 @@ const router = Router();
 const upload = require("../middlewares/multer.middleware");
 
 
-
+router.route('/fetchPromoterAttendanceDetails').post(promoterController.fetchPromoterAttendanceDetails);
 router.route('/fetchAttendance').post(promoterController.fetchAttendance);
 router.route('/fetchAllForms').post(promoterController.fetchPromoterForms);
 router.route('/fillAttendancePunchIn')
