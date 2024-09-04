@@ -40,8 +40,18 @@ const AdminProfilePage = ({ userId }) => {  // Updated to accept userId as a pro
     return (
         <div className="adminProfilePage-container">
             <PageTitle title="Profile" />
-            <div className="Profile-container">
-                <DynamicTable></DynamicTable>
+            <div className="profile-container">
+                <h1 className='userDetailsTitle'>User Details</h1>
+                {userDetails && (
+                    <div className="user-details">
+                        <p><strong>Name:</strong> {userDetails.name}</p>
+                        <p><strong>Surname:</strong> {userDetails.surname}</p>
+                        <p><strong>Email:</strong> {userDetails.email}</p>
+                        <p><strong>Role:</strong> {userDetails.role}</p>
+                        <p><strong>Created At:</strong> {new Date(userDetails.createdAt).toLocaleString()}</p>
+                        <p><strong>Updated At:</strong> {new Date(userDetails.updatedAt).toLocaleString()}</p>
+                    </div>
+                )}
             </div>
         </div>
     );
