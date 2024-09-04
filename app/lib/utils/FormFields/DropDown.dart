@@ -30,7 +30,6 @@ class _DropDownFieldState extends State<DropDownField> {
     title = items.first;
     dropDownItems = items.sublist(1); // All items after the first are options
 
-    // Set the initial selected value
     selectedValue = widget.initialValue ?? dropDownItems.first;
   }
 
