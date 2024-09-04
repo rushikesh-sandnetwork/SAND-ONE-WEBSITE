@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './LoginPage.css';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Logo from './SAND 1 logo.png'; // Corrected import statement
 
 // admin@gmail.com
 // Admin123
@@ -23,7 +24,7 @@ const LoginPage = () => {
         setError('');
 
         try {
-            const response = await axios.post('http://localhost:8080/api/v1/user/loginUser', {
+            const response = await axios.post('https://sand-one-website.onrender.com/api/v1/user/loginUser', {
                 email,
                 password
             });
@@ -54,7 +55,7 @@ const LoginPage = () => {
         <div className="LoginPage-container">
             <div className="LoginPage-box">
                 <div className="LoginPage-logo">
-                    <img src="./src/pages/users/admin/utils/SAND 1 logo.png" alt="SAND Logo" />
+                    <img src={Logo} alt="SAND Logo" />
                 </div>
                 <div className="LoginPage-content">
                     <div className="content-title">

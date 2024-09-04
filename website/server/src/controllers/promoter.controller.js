@@ -344,18 +344,21 @@ const fetchAttendance = asyncHandler(async (req, res) => {
         // Create an array for the last 7 days, including today
         const days = [];
         for (let i = 0; i < 7; i++) {
-            const day = new Date();
+            const day = new Date(sevenDaysAgo);
             day.setDate(sevenDaysAgo.getDate() + i);
             day.setHours(0, 0, 0, 0); // Start of the day
             days.push(day);
         }
+        
+        console.log(promoterId);
 
         // Fetch attendance records for the last 7 days
         const attendanceRecords = await AttendanceModel.find({
             promoterId,
-            punchInTime: { $gte: sevenDaysAgo },
-            punchInTime: { $lte: today }
+            punchInTime: { $gte: sevenDaysAgo, $lte: today }
         });
+        console.log(attendanceRecords);
+        
 
         // Aggregate total time for each day
         const dailyAttendance = days.map(day => {
