@@ -12,7 +12,7 @@ const AdminViewAttendance = () => {
 
   const fetchAttendanceDetails = async () => {
     try {
-      const response = await axios.post('http://localhost:8080/api/v1/promoter/fetchPromoterAttendanceDetails', { email });
+      const response = await axios.post('https://sand-one-website.onrender.com/api/v1/promoter/fetchPromoterAttendanceDetails', { email });
       if (response.data && response.data.data) {
         setAttendanceDetails(response.data.data);
         setErrorMessage(''); // Clear any previous error message
