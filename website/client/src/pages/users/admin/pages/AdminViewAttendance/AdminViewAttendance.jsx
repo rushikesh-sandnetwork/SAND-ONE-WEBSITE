@@ -8,6 +8,7 @@ const AdminViewAttendance = () => {
   const [attendanceDetails, setAttendanceDetails] = useState(null);
   const [errorMessage, setErrorMessage] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+  const [fullScreenImage, setFullScreenImage] = useState(null);
   const rowsPerPage = 10;
 
   const fetchAttendanceDetails = async () => {
@@ -15,8 +16,8 @@ const AdminViewAttendance = () => {
       const response = await axios.post('https://sand-one-website.onrender.com/api/v1/promoter/fetchPromoterAttendanceDetails', { email });
       if (response.data && response.data.data) {
         setAttendanceDetails(response.data.data);
-        setErrorMessage(''); // Clear any previous error message
-        setCurrentPage(1); // Reset to the first page
+        setErrorMessage('');
+        setCurrentPage(1);
       } else {
         setAttendanceDetails(null);
         setErrorMessage('No attendance details found for this email.');
@@ -24,7 +25,7 @@ const AdminViewAttendance = () => {
     } catch (error) {
       console.error('Error fetching attendance details:', error);
       setAttendanceDetails(null);
-      setErrorMessage('Error fetching attendance details. Please try again.');
+      setErrorMessage('Email Entry doesn\'t exist');
     }
   };
 
@@ -42,15 +43,20 @@ const AdminViewAttendance = () => {
 
   const calculateDuration = (punchInTime, punchOutTime) => {
     if (!punchInTime || !punchOutTime) return 'N/A';
-    
     const punchIn = new Date(punchInTime);
     const punchOut = new Date(punchOutTime);
     const duration = (punchOut - punchIn) / 1000 / 60; // Duration in minutes
-    
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
-    
     return `${hours}h ${minutes}m`;
+  };
+
+  const handleImageClick = (imageUrl) => {
+    setFullScreenImage(imageUrl);
+  };
+
+  const handleExitFullScreen = () => {
+    setFullScreenImage(null);
   };
 
   const displayedRows = attendanceDetails
@@ -79,9 +85,9 @@ const AdminViewAttendance = () => {
                 <tr>
                   <th>Promoter Email</th>
                   <th>Attendance Date</th>
-                  <th>Punch In Time</th>
-                  <th>Punch Out Time</th>
-                  <th>Duration</th> {/* New column */}
+                  <th>Punch In</th>
+                  <th>Punch Out</th>
+                  <th>Duration</th>
                   <th>Status</th>
                 </tr>
               </thead>
@@ -92,26 +98,57 @@ const AdminViewAttendance = () => {
                     style={{
                       backgroundColor:
                         attendance.status === 'Present'
-                          ? '#64E3A1' // Set your preferred color for 'Present'
+                          ? '#64E3A1'
                           : attendance.status === 'Absent'
-                          ? '#F48B81' // Set your preferred color for 'Absent'
-                          : 'transparent', // Default color for other statuses
+                          ? '#F48B81'
+                          : 'transparent',
                     }}
                   >
                     <td>{attendanceDetails.promoterEmail}</td>
                     <td>{new Date(attendance.date).toLocaleDateString()}</td>
-                    <td>{attendance.punchInTime ? new Date(attendance.punchInTime).toLocaleTimeString() : 'N/A'}</td>
-                    <td>{attendance.punchOutTime ? new Date(attendance.punchOutTime).toLocaleTimeString() : 'N/A'}</td>
-                    <td>{calculateDuration(attendance.punchInTime, attendance.punchOutTime)}</td> {/* New column */}
+                    <td>
+                      {attendance.punchInTime ? new Date(attendance.punchInTime).toLocaleTimeString() : 'N/A'}
+                      <br />
+                      {attendance.punchInImage && (
+                        <img
+                          src={attendance.punchInImage}
+                          alt="Punch In"
+                          className="attendance-image"
+                          onClick={() => handleImageClick(attendance.punchInImage)}
+                        />
+                      )}
+                    </td>
+                    <td>
+                      {attendance.punchOutTime ? new Date(attendance.punchOutTime).toLocaleTimeString() : 'N/A'}
+                      <br />
+                      {attendance.punchOutImage && (
+                        <img
+                          src={attendance.punchOutImage}
+                          alt="Punch Out"
+                          className="attendance-image"
+                          onClick={() => handleImageClick(attendance.punchOutImage)}
+                        />
+                      )}
+                    </td>
+                    <td>{calculateDuration(attendance.punchInTime, attendance.punchOutTime)}</td>
                     <td>{attendance.status}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
+
             <div className="pagination-controls">
               <button onClick={handlePreviousPage} className="previous-button" disabled={currentPage === 1}>Previous</button>
               <button onClick={handleNextPage} className="next-button" disabled={currentPage * rowsPerPage >= (attendanceDetails ? attendanceDetails.attendanceDetails.length : 0)}>Next</button>
             </div>
+
+            {/* Full-screen image view */}
+            {fullScreenImage && (
+              <div className="fullscreen-image-container" onClick={handleExitFullScreen}>
+                <img src={fullScreenImage} alt="Full View" className="fullscreen-image" />
+                <span className="close-button">&times;</span>
+              </div>
+            )}
           </>
         ) : (
           <p className="info-message">{errorMessage || 'Please enter an email to view attendance details.'}</p>
