@@ -89,13 +89,14 @@ const AdminViewAttendance = () => {
                 {displayedRows.map((attendance, index) => (
                   <tr
                     key={index}
-                    className={
-                      attendance.status === 'Present'
-                        ? 'present-row'
-                        : attendance.status === 'Absent'
-                        ? 'absent-row'
-                        : ''
-                    }
+                    style={{
+                      backgroundColor:
+                        attendance.status === 'Present'
+                          ? '#64E3A1' // Set your preferred color for 'Present'
+                          : attendance.status === 'Absent'
+                          ? '#F48B81' // Set your preferred color for 'Absent'
+                          : 'transparent', // Default color for other statuses
+                    }}
                   >
                     <td>{attendanceDetails.promoterEmail}</td>
                     <td>{new Date(attendance.date).toLocaleDateString()}</td>
