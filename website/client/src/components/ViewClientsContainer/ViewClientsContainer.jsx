@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import './ViewClientsContainer.css';
-import ViewClientsBox from './ViewClientsBox';
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import "./ViewClientsContainer.css";
+import ViewClientsBox from "./ViewClientsBox";
 
 const ViewClientsContainer = ({ setActiveTab }) => {
   const [clients, setClients] = useState([]);
@@ -11,16 +11,18 @@ const ViewClientsContainer = ({ setActiveTab }) => {
   useEffect(() => {
     const fetchClients = async () => {
       try {
-        const response = await axios.get('https://sand-one-website.onrender.com/api/v1/admin/fetchAllClient');
+        const response = await axios.get(
+          "http://localhost:8080/api/v1/admin/fetchAllClient"
+        );
         setClients(response.data.data.reverse());
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching clients:', err);
-        setError('Failed to load clients');
+        console.error("Error fetching clients:", err);
+        setError("Failed to load clients");
         setLoading(false);
       }
     };
-    
+
     fetchClients();
   }, []);
 
@@ -39,7 +41,7 @@ const ViewClientsContainer = ({ setActiveTab }) => {
           key={index}
           imgSrc={client["clientPhoto"]}
           clientName={client["clientName"]}
-          clientId={client["_id"]}  
+          clientId={client["_id"]}
           setActiveTab={setActiveTab}
         />
       ))}

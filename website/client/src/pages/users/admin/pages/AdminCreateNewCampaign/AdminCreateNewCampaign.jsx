@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import PageTitle from '../../../../../components/PageTitles/PageTitle';
-import './AdminCreateNewCampaign.css';
-import { useNavigate } from 'react-router-dom';
+import React, { useState } from "react";
+import axios from "axios";
+import PageTitle from "../../../../../components/PageTitles/PageTitle";
+import "./AdminCreateNewCampaign.css";
+import { useNavigate } from "react-router-dom";
 
 const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
-  const [title, setTitle] = useState('');
+  const [title, setTitle] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
-  const [campaignId, setId] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+  const [campaignId, setId] = useState("");
   const [campaignPhoto, setCampaignPhoto] = useState(null);
 
   const navigate = useNavigate();
@@ -26,51 +26,66 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
   const handleNextClick = () => {
     navigate(`/admin/createNewForm/${campaignId}`);
   };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     if (!campaignPhoto) {
-      setError('Please upload Campaign Photo');
-      setLoading(false);
-      return;
+        setError("Please upload Campaign Photo");
+        setLoading(false);
+        return;
     }
 
     try {
-      const formData = new FormData();
-      formData.append('title', title);
-      formData.append('clientId', clientId);
-      formData.append('campaignPhoto', campaignPhoto);
+        const formData = new FormData();
+        formData.append("title", title);
+        formData.append("clientId", clientId);
+        formData.append("campaignPhoto", campaignPhoto);
 
-      const response = await axios.post('https://sand-one-website.onrender.com/api/v1/admin/createNewCampaign', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+        const response = await axios.post(
+            "http://localhost:8080/api/v1/admin/createNewCampaign",
+            formData,
+            {
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+            }
+        );
 
-      if (response.status === 201) {
-        const newCampaign = response.data.data;
-        setSuccess(`Campaign created successfully: ${newCampaign.title} (ID: ${newCampaign._id})`);
-        setTitle('');
-        setId(newCampaign._id);
-        setCampaignPhoto(null);  // Clear photo after successful upload
-      }
+        if (response.status === 201) {
+            const newCampaign = response.data.data;
+            setSuccess(`Campaign created successfully: ${newCampaign.title} (ID: ${newCampaign._id})`);
+            setTitle("");
+            setId(newCampaign._id);
+            setCampaignPhoto(null);
+        }
     } catch (error) {
-      setError('An error occurred while creating new campaign. Try again later.');
+        console.log("Error response:", error.response);
+        if (error.response && error.response.status === 409) {
+            setError("Campaign title already exists for this client. Please choose a different title.");
+        } else {
+            setError("An error occurred while creating new campaign. Try again later.");
+        }
     } finally {
-      setLoading(false);
+        setLoading(false); // Ensure loading is reset here
     }
-  };
+
+    // Clear the error message after 3 seconds
+    if (error) {
+        setTimeout(() => {
+            setError("");
+        }, 3000);
+    }
+};
 
   return (
     <div className="create-new-campaign">
       <PageTitle title="Create New Campaign" />
       <div className="create-new-campaign-container">
         <h3 className="container-heading">Enter Campaign Details</h3>
-        <form className='campaign-form' onSubmit={handleSubmit}>
+        <form className="campaign-form" onSubmit={handleSubmit}>
           <div className="inputFields">
             <input
               type="text"
@@ -86,21 +101,34 @@ const AdminCreateNewCampaign = ({ clientId, setActiveTab }) => {
                 id="campaign-photo-upload"
                 className="file-upload-input"
                 onChange={handleFileChange}
-                
               />
-              <label htmlFor="campaign-photo-upload" className="file-upload-label">
-                {campaignPhoto ? campaignPhoto.name : 'Upload Campaign Photo'}
+              <label
+                htmlFor="campaign-photo-upload"
+                className="file-upload-label"
+              >
+                {campaignPhoto ? campaignPhoto.name : "Upload Campaign Photo"}
               </label>
             </div>
           </div>
 
-          <button type="submit" className="submit-campaign-button" disabled={loading}>
-            {loading ? 'Creating...' : 'Create Campaign'}
+          <button
+            type="submit"
+            className="submit-campaign-button"
+            disabled={loading}
+          >
+            {loading ? "Creating..." : "Create Campaign"}
           </button>
         </form>
         {error && <p className="error-message">{error}</p>}
         {success && <p className="success-message">{success}</p>}
-        {success && <input type="button" value="Generate Form" className='submit-campaign-button' onClick={handleNextClick} />}
+        {success && (
+          <input
+            type="button"
+            value="Generate Form"
+            className="submit-campaign-button"
+            onClick={handleNextClick}
+          />
+        )}
       </div>
     </div>
   );

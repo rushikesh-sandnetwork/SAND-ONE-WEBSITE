@@ -101,6 +101,29 @@ const deleteClient = asyncHandler(async (req, res) => {
     }
 });
 
+const deletePromoter = asyncHandler(async (req, res) => {
+    try {
+      const { promoterId } = req.body;  // Get promoterId from request body
+  
+      if (!promoterId) {
+        return res.status(400).json(new apiError(400, "Promoter ID is required to delete the promoter."));
+      }
+  
+      // Find and delete the promoter by ID
+      const promoterDoc = await Promoter.findByIdAndDelete(promoterId);
+  
+      if (!promoterDoc) {
+        return res.status(404).json(new apiError(404, "No promoter found with the given ID."));
+      }
+  
+      return res.status(200).json(new apiResponse(200, promoterDoc, "Promoter deleted successfully."));
+    } catch (error) {
+      console.error("Error deleting promoter:", error);
+      res.status(500).json(new apiError(500, "An error occurred while deleting the promoter."));
+    }
+  });
+  
+
 
 const deleteCampaign = asyncHandler(async (req, res) => {
     try {
@@ -254,7 +277,6 @@ const createNestedForm = asyncHandler(async (req, res) => {
         res.status(500).json(new apiError(500, "An error occurred while creating new campaign"));
     }
 });
-
 const createNewCampaign = asyncHandler(async (req, res) => {
     try {
         const { title, clientId } = req.body;
@@ -263,18 +285,28 @@ const createNewCampaign = asyncHandler(async (req, res) => {
             return res.status(400).json(new apiError(400, "Title and Client ID are required"));
         }
 
-        const campaignPicFinalPath = req.files?.campaignPhoto?.[0]?.path;
+        const existingCampaign = await campaign.findOne({ title, clientId });
+        console.log("Existing Campaign:", existingCampaign);
+        
+        if (existingCampaign) {
+            return res.status(409).json({ status: 409, message: "Campaign title already exists for this client. Please choose a different title." });
+        }
 
+        const campaignPicFinalPath = req.files?.campaignPhoto?.[0]?.path;
         if (!campaignPicFinalPath) {
-            throw new apiError(400, "campaign Logo/Pic is required");
-        };
+            throw new apiError(400, "Campaign Logo/Pic is required");
+        }
 
         const campaignPicFinal = await uploadOnCloudinary(campaignPicFinalPath);
         if (!campaignPicFinal) {
             throw new apiError(400, "Failed to upload campaign Photo");
-        };
+        }
 
-        const newCampaign = await campaign.create({ title, clientId, campaignLogo: campaignPicFinal.url });
+        const newCampaign = await campaign.create({
+            title,
+            clientId,
+            campaignLogo: campaignPicFinal.url,
+        });
 
         res.status(201).json(new apiResponse(201, newCampaign, "New campaign created successfully"));
     } catch (error) {
@@ -300,6 +332,7 @@ const assignCreatedForm = asyncHandler(async (req, res) => {
 
         promoter.forms = promoter.forms || [];
         promoter.forms.push(formId);
+        promoter.actionHistory.push({ action: "assigned", timestamp: new Date() });
 
         await promoter.save();
 
@@ -309,6 +342,44 @@ const assignCreatedForm = asyncHandler(async (req, res) => {
         res.status(500).json(new apiError(500, "An error occurred while assigning the form"));
     }
 });
+
+const fetchPromoterActionHistory = asyncHandler(async (req, res) => {
+    try {
+        const { promoterId } = req.body;
+
+        if (!promoterId) {
+            return res.status(400).json(new apiError(400, "Promoter ID is required"));
+        }
+
+        const promoter = await Promoter.findById(promoterId).select("actionHistory");
+
+        if (!promoter) {
+            return res.status(404).json(new apiError(404, "Promoter not found"));
+        }
+
+        // Sort action history by timestamp in descending order (most recent first)
+        const sortedHistory = promoter.actionHistory
+            .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
+            .map(action => ({
+                ...action._doc, // Extracts all fields from action
+                timestamp: new Intl.DateTimeFormat('en-US', { 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: '2-digit', 
+                    hour: '2-digit', 
+                    minute: '2-digit', 
+                    second: '2-digit', 
+                    hour12: true 
+                }).format(new Date(action.timestamp))
+            }));
+
+        res.status(200).json(new apiResponse(200, sortedHistory, "Action history fetched successfully"));
+    } catch (error) {
+        console.error('Error fetching promoter action history:', error);
+        res.status(500).json(new apiError(500, "An error occurred while fetching action history"));
+    }
+});
+
 
 const unassignCreatedForm = asyncHandler(async (req, res) => {
     try {
@@ -325,7 +396,8 @@ const unassignCreatedForm = asyncHandler(async (req, res) => {
         }
 
         promoter.forms = promoter.forms || [];
-        promoter.forms.pop(formId);
+        promoter.forms.pull(formId);
+        promoter.actionHistory.push({ action: "revoked", timestamp: new Date() });
 
         await promoter.save();
 
@@ -551,5 +623,7 @@ module.exports = {
     deleteClient,
     fetchAllClients,
     fetchClient,
-    createNewClient
+    createNewClient,
+    deletePromoter,
+    fetchPromoterActionHistory
 };``

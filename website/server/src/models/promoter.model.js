@@ -6,12 +6,12 @@ const promoterSchema = new Schema({
         type: String,
         required: true,
     },
-    promoterEmailId:{
+    promoterEmailId: {
         type: String,
         required: true,
     },
     password: {
-        type: String,
+        type: String,   
         required: true,
     },
     campaignId: {
@@ -21,6 +21,17 @@ const promoterSchema = new Schema({
     forms: [{
         type: Schema.Types.ObjectId,
         ref: "Form",
+    }],
+    actionHistory: [{
+        action: { 
+            type: String, 
+            enum: ['assigned', 'revoked'], 
+            required: true,
+        },
+        timestamp: { 
+            type: Date, 
+            default: Date.now,
+        },
     }],
 });
 

@@ -18,6 +18,9 @@ router.route("/createNewClient").post(
     ,adminController.createNewClient);
 
 
+//  deleting a promoter
+router.route("/deletePromoter").delete(adminController.deletePromoter);
+
 // delete new client
 router.route("/deleteClient").delete(adminController.deleteClient);
 
@@ -62,6 +65,9 @@ router.route("/assignCreatedForms").post(adminController.assignCreatedForm);
 
 // unassignCreatedForm
 router.route("/unassignCreatedForms").post(adminController.unassignCreatedForm);
+
+//FETCH LOGS OF ASSIGN AND UNASSIGN 
+router.route("/fetchPromoterActionHistory").post(adminController.fetchPromoterActionHistory);
 
 
 // update user rights

@@ -17,32 +17,41 @@ const fetchAllPromoters = asyncHandler(async (req, res) => {
         res.status(400).json(new apiError(400, "Error in fetching all the promoters."));
     }
 });
-
-
 const createNewPromoter = asyncHandler(async (req, res) => {
     try {
         const { promoterName, promoterEmailId, password } = req.body;
 
         if (!promoterName || !promoterEmailId || !password) {
-            return res.status(400).json(new apiError(400, "Missing required fields"));
-        };
+            return res.status(400).json({ message: "Missing required fields" });
+        }
 
+        // Check if a promoter with the same email ID already exists
+        const existingPromoter = await Promoter.findOne({ promoterEmailId });
+        console.log("Existing promoter:", existingPromoter); // Add this line to debug
+        if (existingPromoter) {
+            return res
+              .status(409)
+              .json({ message: "A promoter with this email ID already exists" });
+        }
 
-        const newPromoter = await Promoter.create({ promoterName, promoterEmailId, password });
+        // Create a new promoter
+        const newPromoter = await Promoter.create({
+            promoterName,
+            promoterEmailId,
+            password,
+        });
 
         if (!newPromoter) {
-            return res.status(400).json(new apiError(400, "Promoter not created"));
-        };
+            return res.status(400).json({ message: "Promoter not created" });
+        }
 
-        return res.status(200).json(new apiResponse(200, newPromoter, "New Promoter was created."));
-
+        return res.status(200).json({ message: "New Promoter was created", newPromoter });
 
     } catch (error) {
-        console.error('Error in creating new Promoter.', error);
-        res.status(400).json(new apiError(400, "Error in creating new Promoter."));
+        console.error("Error in creating new Promoter.", error); // Better error logging
+        return res.status(500).json({ message: "Internal Server Error" });
     }
 });
-
 
 const fetchPromoterDetails = asyncHandler(async (req, res) => {
     try {

@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import './ViewCampaignsContainer.css';
-import ViewCampaignsBox from './ViewCampaignsBox';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import "./ViewCampaignsContainer.css";
+import ViewCampaignsBox from "./ViewCampaignsBox";
 
 const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
   const [campaigns, setCampaigns] = useState([]);
@@ -13,12 +13,15 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const response = await axios.post('https://sand-one-website.onrender.com/api/v1/admin/fetchAllCampaigns', { clientId });
+        const response = await axios.post(
+          "http://localhost:8080/api/v1/admin/fetchAllCampaigns",
+          { clientId }
+        );
         setCampaigns(response.data.data.reverse());
         setLoading(false);
       } catch (error) {
-        console.error('Error fetching campaigns:', error);
-        setError('Failed to load campaigns');
+        console.error("Error fetching campaigns:", error);
+        setError("Failed to load campaigns");
         setLoading(false);
       }
     };
@@ -26,20 +29,22 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
     fetchCampaigns();
   }, [clientId]);
 
-  
   const handleDeleteClient = async () => {
     try {
-      const response = await axios.delete('https://sand-one-website.onrender.com/api/v1/admin/deleteClient', {
-        data: { clientId }
-      });
-      
+      const response = await axios.delete(
+        "http://localhost:8080/api/v1/admin/deleteClient",
+        {
+          data: { clientId },
+        }
+      );
+
       if (response.status === 200) {
-        alert('Client deleted successfully.');
-        setActiveTab("viewClients") 
+        alert("Client deleted successfully.");
+        setActiveTab("viewClients");
       }
     } catch (error) {
-      console.error('Error deleting client:', error);
-      alert('Failed to delete client');
+      console.error("Error deleting client:", error);
+      alert("Failed to delete client");
     }
   };
 
@@ -54,21 +59,27 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
   return (
     <div className="viewCampaignsContainer">
       <input
-        className='newCampaignBtn'
+        className="newCampaignBtn"
         type="button"
         value="Create New Campaign"
         onClick={() => setActiveTab(`createNewCampaign/${clientId}`)}
       />
       <input
-        className='deleteClientBtn'
+        className="deleteClientBtn"
         type="button"
         value="Delete Client"
         onClick={handleDeleteClient}
       />
 
       <div className="allCampaignsContainer">
-        {campaigns.map(campaign => (
-          <ViewCampaignsBox key={campaign._id} url={campaign.campaignLogo} campaign={campaign} campaignId={campaign._id} setActiveTab={setActiveTab} />
+        {campaigns.map((campaign) => (
+          <ViewCampaignsBox
+            key={campaign._id}
+            url={campaign.campaignLogo}
+            campaign={campaign}
+            campaignId={campaign._id}
+            setActiveTab={setActiveTab}
+          />
         ))}
       </div>
     </div>

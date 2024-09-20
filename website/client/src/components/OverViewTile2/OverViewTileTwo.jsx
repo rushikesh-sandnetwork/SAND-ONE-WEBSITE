@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import './OverViewTileTwoBox.css';
-import OverViewTileTwoBox from './OverViewTileTwoBox';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import "./OverViewTileTwoBox.css";
+import OverViewTileTwoBox from "./OverViewTileTwoBox";
 
-const OverViewTileTwo = ({setActiveTab}) => {
+const OverViewTileTwo = ({ setActiveTab }) => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,11 +11,13 @@ const OverViewTileTwo = ({setActiveTab}) => {
   useEffect(() => {
     const fetchCampaigns = async () => {
       try {
-        const response = await axios.get('https://sand-one-website.onrender.com/api/v1/admin/fetchLastCampaigns');
+        const response = await axios.get(
+          "http://localhost:8080/api/v1/admin/fetchLastCampaigns"
+        );
         setCampaigns(response.data.data); // Assuming the response structure is { data: { data: campaigns } }
         setLoading(false);
       } catch (error) {
-        setError('Error fetching campaigns');
+        setError("Error fetching campaigns");
         setLoading(false);
       }
     };
@@ -33,11 +35,14 @@ const OverViewTileTwo = ({setActiveTab}) => {
 
   return (
     <div className="OverViewTileTwoContainer">
- 
-      {campaigns.map(campaign => (
-        <OverViewTileTwoBox 
-        id={campaign.id}
-        key={campaign._id} title={campaign.title} details={campaign.details} setActiveTab= {setActiveTab}/>
+      {campaigns.map((campaign) => (
+        <OverViewTileTwoBox
+          id={campaign.id}
+          key={campaign._id}
+          title={campaign.title}
+          details={campaign.details}
+          setActiveTab={setActiveTab}
+        />
       ))}
     </div>
   );

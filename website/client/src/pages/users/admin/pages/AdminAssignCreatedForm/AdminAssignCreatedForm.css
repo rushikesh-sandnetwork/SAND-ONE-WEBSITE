@@ -1,10 +1,12 @@
-
 .assignFormContainer {
-  width: 100%;
+  width: calc(100% - 20px); /* 10px padding on each side */
+  max-width: 100%;
+  margin: 0 auto; /* Center content horizontally */
   box-sizing: border-box;
   font-family: "Poppins", sans-serif;
-  /* padding: 20px; */
-  background-color: #f4f4f9;
+  background-color: #ffffff;
+  padding: 0 10px; /* 10px spacing from left and right */
+  overflow-x: hidden; /* Hide horizontal overflow */
 }
 
 .title {
@@ -25,14 +27,15 @@
   margin-bottom: 25px;
   border: none;
   border-radius: 18px;
-  background-color: #2d9bff;
+  background-color: #134b70; /* Updated color */
   font-family: "Poppins", sans-serif;
   font-weight: bold;
   font-size: 18px;
-  color: white;
+  color: #eeeeee; /* Updated color */
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s, box-shadow 0.3s;
+  align-self: flex-start; /* Left-align the button */
 }
 
 .create-promoter-btn:hover {
@@ -45,36 +48,91 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
+.promoter-form {
+  width: 100%;
+  max-width: 600px; /* Ensure form does not exceed screen width */
+  margin: 0 auto; /* Center form horizontally */
+  padding: 20px;
+  background-color: #eeeeee; /* Updated color */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.inputField {
+  width: 40%;
+  padding: 12px;
+  margin-right: 20px;
+  border-radius: 8px;
+  border: 1px solid #508c9b; /* Updated color */
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.inputField:focus {
+  border-color: #134b70; /* Updated color */
+  outline: none;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: center;
+}
+
+.submit-promoter-btn {
+  padding: 15px 20px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border: none;
+  border-radius: 18px;
+  background-color: #134b70; /* Updated color */
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  color: #eeeeee; /* Updated color */
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.submit-promoter-btn:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.submit-promoter-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
 .promoterTable {
   width: 100%;
   border-collapse: collapse;
   margin-top: 20px;
-  margin-left: auto; /* Center horizontally */
-  margin-right: auto; /* Center horizontally */
+  margin-bottom: 20px;
   font-size: 14px;
   border-radius: 10px;
   overflow: hidden;
-  background-color: white;
+  background-color: #eeeeee; /* Updated color */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
-.promoterTable th {
-  background-color: #f2f2f2; /* Light grey background */
-  color: #333; /* Dark text color for better contrast */
-  font-weight: bold;
-  text-align: left;
-  padding: 10px;
-  border: 1px solid #ddd; /* Add border to ensure headers are visible */
-}
 
+.promoterTable th,
 .promoterTable td {
+  text-align: center; /* Center-align content */
+  font-weight: bold; /* Make content bold */
   padding: 10px;
   border: 1px solid #ddd; /* Ensure borders are consistent */
 }
 
-
 .promoterTable th {
-  background-color: #3751b6;
-  font-weight: bold;
+  background-color: #508c9b; /* Updated color */
+  color: #eeeeee; /* Updated color */
 }
 
 .promoterTable tr:nth-child(even) {
@@ -96,8 +154,9 @@
 }
 
 .assignFormBtn {
-  background-color: #3751b6;
-  color: #fff;
+  background-color: #134b70; /* Updated color */
+  margin-right: 10px;
+  color: #eeeeee; /* Updated color */
   border: none;
   padding: 8px 16px;
   font-family: "Poppins", sans-serif;
@@ -107,8 +166,9 @@
   border-radius: 5px;
   transition: background-color 0.3s, transform 0.3s;
 }
+
 .assignFormBtn:hover {
-  background-color: #2d4699;
+  background-color: #102f5e;
   transform: scale(1.05);
 }
 
@@ -116,10 +176,10 @@
   transform: scale(1);
 }
 
-
-.unassignFormBtn{
-  background-color: #b63737;
-  color: #fff;
+.unassignFormBtn {
+  background-color: #b6ae37; /* Updated color */
+  margin-right: 10px;
+  color: #eeeeee; /* Updated color */
   border: none;
   padding: 8px 16px;
   font-family: "Poppins", sans-serif;
@@ -131,63 +191,12 @@
 }
 
 .unassignFormBtn:hover {
-  background-color: #772222;
+  background-color: #8b8204;
   transform: scale(1.05);
 }
 
 .unassignFormBtn:active {
   transform: scale(1);
-}
-
-.loading {
-  padding: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.error-message {
-  color: red;
-  font-weight: bold;
-}
-
-
-.promoter-form .inputField {
-  width: 100%;
-  padding: 12px;
-  margin-bottom: 15px;
-  border-radius: 8px;
-  border: 1px solid #ccc;
-  font-size: 16px;
-  transition: border-color 0.3s ease;
-}
-
-.promoter-form .inputField:focus {
-  border-color: #2d9bff;
-  outline: none;
-}
-
-.loading {
-  padding: 20px;
-  font-size: 18px;
-  font-weight: bold;
-}
-
-.error-message {
-  color: red;
-  font-weight: bold;
-}
-
-.createPromotersubmit-btn{
-  background-color: #3751b6;
-  color: #fff;
-  border: none;
-  padding: 8px 16px;
-  font-family: "Poppins", sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: background-color 0.3s, transform 0.3s;
 }
 
 @media (max-width: 768px) {
@@ -202,6 +211,73 @@
   .create-promoter-btn {
     width: 100%;
     padding: 12px;
+
     font-size: 16px;
   }
+}
+
+.email-td {
+  color: #9cebff;
+  background-color: #134b70;
+}
+
+.deletePromoterBtn {
+  background-color: #7a03036a; /* Updated color */
+  color: #4e0202; /* Updated color */
+  border: none;
+  padding: 8px 16px;
+
+  margin-right: 10px;
+  font-family: "Poppins", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.deletePromoterBtn:hover {
+  background-color: #772222;
+  color: white;
+  transform: scale(1.05);
+}
+
+.deletePromoterBtn:active {
+  transform: scale(1);
+}
+
+.historyPromoterBtn {
+  background-color: #00313585; /* Updated color */
+  color: #ffffff; /* Updated color */
+  border: none;
+  padding: 8px 16px;
+
+  font-family: "Poppins", sans-serif;
+
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+
+  border-radius: 20px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.historyPromoterBtn:hover {
+  background-color: #003135;
+  color: white;
+  transform: scale(1.05);
+}
+
+.historyPromoterBtn:active {
+  transform: scale(1);
+}
+
+/* Add this to your CSS file */
+.error-message {
+  opacity: 1;
+  transition: opacity 2s ease-in-out;
+}
+
+.error-message.fade {
+  opacity: 0;
 }

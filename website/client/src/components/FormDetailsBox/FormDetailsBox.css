@@ -3,8 +3,8 @@
     border-radius: 18px;
     padding: 20px;
     text-align: center;
-    width: 220px;
-    height: 200px;
+    width: 200px;
+    height: 140px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 

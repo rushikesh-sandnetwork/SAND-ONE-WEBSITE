@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-import PageTitle from '../../../../../components/PageTitles/PageTitle';
-import './AdminCreateNewUser.css';
+import React, { useState } from "react";
+import axios from "axios";
+import PageTitle from "../../../../../components/PageTitles/PageTitle";
+import "./AdminCreateNewUser.css";
 
 const AdminCreateNewUser = () => {
-  const [name, setname] = useState('');
-  const [surname, setsurname] = useState('');
-  const [email, setemail] = useState('');
-  const [password, setpassword] = useState('');
-  const [role, setrole] = useState('');
+  const [name, setname] = useState("");
+  const [surname, setsurname] = useState("");
+  const [email, setemail] = useState("");
+  const [password, setpassword] = useState("");
+  const [role, setrole] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
   const handleInputChange = (setter) => (event) => {
     setter(event.target.value);
@@ -20,8 +20,8 @@ const AdminCreateNewUser = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError('');
-    setSuccess('');
+    setError("");
+    setSuccess("");
 
     // Prepare the data as JSON
     const userData = {
@@ -33,22 +33,26 @@ const AdminCreateNewUser = () => {
     };
 
     try {
-      const response = await axios.post('https://sand-one-website.onrender.com/api/v1/user/createUser', userData, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:8080/api/v1/user/createUser",
+        userData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
       if (response.status === 201) {
         const newUser = response.data.data;
         setSuccess(`User created successfully with the role ${newUser.role}`);
-        setname('');
-        setsurname('');
-        setemail('');
-        setpassword('');
-        setrole('');
+        setname("");
+        setsurname("");
+        setemail("");
+        setpassword("");
+        setrole("");
       }
     } catch (error) {
-      setError('An error occurred while creating new user. Try again later.');
+      setError("An error occurred while creating new user. Try again later.");
     } finally {
       setLoading(false);
     }
@@ -59,7 +63,7 @@ const AdminCreateNewUser = () => {
       <PageTitle title="Create New User" />
       <div className="create-new-client-container">
         <h3 className="container-heading">Enter User Details</h3>
-        <form className='client-Form' onSubmit={handleSubmit}>
+        <form className="client-Form" onSubmit={handleSubmit}>
           <div className="inputFields">
             <input
               type="text"
@@ -110,9 +114,9 @@ const AdminCreateNewUser = () => {
               </select>
             </div>
           </div>
-       
+
           <button type="submit" className="submit-button" disabled={loading}>
-            {loading ? 'Creating...' : 'Create User'}
+            {loading ? "Creating..." : "Create User"}
           </button>
         </form>
         {error && <p className="error-message">{error}</p>}

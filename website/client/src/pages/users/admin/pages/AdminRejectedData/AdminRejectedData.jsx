@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import PageTitle from '../../../../../components/PageTitles/PageTitle';
-import './AdminRejectedData.css';
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import PageTitle from "../../../../../components/PageTitles/PageTitle";
+import "./AdminRejectedData.css";
 
 const AdminRejectedData = () => {
   const [formData, setFormData] = useState([]);
@@ -18,13 +18,16 @@ const AdminRejectedData = () => {
     setLoading(true);
     setError(null);
     try {
-      const response = await fetch('https://sand-one-website.onrender.com/api/v1/promoter/fetchFormFilledData', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ formId }),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/v1/promoter/fetchFormFilledData",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ formId }),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
@@ -33,7 +36,7 @@ const AdminRejectedData = () => {
         setError(result.message);
       }
     } catch (err) {
-      setError('Error fetching data');
+      setError("Error fetching data");
     } finally {
       setLoading(false);
     }
@@ -41,17 +44,20 @@ const AdminRejectedData = () => {
 
   const updateAcceptedData = async (itemId, accepted) => {
     try {
-      const response = await fetch('https://sand-one-website.onrender.com/api/v1/admin/updateAcceptedData', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          formId: formId,
-          itemId: itemId,
-          acceptData: accepted,
-        }),
-      });
+      const response = await fetch(
+        "http://localhost:8080/api/v1/admin/updateAcceptedData",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            formId: formId,
+            itemId: itemId,
+            acceptData: accepted,
+          }),
+        }
+      );
 
       const result = await response.json();
       if (response.ok) {
@@ -60,7 +66,7 @@ const AdminRejectedData = () => {
         setError(result.message);
       }
     } catch (err) {
-      setError('Error updating data');
+      setError("Error updating data");
     }
   };
 
@@ -76,7 +82,7 @@ const AdminRejectedData = () => {
     if (formData.length === 0) return null;
 
     const keys = Object.keys(formData[0]);
-    const filteredKeys = keys.filter(key => key !== '_id');
+    const filteredKeys = keys.filter((key) => key !== "_id");
     return (
       <>
         {filteredKeys.map((key) => (
@@ -87,15 +93,17 @@ const AdminRejectedData = () => {
   };
 
   const renderTableRows = () => {
-    const rejectedData = formData.filter(item => !item.acceptedData);
+    const rejectedData = formData.filter((item) => !item.acceptedData);
 
     return rejectedData.map((item) => (
       <tr key={item._id}>
         {Object.keys(item)
-          .filter(key => key !== '_id') // Exclude '_id'
+          .filter((key) => key !== "_id") // Exclude '_id'
           .map((key) => (
             <td key={key}>
-              {key === 'acceptedData' ? renderAcceptedDataCell(item[key]) : renderCellContent(item[key])}
+              {key === "acceptedData"
+                ? renderAcceptedDataCell(item[key])
+                : renderCellContent(item[key])}
             </td>
           ))}
       </tr>
@@ -108,7 +116,7 @@ const AdminRejectedData = () => {
         <img
           src={value}
           alt="Image"
-          style={{ maxWidth: '100px', maxHeight: '100px', cursor: 'pointer' }}
+          style={{ maxWidth: "100px", maxHeight: "100px", cursor: "pointer" }}
           onClick={() => setModalImage(value)}
         />
       );
@@ -118,7 +126,7 @@ const AdminRejectedData = () => {
   };
 
   const renderAcceptedDataCell = (value) => {
-    return value ? 'Accepted' : 'Rejected';
+    return value ? "Accepted" : "Rejected";
   };
 
   const isURL = (value) => {
@@ -131,20 +139,20 @@ const AdminRejectedData = () => {
   };
 
   const exportToExcel = () => {
-    const fileName = 'rejectedData.csv';
-    const rejectedData = formData.filter(item => !item.acceptedData); // Only rejected data
+    const fileName = "rejectedData.csv";
+    const rejectedData = formData.filter((item) => !item.acceptedData); // Only rejected data
     const csv = convertToCSV(rejectedData);
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
 
     if (navigator.msSaveBlob) {
       navigator.msSaveBlob(blob, fileName);
     } else {
-      const link = document.createElement('a');
+      const link = document.createElement("a");
       if (link.download !== undefined) {
         const url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', fileName);
-        link.style.visibility = 'hidden';
+        link.setAttribute("href", url);
+        link.setAttribute("download", fileName);
+        link.style.visibility = "hidden";
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
@@ -154,21 +162,25 @@ const AdminRejectedData = () => {
 
   const convertToCSV = (data) => {
     const keys = Object.keys(data[0]);
-    const header = keys.filter(key => key !== '_id') // Exclude '_id'
-      .map(key => key.charAt(0).toUpperCase() + key.slice(1))
-      .join(',');
-    const rows = data.map(row => {
-      return keys.filter(key => key !== '_id') // Exclude '_id'
-        .map(key => {
-          let cell = row[key] === null || row[key] === undefined ? '' : row[key];
+    const header = keys
+      .filter((key) => key !== "_id") // Exclude '_id'
+      .map((key) => key.charAt(0).toUpperCase() + key.slice(1))
+      .join(",");
+    const rows = data.map((row) => {
+      return keys
+        .filter((key) => key !== "_id") // Exclude '_id'
+        .map((key) => {
+          let cell =
+            row[key] === null || row[key] === undefined ? "" : row[key];
           cell = cell.toString().replace(/"/g, '""');
           if (cell.search(/("|,|\n)/g) >= 0) {
             cell = `"${cell}"`;
           }
           return cell;
-        }).join(',');
+        })
+        .join(",");
     });
-    return `${header}\n${rows.join('\n')}`;
+    return `${header}\n${rows.join("\n")}`;
   };
 
   return (
@@ -186,25 +198,27 @@ const AdminRejectedData = () => {
             <div className="table-container">
               <table>
                 <thead>
-                  <tr>
-                    {renderTableHeaders()}
-                  </tr>
+                  <tr>{renderTableHeaders()}</tr>
                 </thead>
-                <tbody>
-                  {renderTableRows()}
-                </tbody>
+                <tbody>{renderTableRows()}</tbody>
               </table>
             </div>
             <div className="buttons">
-              <button onClick={exportToExcel} className="refresh-button">Export to Excel</button>
-              <button onClick={fetchData} className="refresh-button">Refresh</button>
+              <button onClick={exportToExcel} className="refresh-button">
+                Export to Excel
+              </button>
+              <button onClick={fetchData} className="refresh-button">
+                Refresh
+              </button>
             </div>
           </React.Fragment>
         )}
       </div>
       {modalImage && (
         <div className="modal" onClick={() => setModalImage(null)}>
-          <span className="close" onClick={() => setModalImage(null)}>&times;</span>
+          <span className="close" onClick={() => setModalImage(null)}>
+            &times;
+          </span>
           <img className="modal-content" src={modalImage} alt="Zoomed" />
         </div>
       )}
