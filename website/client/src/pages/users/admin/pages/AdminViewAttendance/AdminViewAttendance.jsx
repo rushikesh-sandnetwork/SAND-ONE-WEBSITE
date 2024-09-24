@@ -1,15 +1,17 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./AdminViewAttendance.css";
 import PageTitle from "../../../../../components/PageTitles/PageTitle";
 
-const AdminViewAttendance = () => {
+const AdminViewAttendance = ({ setActiveTab }) => {
   const [email, setEmail] = useState("");
   const [attendanceDetails, setAttendanceDetails] = useState(null);
   const [errorMessage, setErrorMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [fullScreenImage, setFullScreenImage] = useState(null);
   const rowsPerPage = 10;
+  const navigate = useNavigate();
 
   const fetchAttendanceDetails = async () => {
     try {
@@ -73,9 +75,16 @@ const AdminViewAttendance = () => {
     : [];
 
   return (
-    <div className="admin-view-attendance">
+    <div className="">
       <PageTitle title="View Attendance" />
       <div className="admin-view-attendance-container">
+        <button
+          onClick={() => setActiveTab("promoterParent")}
+          className="back-button"
+        >
+          Back
+        </button>{" "}
+        {/* Navigate back using setActiveTab */}
         <div className="search-container">
           <input
             type="text"
@@ -88,7 +97,6 @@ const AdminViewAttendance = () => {
             Search
           </button>
         </div>
-
         {attendanceDetails ? (
           <>
             <table className="attendance-table">

@@ -1,24 +1,120 @@
-.assignFormContainer {
-  width: calc(100% - 20px); /* 10px padding on each side */
-  max-width: 100%;
-  margin: 0 auto; /* Center content horizontally */
-  box-sizing: border-box;
-  font-family: "Poppins", sans-serif;
-  background-color: #ffffff;
-  padding: 0 10px; /* 10px spacing from left and right */
-  overflow-x: hidden; /* Hide horizontal overflow */
+
+.viewPromoterContainer {
+  width: 100%;
+  margin: -10px;
+  padding: 0;
 }
 
-.title {
+.background-blue-container {
+  background-color: #cdf0ff;
+  border-radius: 18px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  margin: 20px auto;
+  width: 95%;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+
+/* .title {
   margin-bottom: 20px;
-}
+} */
 
-.formDetails {
+.promoterFormDetails {
   width: 100%;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  /* align-items: center; */
+  /* justify-content: center; */
+}
+
+.createPromoterBtn {
+  padding: 15px 20px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border: none;
+  border-radius: 18px;
+  background-color: #134b70; 
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  color: #eeeeee; /* Updated color */
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  align-self: flex-start; /* Left-align the button */
+}
+
+.createPromoterBtn:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.createPromoterBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.promoterForm {
+  width: 100%;
+  max-width: 600px; /* Ensure form does not exceed screen width */
+  margin: 0 auto; /* Center form horizontally */
+  padding: 20px;
+  background-color: #eeeeee; /* Updated color */
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.promoterFormGroup {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 15px;
+}
+
+.promoterInputField {
+  width: 40%;
+  padding: 12px;
+  margin-right: 20px;
+  border-radius: 8px;
+  border: 1px solid #508c9b; /* Updated color */
+  font-size: 16px;
+  transition: border-color 0.3s ease;
+}
+
+.promoterInputField:focus {
+  border-color: #134b70; /* Updated color */
+  outline: none;
+}
+
+.promoterFormActions {
+  display: flex;
   justify-content: center;
+}
+
+.submitPromoterBtn {
+  padding: 15px 20px;
+  margin-top: 25px;
+  margin-bottom: 25px;
+  border: none;
+  border-radius: 18px;
+  background-color: #134b70; /* Updated color */
+  font-family: "Poppins", sans-serif;
+  font-weight: bold;
+  font-size: 18px;
+  color: #eeeeee; /* Updated color */
+  cursor: pointer;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.submitPromoterBtn:hover {
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.submitPromoterBtn:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
 }
 
 .promoterTable {
@@ -64,7 +160,7 @@
   border-top-right-radius: 10px;
 }
 
-.assignFormBtn {
+.assignPromoterBtn {
   background-color: #134b70; /* Updated color */
   margin-right: 10px;
   color: #eeeeee; /* Updated color */
@@ -78,16 +174,16 @@
   transition: background-color 0.3s, transform 0.3s;
 }
 
-.assignFormBtn:hover {
+.assignPromoterBtn:hover {
   background-color: #102f5e;
   transform: scale(1.05);
 }
 
-.assignFormBtn:active {
+.assignPromoterBtn:active {
   transform: scale(1);
 }
 
-.unassignFormBtn {
+.unassignPromoterBtn {
   background-color: #b6ae37; /* Updated color */
   margin-right: 10px;
   color: #eeeeee; /* Updated color */
@@ -101,17 +197,17 @@
   transition: background-color 0.3s, transform 0.3s;
 }
 
-.unassignFormBtn:hover {
+.unassignPromoterBtn:hover {
   background-color: #8b8204;
   transform: scale(1.05);
 }
 
-.unassignFormBtn:active {
+.unassignPromoterBtn:active {
   transform: scale(1);
 }
 
 @media (max-width: 768px) {
-  .assignFormContainer {
+  .promoterFormContainer {
     padding: 15px;
   }
 
@@ -119,15 +215,14 @@
     font-size: 12px;
   }
 
-  .create-promoter-btn {
+  .createPromoterBtn {
     width: 100%;
     padding: 12px;
-
     font-size: 16px;
   }
 }
 
-.email-td {
+.emailPromoterTd {
   color: #9cebff;
   background-color: #134b70;
 }
@@ -137,7 +232,6 @@
   color: #4e0202; /* Updated color */
   border: none;
   padding: 8px 16px;
-
   margin-right: 10px;
   font-family: "Poppins", sans-serif;
   font-weight: 700;
@@ -162,13 +256,10 @@
   color: #ffffff; /* Updated color */
   border: none;
   padding: 8px 16px;
-
   font-family: "Poppins", sans-serif;
-
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-
   border-radius: 20px;
   transition: background-color 0.3s, transform 0.3s;
 }
@@ -190,5 +281,30 @@
 }
 
 .error-message.fade {
-  opacity: 0;
+  opacity: 0.5;
+}
+
+.back-button {
+  background-image: linear-gradient(
+    to right,
+    rgb(0, 0, 0) 0%,
+    #4A489Cff 51%,
+    #F4A91Cff 100%
+  );
+  padding: 15px 45px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.5s;
+  background-size: 200% auto;
+  color: white;
+  box-shadow: 0 0 10px #000000;
+  border-radius: 10px;
+  display: block;
+  font-weight: 800;
+}
+
+.back-button:hover {
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
 }

@@ -1,0 +1,47 @@
+/* Color Scheme */
+:root {
+  --black: #000000ff;
+  --orange-web: #F4A91Cff;
+  --red-cmyk: #EE0011ff;
+  --jade: #10B372ff;
+  --violet-blue: #4A489Cff;
+}
+
+/* Example parent container styles */
+
+
+.x2-adminPromoterParent-container {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  
+
+}
+
+.x2-background-blue-container{
+  background-color: #CDF0FF;
+  border-radius: 18px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  margin: 20px auto;
+  width: 95%;
+  transition: box-shadow 0.3s ease-in-out;
+}
+
+/* Additional styles for the content area and buttons */
+.x2-content-area {
+  padding: 20px;
+}
+
+.x2-button {
+  margin-right: 10px;
+  padding: 10px 20px;
+  background-color: #007bff; /* Adjust to your theme color */
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.x2-button:hover {
+  background-color: #0056b3;
+}

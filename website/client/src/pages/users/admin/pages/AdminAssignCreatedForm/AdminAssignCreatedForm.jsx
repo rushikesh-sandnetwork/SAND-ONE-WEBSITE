@@ -5,17 +5,12 @@ import "./AdminAssignCreatedForm.css";
 import { useParams } from "react-router-dom";
 import { FcDeleteRow } from "react-icons/fc";
 import { IoTrashBinSharp } from "react-icons/io5";
-
 import { FaClockRotateLeft } from "react-icons/fa6";
 
 const AdminAssignCreatedForm = () => {
   const [promoters, setPromoters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showForm, setShowForm] = useState(false);
-  const [promoterName, setPromoterName] = useState("");
-  const [promoterEmailId, setPromoterEmailId] = useState("");
-  const [password, setPassword] = useState("");
 
   const { formId } = useParams();
 
@@ -215,100 +210,13 @@ const AdminAssignCreatedForm = () => {
       }
     }
   };
-  const handleCreatePromoter = async (e) => {
-    e.preventDefault();
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/v1/promoter/registerNewPromoter",
-        {
-          promoterName,
-          promoterEmailId,
-          password,
-        }
-      );
-      if (response.status === 200) {
-        alert("Promoter created successfully!");
-        fetchPromoters();
-        setPromoterName("");
-        setPromoterEmailId("");
-        setPassword("");
-        setShowForm(false);
-        setError(""); // Reset error message
-      } else {
-        setError("Failed to create promoter.");
-      }
-    } catch (error) {
-      if (error.response && error.response.status === 409) {
-        setError("Email already exists. Please use a different email.");
-  
-        // Fade away the error message after 3 seconds
-        setTimeout(() => {
-          setError("");
-          setPromoterName("");
-          setPromoterEmailId("");
-          setPassword("");
-        }, 2000); // 2 seconds
-      } else {
-        setError("An error occurred while creating the promoter.");
-      }
-    }
-  };
-  
-  
+
   return (
     <div className="assignFormContainer">
       <div className="title">
         <PageTitle title="Assign Promoters" />
       </div>
       <div className="formDetails">
-        <button
-          className="create-promoter-btn"
-          onClick={() => setShowForm(!showForm)}
-        >
-          {showForm ? "Cancel" : "Create New Promoter"}
-        </button>
-
-        {showForm && (
-          <div className="promoter-form">
-            <form onSubmit={handleCreatePromoter}>
-              <div className="form-row">
-                <input
-                  type="text"
-                  id="promoterName"
-                  className="inputField"
-                  placeholder="Promoter Name"
-                  value={promoterName}
-                  onChange={(e) => setPromoterName(e.target.value)}
-                  required
-                />
-                <input
-                  type="email"
-                  id="promoterEmailId"
-                  className="inputField"
-                  placeholder="Promoter Email"
-                  value={promoterEmailId}
-                  onChange={(e) => setPromoterEmailId(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="form-row">
-                <input
-                  type="password"
-                  id="password"
-                  className="inputField"
-                  placeholder="Password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  required
-                />
-                <button type="submit" className="submit-promoter-btn">
-                  Create Promoter
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
-
         {loading ? (
           <div className="loading">
             <p>Loading...</p>
