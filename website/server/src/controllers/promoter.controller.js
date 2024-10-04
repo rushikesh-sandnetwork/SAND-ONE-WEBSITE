@@ -375,18 +375,20 @@ const fetchAttendance = asyncHandler(async (req, res) => {
             let totalTime = 0;
             dailyRecords.forEach(record => {
                 const punchInTime = new Date(record.punchInTime);
-                const punchOutTime = new Date(record.punchOutTime);
-                
+                const punchOutTime = record.punchOutTime ? new Date(record.punchOutTime) : null; // Check if punchOutTime exists
+            
                 if (punchInTime && punchOutTime) {
                     totalTime += (punchOutTime - punchInTime) / (1000 * 60 * 60); // Convert milliseconds to hours
                 }
             });
+            
 
             return {
                 date: startOfDay.toISOString().split('T')[0], // Format date as YYYY-MM-DD
-                totalTime: totalTime.toFixed(2),
+                totalTime: totalTime ? totalTime.toFixed(2) : 'Pending', // Display 'Pending' if no punch-out
                 status: dailyRecords.length > 0 ? 'Present' : 'Absent'
             };
+            
         });
 
         // Reverse the list to show the current date first
@@ -399,7 +401,6 @@ const fetchAttendance = asyncHandler(async (req, res) => {
         res.status(400).json(new apiError(400, "Error in fetching Attendance"));
     }
 });
-
 
 const fetchPromoterAttendanceDetails = asyncHandler(async (req, res) => {
     try {
