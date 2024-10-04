@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import "./ViewCampaignsContainer.css";
 import ViewCampaignsBox from "./ViewCampaignsBox";
 
-const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
+const ViewCampaignsContainer = ({ clientId, setActiveTab, role }) => {
   const [campaigns, setCampaigns] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -64,12 +64,14 @@ const ViewCampaignsContainer = ({ clientId, setActiveTab }) => {
         value="Create New Campaign"
         onClick={() => setActiveTab(`createNewCampaign/${clientId}`)}
       />
-      <input
-        className="deleteClientBtn"
-        type="button"
-        value="Delete Client"
-        onClick={handleDeleteClient}
-      />
+      {role == "admin" && (
+        <input
+          className="deleteClientBtn"
+          type="button"
+          value="Delete Client"
+          onClick={handleDeleteClient}
+        />
+      )}
 
       <div className="allCampaignsContainer">
         {campaigns.map((campaign) => (

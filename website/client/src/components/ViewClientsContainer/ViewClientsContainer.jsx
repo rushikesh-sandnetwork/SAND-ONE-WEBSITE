@@ -36,7 +36,9 @@ const ViewClientsContainer = ({ setActiveTab }) => {
 
   return (
     <div className="ViewClientsContainer">
+  
       {clients.map((client, index) => (
+        
         <ViewClientsBox
           key={index}
           imgSrc={client["clientPhoto"]}

@@ -24,8 +24,10 @@
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
   max-width: 400px; /* Adjusted width */
   margin: 0 auto;
-  transition: transform 0.5s;
+  margin-top: -50px; /* Negative margin to move form up */
+  transition: transform 0.7s;
 }
+
 
 .x1-form-card:hover {
   transform: scale(1.05);
@@ -132,11 +134,67 @@
   border-radius: 10px;
   display: block;
   font-weight: 800;
-  cursor: pointer; /* Add pointer cursor */
+  cursor: pointer !important; /* Add pointer cursor */
 }
 
 .x1-back-button:hover {
-  background-position: right center; /* Change the direction of the change here */
-  color: #e8e8e8;
+  background-position: right center; /* change the direction of the change here */
+  color: #fff;
   text-decoration: none;
+  cursor:pointer;
+}
+
+/* Button to trigger password update form */
+.x1-update-button {
+  background-color: var(--orange-web);
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.3s;
+}
+
+.x1-update-button:hover {
+  background-color: var(--jade);
+  transform: scale(1.05);
+}
+
+
+
+/* Button to trigger password update form */
+.x1-cancel-button {
+  background-color: var(--red-cmyk);
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.3s;
+}
+
+.x1-cancel-button:hover {
+  background-color: rgb(196, 0, 13);
+  transform: scale(1.05);
+}
+
+
+
+
+.x1-forget-button{
+  background-color: var(--red-cmyk);
+  color: white;
+  padding: 10px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 10px;
+  transition: transform 0.3s;
+}
+
+.x1-forget-button:hover{
+  background-color: rgb(196, 0, 13);
+  transform: scale(1.05);
 }

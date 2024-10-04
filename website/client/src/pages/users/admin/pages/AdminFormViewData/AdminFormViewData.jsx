@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import PageTitle from "../../../../../components/PageTitles/PageTitle";
 import "./AdminFormViewData.css";
 
-const AdminFormViewData = () => {
+const AdminFormViewData = (setActiveTab) => {
   const [formData, setFormData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);

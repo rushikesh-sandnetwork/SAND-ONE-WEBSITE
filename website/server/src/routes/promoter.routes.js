@@ -35,4 +35,5 @@ router.route('/fetchPromoters').get(promoterController.fetchAllPromoters);
 router.route('/fetchPromoterDetails').post(promoterController.fetchPromoterDetails);
 router.route('/fetchFormField').post(promoterController.fetchFormField);
 router.route('/registerNewPromoter').post(promoterController.createNewPromoter);
+router.route('/updatePromoterPassword').put(promoterController.updatePromoterPassword);
 module.exports = router;

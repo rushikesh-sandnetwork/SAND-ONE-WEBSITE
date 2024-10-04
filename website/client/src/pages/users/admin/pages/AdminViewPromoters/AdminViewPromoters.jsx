@@ -6,7 +6,7 @@ import { IoTrashBinSharp } from "react-icons/io5";
 import { FaClockRotateLeft } from "react-icons/fa6";
 import "./AdminViewPromoters.css";
 
-const AdminViewPromoters = ({ setActiveTab }) => {
+const AdminViewPromoters = ({ setActiveTab, role }) => {
   const [promoters, setPromoters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -50,34 +50,67 @@ const AdminViewPromoters = ({ setActiveTab }) => {
         const newWindow = window.open("", "_blank");
         newWindow.document.write(`
           <html>
-          <head>
-            <title>Promoter Action History</title>
-            <style>
-              body { font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; color: #333; }
-              table { width: 100%; border-collapse: collapse; margin: 20px 0; font-size: 1em; background-color: #fff; border: 1px solid #ddd; box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1); }
-              th, td { padding: 12px 15px; text-align: left; border-bottom: 1px solid #ddd; }
-              th { background-color: #4CAF50; color: white; }
-              tr:nth-child(even) { background-color: #f2f2f2; }
-              tr:hover { background-color: #ddd; }
-            </style>
-          </head>
-          <body>
-            <h1>Promoter Action History</h1>
-            <table>
-              <thead>
-                <tr><th>Action</th><th>Timestamp</th></tr>
-              </thead>
-              <tbody>
-                ${actionHistory
-                  .map(
-                    (history) =>
-                      `<tr><td>${history.action}</td><td>${history.timestamp}</td></tr>`
-                  )
-                  .join("")}
-              </tbody>
-            </table>
-          </body>
-          </html>
+              <head>
+                <title>Promoter Action History</title>
+                <style>
+                  body {
+                    font-family: Arial, sans-serif;
+                    padding: 20px;
+                    background-color: #f4f4f4;
+                    color: #333;
+                  }
+                  table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    margin: 20px 0;
+                    font-size: 1em;
+                    background-color: #fff;
+                    border: 1px solid #ddd;
+                    box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+                  }
+                  th, td {
+                    padding: 12px 15px;
+                    text-align: left;
+                    border-bottom: 1px solid #ddd;
+                  }
+                  th {
+                    background-color: #4CAF50;
+                    color: white;
+                  }
+                  tr:nth-child(even) {
+                    background-color: #f2f2f2;
+                  }
+                  tr:hover {
+                    background-color: #ddd;
+                  }
+                </style>
+              </head>
+              <body>
+                <h1>Promoter Action History</h1>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Action</th>
+                      <th>Timestamp</th>
+                      <th>Performed By</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${actionHistory
+                      .map(
+                        (history) => `
+                      <tr>
+                        <td>${history.action}</td>
+                        <td>${history.timestamp}</td>
+                        <td>${history.userName}</td> <!-- Show user full name here -->
+                      </tr>
+                    `
+                      )
+                      .join("")}
+                  </tbody>
+                </table>
+              </body>
+              </html>
         `);
         newWindow.document.close();
       } else {
@@ -118,7 +151,7 @@ const AdminViewPromoters = ({ setActiveTab }) => {
         <PageTitle title="View Promoters" />
       </div>
       <div className="background-blue-container">
-      <button
+        <button
           onClick={() => setActiveTab("promoterParent")}
           className="back-button"
         >
@@ -148,12 +181,15 @@ const AdminViewPromoters = ({ setActiveTab }) => {
                     {promoter.promoterEmailId}
                   </td>
                   <td>
-                    <button
-                      className="deletePromoterBtn"
-                      onClick={() => deletePromoter(promoter._id)}
-                    >
-                      <IoTrashBinSharp />
-                    </button>
+                    {role == "admin" && (
+                      <button
+                        className="deletePromoterBtn"
+                        onClick={() => deletePromoter(promoter._id)}
+                      >
+                        <IoTrashBinSharp />
+                      </button>
+                    )}
+
                     <button
                       className="historyPromoterBtn"
                       onClick={() => viewHistory(promoter._id)}

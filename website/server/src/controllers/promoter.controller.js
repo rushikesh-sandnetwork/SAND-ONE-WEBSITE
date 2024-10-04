@@ -27,7 +27,7 @@ const createNewPromoter = asyncHandler(async (req, res) => {
 
         // Check if a promoter with the same email ID already exists
         const existingPromoter = await Promoter.findOne({ promoterEmailId });
-        console.log("Existing promoter:", existingPromoter); // Add this line to debug
+        
         if (existingPromoter) {
             return res
               .status(409)
@@ -52,6 +52,37 @@ const createNewPromoter = asyncHandler(async (req, res) => {
         return res.status(500).json({ message: "Internal Server Error" });
     }
 });
+
+
+const updatePromoterPassword = asyncHandler(async (req, res) => {
+    try {
+        const { promoterEmailId, password } = req.body;
+
+        if (!promoterEmailId || !password) {
+            return res.status(400).json({ message: "Missing required fields" });
+        }
+
+        // Check if a promoter with the same email ID already exists
+        const existingPromoter = await Promoter.findOne({ promoterEmailId });
+
+        if (!existingPromoter) {
+            return res
+              .status(404)
+              .json({ message: "A promoter with this email ID does not exist" });
+        }
+
+        existingPromoter.password = password;
+        await existingPromoter.save();
+
+        return res.status(200).json({ message: "Promoter password was updated successfully" });
+
+    } catch (error) {
+        console.error("Error in updating promoter password.", error); // Better error logging
+        return res.status(500).json({ message: "Internal Server Error" });
+    }
+});
+
+
 
 const fetchPromoterDetails = asyncHandler(async (req, res) => {
     try {
@@ -384,18 +415,20 @@ const fetchAttendance = asyncHandler(async (req, res) => {
             let totalTime = 0;
             dailyRecords.forEach(record => {
                 const punchInTime = new Date(record.punchInTime);
-                const punchOutTime = new Date(record.punchOutTime);
-                
+                const punchOutTime = record.punchOutTime ? new Date(record.punchOutTime) : null; // Check if punchOutTime exists
+            
                 if (punchInTime && punchOutTime) {
                     totalTime += (punchOutTime - punchInTime) / (1000 * 60 * 60); // Convert milliseconds to hours
                 }
             });
+            
 
             return {
                 date: startOfDay.toISOString().split('T')[0], // Format date as YYYY-MM-DD
-                totalTime: totalTime.toFixed(2),
+                totalTime: totalTime ? totalTime.toFixed(2) : 'Pending', // Display 'Pending' if no punch-out
                 status: dailyRecords.length > 0 ? 'Present' : 'Absent'
             };
+            
         });
 
         // Reverse the list to show the current date first
@@ -483,5 +516,5 @@ const fetchPromoterAttendanceDetails = asyncHandler(async (req, res) => {
 module.exports = {
     fetchPromoterAttendanceDetails,
     fetchPromoterForms,
-    promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails, fillAttendancePunchIn, fillAttendancePunchOut, fetchAttendance
+    promoterLogin, fetchFormFilledData, fetchAllPromoters, fillFormData, fetchFormField, createNewPromoter, fetchPromoterDetails, fillAttendancePunchIn, fillAttendancePunchOut, fetchAttendance,updatePromoterPassword
 };

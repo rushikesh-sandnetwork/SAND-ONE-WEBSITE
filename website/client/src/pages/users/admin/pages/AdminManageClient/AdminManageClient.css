@@ -8,13 +8,13 @@
 }
 
 /* Container styles */
-.x2-adminPromoterParent-container {
+.x3-adminPromoterParent-container {
   width: 100%;
   margin: 0;
   padding: 0;
 }
 
-.x2-background-blue-container {
+.x3-background-blue-container {
   background-color: #CDF0FF;
   border-radius: 18px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -23,7 +23,7 @@
   width: 95%;
 }
 
-.x2-content-area {
+.x3-content-area {
   display: flex;
   justify-content: space-around; /* Space cards evenly */
   flex-wrap: wrap; /* Allow wrapping for responsive design */
@@ -31,8 +31,8 @@
 }
 
 /* Card styles */
-.x2-card-item {
-  width: 250px; /* Card width */
+.x3-card-item {
+  width: 400px; /* Card width */
   height: 180px; /* Increased height for cards */
   display: flex;
   flex-direction: column; /* Arrange content vertically */
@@ -54,8 +54,8 @@
 }
 
 .card-icon {
-  width: 50px; /* Adjust icon size */
-  height: 50px; /* Adjust icon size */
+  width: 100px; /* Adjust icon size */
+  height: 100px; /* Adjust icon size */
   margin-bottom: 10px; /* Space between icon and title */
   transition: transform 0.2s; /* Transition for icon */
 }
@@ -72,18 +72,18 @@
 
 
 
-.x2-card-item:hover {
+.x3-card-item:hover {
   transform: translateY(-5px) scale(1.05) rotateY(5deg) rotateX(5deg); /* Lift, scale, and rotate on hover */
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35); /* Increase shadow on hover */
   background-color: #F0F0F0; /* Optional: Change background color on hover */
 }
 
 /* Ensure the card height is sufficient to display content clearly */
-.x2-card-item {
+.x3-card-item {
   padding: 15px; /* Added padding for better spacing */
 }
 
 /* Optional: Add a 3D effect to the image */
-.x2-card-item:hover .card-icon {
+.x3-card-item:hover .card-icon {
   transform: scale(1.1); /* Scale icon on hover for a pop effect */
 }

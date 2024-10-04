@@ -7,7 +7,7 @@ import { FcDeleteRow } from "react-icons/fc";
 import { IoTrashBinSharp } from "react-icons/io5";
 import { FaClockRotateLeft } from "react-icons/fa6";
 
-const AdminAssignCreatedForm = () => {
+const AdminAssignCreatedForm = ({ role }) => {
   const [promoters, setPromoters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -253,13 +253,14 @@ const AdminAssignCreatedForm = () => {
                         Assign Form
                       </button>
                     )}
-                    {/* Delete button */}
-                    <button
-                      className="deletePromoterBtn"
-                      onClick={() => deletePromoter(promoter._id)}
-                    >
-                      <IoTrashBinSharp />
-                    </button>
+                    {role == "admin" && (
+                      <button
+                        className="deletePromoterBtn"
+                        onClick={() => deletePromoter(promoter._id)}
+                      >
+                        <IoTrashBinSharp />
+                      </button>
+                    )}
                     <button
                       className="historyPromoterBtn"
                       onClick={() => viewHistory(promoter._id)}

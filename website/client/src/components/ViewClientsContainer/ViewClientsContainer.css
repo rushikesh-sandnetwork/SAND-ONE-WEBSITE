@@ -71,3 +71,30 @@
         grid-template-columns: repeat(2, minmax(120px, 1fr)); /* Adjusts column count for mobile screens */
     }
 }
+
+.back-button {
+    background-image: linear-gradient(
+      to right,
+      rgb(0, 0, 0) 0%,
+      #4A489Cff 51%,
+      #F4A91Cff 100%
+    );
+    padding: 15px 45px;
+    text-align: center;
+    text-transform: uppercase;
+    width:40px; 
+    transition: 0.5s;
+    background-size: 200% auto;
+    color: white;
+    box-shadow: 0 0 10px #000000;
+    border-radius: 10px;
+    display: block; 
+    font-weight: 800;
+  }
+  
+  .back-button:hover {
+    background-position: right center; /* change the direction of the change here */
+    color: #fff;
+    text-decoration: none;
+  }
+  

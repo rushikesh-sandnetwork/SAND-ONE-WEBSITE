@@ -1,12 +1,12 @@
-import React, { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';  // Import useNavigate from react-router-dom
-import PageTitle from '../../../../../components/PageTitles/PageTitle';
-import CampaignDetailsBox from '../../../../../components/CampaignDetailsBoxes/CampaignDetailsBox';
-import './AdminCampaignDetailsPage.css';
-import CampaignDeleteBox from '../../../../../components/CampaignDetailsBoxes/CampaignDeleteBox';
+import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom"; // Import useNavigate from react-router-dom
+import PageTitle from "../../../../../components/PageTitles/PageTitle";
+import CampaignDetailsBox from "../../../../../components/CampaignDetailsBoxes/CampaignDetailsBox";
+import "./AdminCampaignDetailsPage.css";
+import CampaignDeleteBox from "../../../../../components/CampaignDetailsBoxes/CampaignDeleteBox";
 
-const AdminCampaignDetailsPage = ({ campaignId, setActiveTab }) => {
-  const navigate = useNavigate();  // Initialize the useNavigate hook
+const AdminCampaignDetailsPage = ({ campaignId, setActiveTab, role }) => {
+  const navigate = useNavigate(); // Initialize the useNavigate hook
 
   useEffect(() => {
     // This effect will navigate back to the previous page when the component mounts
@@ -15,11 +15,11 @@ const AdminCampaignDetailsPage = ({ campaignId, setActiveTab }) => {
       navigate(-1);
     };
 
-    window.addEventListener('popstate', handlePopState);
+    window.addEventListener("popstate", handlePopState);
 
     // Cleanup the event listener on component unmount
     return () => {
-      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener("popstate", handlePopState);
     };
   }, [navigate]);
 
@@ -42,11 +42,20 @@ const AdminCampaignDetailsPage = ({ campaignId, setActiveTab }) => {
             setActiveTab={setActiveTab}
             campaignId={campaignId}
           />
-          <CampaignDeleteBox
-            imgSrc="https://cdn-icons-png.flaticon.com/512/2723/2723639.png"
-            title="DELETE CAMPAIGN"
-            campaignId={campaignId}
+          {role === "admin" && (
+            <CampaignDeleteBox
+              imgSrc="https://cdn-icons-png.flaticon.com/512/2723/2723639.png"
+              title="DELETE CAMPAIGN"
+              campaignId={campaignId}
+              setActiveTab={setActiveTab}
+            />
+          )}
+          <CampaignDetailsBox
+            imgSrc="https://cdn-icons-png.flaticon.com/512/9316/9316720.png"
+            title="VIEW FORMS"
+            url="view-all-forms"
             setActiveTab={setActiveTab}
+            campaignId={campaignId}
           />
         </div>
       </div>

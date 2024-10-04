@@ -16,8 +16,9 @@ import AdminViewAttendance from "../AdminViewAttendance/AdminViewAttendance";
 import AdminPromoterParent from "../AdminPromoterParent/AdminPromoterParent";
 import AdminViewPromoters from "../AdminViewPromoters/AdminViewPromoters";
 import AdminCreatePromoter from "../AdminCreatePromoter/AdminCreatePromoter";
+import AdminManageClient from "../AdminManageClient/AdminManageClient";
 
-const AdminLandingPage = () => {
+const AdminLandingPage = ({ role }) => {
   const [activeTab, setActiveTab] = useState("overview");
   const { id } = useParams(); // Destructure to get the `id` from useParams
   const navigate = useNavigate();
@@ -32,11 +33,15 @@ const AdminLandingPage = () => {
         <div className="navbar">
           <img src={Logo} alt="" />
           <a onClick={() => setActiveTab("overview")}>Overview</a>
-          <a onClick={() => setActiveTab("newClient")}>New Client</a>
-          <a onClick={() => setActiveTab("viewClients")}>View Clients</a>
-          <a onClick={() => setActiveTab("profile")}>Profile</a>
-          <a onClick={() => setActiveTab("newUser")}>New User</a>
+          {/* <a onClick={() => setActiveTab("newClient")}>New Client</a>
+          <a onClick={() => setActiveTab("viewClients")}>View Clients</a> */}
+          <a onClick={() => setActiveTab("manageClient")}>Manage Client</a>
           <a onClick={() => setActiveTab("promoterParent")}>Manage Promoters</a>
+          {role == "admin" && (
+            <a onClick={() => setActiveTab("newUser")}>Create new user</a>
+          )}
+          <a onClick={() => setActiveTab("profile")}>Profile</a>
+
           <input type="button" value="Logout" onClick={handleLogout} />
         </div>
       </div>
@@ -48,13 +53,17 @@ const AdminLandingPage = () => {
         {activeTab === "viewClients" && (
           <AdminViewClientsPage setActiveTab={setActiveTab} />
         )}
+        {activeTab === "manageClient" && (
+          <AdminManageClient setActiveTab={setActiveTab} />
+        )}
+
         {activeTab === "profile" && <AdminProfilePage userId={id} />}
         {activeTab === "newUser" && <AdminCreateNewUser />}
         {activeTab === "promoterAttendance" && (
           <AdminViewAttendance setActiveTab={setActiveTab} />
         )}
         {activeTab === "viewPromoters" && (
-          <AdminViewPromoters setActiveTab={setActiveTab} />
+          <AdminViewPromoters setActiveTab={setActiveTab} role={role} />
         )}
         {activeTab === "promoterParent" && (
           <AdminPromoterParent setActiveTab={setActiveTab} />
@@ -67,6 +76,7 @@ const AdminLandingPage = () => {
           <AdminViewCampaignsPage
             clientId={activeTab.substring("client-detail".length + 1)}
             setActiveTab={setActiveTab}
+            role={role}
           />
         )}
         {activeTab.startsWith("createNewCampaign") && (
@@ -79,6 +89,7 @@ const AdminLandingPage = () => {
           <AdminCampaignDetailsPage
             campaignId={activeTab.substring("campaignDetailsPage".length + 1)}
             setActiveTab={setActiveTab}
+            role={role}
           />
         )}
         {activeTab.startsWith("view-all-forms") && (
@@ -90,6 +101,13 @@ const AdminLandingPage = () => {
         {activeTab.startsWith("viewFormData") && (
           <AdminFormItems
             formId={activeTab.substring("viewFormData".length + 1)}
+            setActiveTab={setActiveTab}
+          />
+        )}
+  
+        {activeTab.startsWith("acceptData") && (
+          <AdminAcceptedData
+            formId={activeTab.substring("acceptData".length + 1)}
             setActiveTab={setActiveTab}
           />
         )}

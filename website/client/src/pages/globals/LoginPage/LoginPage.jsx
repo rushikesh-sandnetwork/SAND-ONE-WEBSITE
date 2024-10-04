@@ -7,13 +7,15 @@ import Logo from "./SAND 1 logo.png"; // Corrected import statement
 // admin@gmail.com
 // Admin123
 
-const LoginPage = () => {
+const LoginPage = ({ onLogin }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
+
+  
   const authenticateAndLogin = async () => {
     if (!email || !password) {
       setError("Email and password are required");
@@ -35,11 +37,12 @@ const LoginPage = () => {
       if (response.status === 200) {
         const role = response.data.data.user.role;
         const id = response.data.data.user._id;
-        if (role === "admin") {
+        onLogin(role, id); // Call the onLogin function and pass the role and id
+        // if (role === "admin") {
           navigate(`/admin/${id}`);
-        } else if (role === "mis") {
-          navigate("/mis");
-        }
+        // } else if (role === "mis") {
+          // navigate("/mis");
+        // }
       } else {
         setError("Login failed. Please try again.");
       }

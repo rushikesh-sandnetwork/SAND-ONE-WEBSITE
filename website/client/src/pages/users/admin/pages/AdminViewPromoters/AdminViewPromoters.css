@@ -1,4 +1,3 @@
-
 .viewPromoterContainer {
   width: 100%;
   margin: -10px;
@@ -14,7 +13,6 @@
   width: 95%;
   transition: box-shadow 0.3s ease-in-out;
 }
-
 
 /* .title {
   margin-bottom: 20px;
@@ -34,7 +32,7 @@
   margin-bottom: 25px;
   border: none;
   border-radius: 18px;
-  background-color: #134b70; 
+  background-color: #134b70;
   font-family: "Poppins", sans-serif;
   font-weight: bold;
   font-size: 18px;
@@ -288,8 +286,8 @@
   background-image: linear-gradient(
     to right,
     rgb(0, 0, 0) 0%,
-    #4A489Cff 51%,
-    #F4A91Cff 100%
+    #4a489cff 51%,
+    #f4a91cff 100%
   );
   padding: 15px 45px;
   text-align: center;
@@ -299,7 +297,9 @@
   color: white;
   box-shadow: 0 0 10px #000000;
   border-radius: 10px;
-  display: block;
+  display: flex; /* Change here */
+  justify-content: center; /* Center align horizontally */
+  align-items: center; /* Center align vertically */
   font-weight: 800;
 }
 
