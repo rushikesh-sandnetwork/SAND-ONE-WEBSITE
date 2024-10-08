@@ -48,19 +48,19 @@ const AdminViewAttendance = () => {
   };
 
   const calculateDuration = (punchInTime, punchOutTime) => {
-    if (!punchInTime || !punchOutTime)
-      return { duration: "N/A", status: "Absent" };
+    if (!punchInTime || !punchOutTime) return { duration: "N/A", status: "Absent" };
 
     const punchIn = new Date(punchInTime);
     const punchOut = new Date(punchOutTime);
     const duration = (punchOut - punchIn) / 1000 / 60; // Duration in minutes
+    console.log("duration: " + duration);
 
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
     const durationString = `${hours}h ${minutes}m`;
 
     // Determine status based on duration
-    const status = duration > 0 ? "Present" : "Absent";
+    const status = duration >= 10 ? "Present" : "Absent"; // Update here
 
     return { duration: durationString, status };
   };
