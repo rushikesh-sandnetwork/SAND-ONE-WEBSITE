@@ -388,7 +388,7 @@ const fetchAttendance = asyncHandler(async (req, res) => {
             return {
                 date: startOfDay.toISOString().split('T')[0], // Format date as YYYY-MM-DD
                 totalTime: totalTime ? totalTime.toFixed(2) : 'Pending', // Display 'Pending' if no punch-out
-                status: dailyRecords.length > 0 ? 'Present' : 'Absent'
+                status: dailyRecords.length > 0 ? 'Absent' : 'Present'
             };
             
         });
