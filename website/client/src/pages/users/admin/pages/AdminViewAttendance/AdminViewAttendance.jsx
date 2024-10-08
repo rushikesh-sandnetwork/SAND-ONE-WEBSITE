@@ -30,7 +30,7 @@ const AdminViewAttendance = ({ setActiveTab }) => {
     } catch (error) {
       console.error("Error fetching attendance details:", error);
       setAttendanceDetails(null);
-      setErrorMessage("Email Entry doesn't exist");
+      setErrorMessage("Email entry doesn't exist");
     }
   };
 
@@ -50,13 +50,23 @@ const AdminViewAttendance = ({ setActiveTab }) => {
   };
 
   const calculateDuration = (punchInTime, punchOutTime) => {
-    if (!punchInTime || !punchOutTime) return "N/A";
+    if (!punchInTime || !punchOutTime) {
+      return { duration: "N/A", status: "Absent" };
+    }
+
     const punchIn = new Date(punchInTime);
     const punchOut = new Date(punchOutTime);
     const duration = (punchOut - punchIn) / 1000 / 60; // Duration in minutes
+    console.log("duration: " + duration);
+
     const hours = Math.floor(duration / 60);
     const minutes = Math.round(duration % 60);
-    return `${hours}h ${minutes}m`;
+    const durationString = `${hours}h ${minutes}m`;
+
+    // Determine status based on duration
+    const status = duration > 10 ? "Present" : "Absent"; // Change to > 10
+
+    return { duration: durationString, status };
   };
 
   const handleImageClick = (imageUrl) => {
@@ -83,8 +93,7 @@ const AdminViewAttendance = ({ setActiveTab }) => {
           className="back-button"
         >
           Back
-        </button>{" "}
-        {/* Navigate back using setActiveTab */}
+        </button>
         <div className="search-container">
           <input
             type="text"
@@ -111,61 +120,63 @@ const AdminViewAttendance = ({ setActiveTab }) => {
                 </tr>
               </thead>
               <tbody>
-                {displayedRows.map((attendance, index) => (
-                  <tr
-                    key={index}
-                    style={{
-                      backgroundColor:
-                        attendance.status === "Present"
-                          ? "#64E3A1"
-                          : attendance.status === "Absent"
-                          ? "#F48B81"
-                          : "transparent",
-                    }}
-                  >
-                    <td>{attendanceDetails.promoterEmail}</td>
-                    <td>{new Date(attendance.date).toLocaleDateString()}</td>
-                    <td>
-                      {attendance.punchInTime
-                        ? new Date(attendance.punchInTime).toLocaleTimeString()
-                        : "N/A"}
-                      <br />
-                      {attendance.punchInImage && (
-                        <img
-                          src={attendance.punchInImage}
-                          alt="Punch In"
-                          className="attendance-image"
-                          onClick={() =>
-                            handleImageClick(attendance.punchInImage)
-                          }
-                        />
-                      )}
-                    </td>
-                    <td>
-                      {attendance.punchOutTime
-                        ? new Date(attendance.punchOutTime).toLocaleTimeString()
-                        : "N/A"}
-                      <br />
-                      {attendance.punchOutImage && (
-                        <img
-                          src={attendance.punchOutImage}
-                          alt="Punch Out"
-                          className="attendance-image"
-                          onClick={() =>
-                            handleImageClick(attendance.punchOutImage)
-                          }
-                        />
-                      )}
-                    </td>
-                    <td>
-                      {calculateDuration(
-                        attendance.punchInTime,
-                        attendance.punchOutTime
-                      )}
-                    </td>
-                    <td>{attendance.status}</td>
-                  </tr>
-                ))}
+                {displayedRows.map((attendance, index) => {
+                  const { duration, status } = calculateDuration(
+                    attendance.punchInTime,
+                    attendance.punchOutTime
+                  );
+
+                  return (
+                    <tr
+                      key={index}
+                      style={{
+                        backgroundColor:
+                          status === "Present" ? "#64E3A1" : "#F48B81",
+                      }}
+                    >
+                      <td>{attendanceDetails.promoterEmail}</td>
+                      <td>{new Date(attendance.date).toLocaleDateString()}</td>
+                      <td>
+                        {attendance.punchInTime
+                          ? new Date(
+                              attendance.punchInTime
+                            ).toLocaleTimeString()
+                          : "N/A"}
+                        <br />
+                        {attendance.punchInImage && (
+                          <img
+                            src={attendance.punchInImage}
+                            alt="Punch In"
+                            className="attendance-image"
+                            onClick={() =>
+                              handleImageClick(attendance.punchInImage)
+                            }
+                          />
+                        )}
+                      </td>
+                      <td>
+                        {attendance.punchOutTime
+                          ? new Date(
+                              attendance.punchOutTime
+                            ).toLocaleTimeString()
+                          : "N/A"}
+                        <br />
+                        {attendance.punchOutImage && (
+                          <img
+                            src={attendance.punchOutImage}
+                            alt="Punch Out"
+                            className="attendance-image"
+                            onClick={() =>
+                              handleImageClick(attendance.punchOutImage)
+                            }
+                          />
+                        )}
+                      </td>
+                      <td>{duration}</td>
+                      <td>{status}</td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
 
