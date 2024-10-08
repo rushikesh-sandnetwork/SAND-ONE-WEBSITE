@@ -270,8 +270,10 @@ const fillAttendancePunchIn = asyncHandler(async (req, res) => {
             promoterId: promoterId,
             date: currentDate,
             punchInTime: punchInTime,
+            punchOutTime:punchInTime,
             punchInImage: logInFinalImage.url,
-            punchOutImage: ''
+            punchOutImage: '',
+            
         });
 
         res.status(201).json(new apiResponse(201, newAttendance, "Attendance Created"));
