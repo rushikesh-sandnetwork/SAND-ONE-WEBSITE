@@ -52,7 +52,7 @@ const AdminCampaignDetailsPage = ({ campaignId, setActiveTab, role }) => {
           )}
           <CampaignDetailsBox
             imgSrc="https://cdn-icons-png.flaticon.com/512/9316/9316720.png"
-            title="VIEW FORMS"
+            title="MANAGE PROMOTER"
             url="view-all-forms"
             setActiveTab={setActiveTab}
             campaignId={campaignId}

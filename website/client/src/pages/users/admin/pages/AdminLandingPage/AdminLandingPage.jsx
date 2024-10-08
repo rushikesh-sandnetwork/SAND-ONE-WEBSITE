@@ -104,10 +104,17 @@ const AdminLandingPage = ({ role }) => {
             setActiveTab={setActiveTab}
           />
         )}
-  
+
         {activeTab.startsWith("acceptData") && (
           <AdminAcceptedData
             formId={activeTab.substring("acceptData".length + 1)}
+            setActiveTab={setActiveTab}
+          />
+        )}
+
+        {activeTab.startsWith("view-all-forms") && (
+          <AdminFormDetails
+            campaignId={activeTab.substring("view-all-forms".length + 1)}
             setActiveTab={setActiveTab}
           />
         )}
