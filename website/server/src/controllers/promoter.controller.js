@@ -270,7 +270,7 @@ const fillAttendancePunchIn = asyncHandler(async (req, res) => {
             promoterId: promoterId,
             date: currentDate,
             punchInTime: punchInTime,
-            punchOutTime:punchInTime,
+            punchOutTime:null,
             punchInImage: logInFinalImage.url,
             punchOutImage: '',
             
