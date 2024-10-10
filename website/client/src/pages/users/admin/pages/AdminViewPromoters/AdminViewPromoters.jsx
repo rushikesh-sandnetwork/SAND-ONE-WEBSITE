@@ -92,7 +92,6 @@ const AdminViewPromoters = ({ setActiveTab, role }) => {
                     <tr>
                       <th>Action</th>
                       <th>Timestamp</th>
-                      <th>Performed By</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -102,7 +101,7 @@ const AdminViewPromoters = ({ setActiveTab, role }) => {
                       <tr>
                         <td>${history.action}</td>
                         <td>${history.timestamp}</td>
-                        <td>${history.userName}</td> <!-- Show user full name here -->
+                      
                       </tr>
                     `
                       )
